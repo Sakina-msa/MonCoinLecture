@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Favoris</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+  <div class="logo">
+    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <span class="logo-sub">Ta bibliothèque</span>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn header-btn-ghost">Connexion</button>
+    <button class="header-btn header-btn-accent">Commencer</button>
+  </div>
+</header>
+
+  <nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html">Accueil</a>
+
+    <div class="nav-dropdown nav-mega">
+      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
+
+      <div class="nav-dropdown-menu mega-menu">
+        <div class="mega-left">
+          <div class="mega-badge">Explorer</div>
+          <h3 class="mega-heading">Ma bibliothèque</h3>
+          <p class="mega-text">
+            Retrouve tous tes livres, organise tes envies de lecture,
+            garde tes favoris et lance une recherche en un instant.
+          </p>
+        </div>
+
+        <div class="mega-links">
+          <a href="livres.html" class="mega-card">
+            <span class="mega-icon">📚</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Mes livres</span>
+              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
+            </span>
+          </a>
+
+          <a href="favoris.html" class="mega-card">
+            <span class="mega-icon">❤️</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Favoris</span>
+              <span class="mega-card-desc">Retrouver tes livres préférés</span>
+            </span>
+          </a>
+
+          <a href="a-lire.html" class="mega-card">
+            <span class="mega-icon">🕮</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">À lire</span>
+              <span class="mega-card-desc">Gérer ta liste d’envies</span>
+            </span>
+          </a>
+
+          <a href="recherche.html" class="mega-card">
+            <span class="mega-icon">🔎</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Recherche</span>
+              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Mes favoris ⭐</h2>
+    <p>Les livres que tu as mis en favoris apparaîtront ici.</p><br>
+    <ul id="listeFavoris"></ul>
+    <br>
+    <button id="btnActualiserFavoris">Actualiser</button>
+  </div>
+
+</div>
+
+<script src="assets/js/script.js"></script>
+
+<script>
+
+function chargerFavoris() {
+
+  fetch("api/livres_favoris.php")
+
+  .then(response => response.json())
+
+  .then(livres => {
+
+    const container = document.getElementById("listeFavoris");
+
+    container.innerHTML = "";
+
+    if (livres.length === 0) {
+      container.innerHTML = "<p>Aucun livre en favoris.</p>";
+      return;
+    }
+
+    livres.forEach(livre => {
+
+      const div = document.createElement("div");
+
+      div.className = "livre-card";
+
+      div.innerHTML = `
+        <strong>${livre.titre}</strong><br>
+        Auteur : ${livre.auteur}<br>
+        Genre : ${livre.genre}<br>
+        Note : ${livre.note ?? "Non noté"}
+      `;
+
+      container.appendChild(div);
+
+    });
+
+  });
+
+}
+
+document.getElementById("btnActualiserFavoris").addEventListener("click", chargerFavoris);
+
+chargerFavoris();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <title>Recherche</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+  <div class="logo">
+    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <span class="logo-sub">Ta bibliothèque</span>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn header-btn-ghost">Connexion</button>
+    <button class="header-btn header-btn-accent">Commencer</button>
+  </div>
+</header>
+
+  <nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html">Accueil</a>
+
+    <div class="nav-dropdown nav-mega">
+      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
+
+      <div class="nav-dropdown-menu mega-menu">
+        <div class="mega-left">
+          <div class="mega-badge">Explorer</div>
+          <h3 class="mega-heading">Ma bibliothèque</h3>
+          <p class="mega-text">
+            Retrouve tous tes livres, organise tes envies de lecture,
+            garde tes favoris et lance une recherche en un instant.
+          </p>
+        </div>
+
+        <div class="mega-links">
+          <a href="livres.html" class="mega-card">
+            <span class="mega-icon">📚</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Mes livres</span>
+              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
+            </span>
+          </a>
+
+          <a href="favoris.html" class="mega-card">
+            <span class="mega-icon">❤️</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Favoris</span>
+              <span class="mega-card-desc">Retrouver tes livres préférés</span>
+            </span>
+          </a>
+
+          <a href="a-lire.html" class="mega-card">
+            <span class="mega-icon">🕮</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">À lire</span>
+              <span class="mega-card-desc">Gérer ta liste d’envies</span>
+            </span>
+          </a>
+
+          <a href="recherche.html" class="mega-card">
+            <span class="mega-icon">🔎</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Recherche</span>
+              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
+<main class="container">
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Rechercher un livre</h2>
+      <span class="muted">Recherche dans ta base de données</span>
+    </div>
+
+    <div class="toolbar" style="margin-top:14px;">
+      <input id="champRecherche" type="text" placeholder="Titre, auteur, mot-clé..." style="min-width:260px;">
+      <button id="btnRecherche" type="button" class="btn-primary">Rechercher</button>
+    </div>
+
+    <div id="messageRecherche" class="notice" style="margin-top:12px;"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Résultats</h2>
+      <span class="muted"><span id="compteurResultats">0</span> résultat(s)</span>
+    </div>
+
+    <ul id="listeResultats" class="books-list" style="margin-top:14px;"></ul>
+  </section>
+
+</main>
+
+<script>
+function afficherResultats(livres) {
+  const liste = document.getElementById("listeResultats");
+  const compteur = document.getElementById("compteurResultats");
+
+  liste.innerHTML = "";
+
+  if (!livres || livres.length === 0) {
+    liste.innerHTML = "<li>Aucun livre trouvé.</li>";
+    compteur.textContent = "0";
+    return;
+  }
+
+  livres.forEach(livre => {
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <div class="livre-top">
+        <strong>${livre.titre}</strong>
+      </div>
+
+      <div class="livre-meta">
+        <p>Auteur : ${livre.auteur ?? "Inconnu"}</p>
+        <p>Genre : ${livre.genre ?? "Non précisé"}</p>
+        <p>Statut : ${livre.statut ?? "Non défini"}</p>
+        <p>Note : ${livre.note ?? "Non noté"}/5</p>
+        ${livre.isbn ? `<p>ISBN : ${livre.isbn}</p>` : ""}
+        ${livre.description ? `<p>Description : ${livre.description}</p>` : ""}
+      </div>
+    `;
+
+    liste.appendChild(li);
+  });
+
+  compteur.textContent = livres.length;
+}
+
+function rechercherLivres() {
+  const champ = document.getElementById("champRecherche");
+  const message = document.getElementById("messageRecherche");
+  const valeur = champ.value.trim();
+
+  message.textContent = "";
+
+  if (valeur === "") {
+    message.textContent = "Tape un mot-clé pour rechercher.";
+    afficherResultats([]);
+    return;
+  }
+
+  fetch("api/rechercher_livres.php?q=" + encodeURIComponent(valeur))
+    .then(response => response.json())
+    .then(data => {
+      if (data.erreur) {
+        message.textContent = data.erreur;
+        afficherResultats([]);
+        return;
+      }
+
+      afficherResultats(data);
+    })
+    .catch(error => {
+      console.error("Erreur :", error);
+      message.textContent = "Erreur lors de la recherche.";
+      afficherResultats([]);
+    });
+}
+
+document.getElementById("btnRecherche").addEventListener("click", rechercherLivres);
+
+document.getElementById("champRecherche").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    rechercherLivres();
+  }
+});
+</script>
+
+</body>
+</html>

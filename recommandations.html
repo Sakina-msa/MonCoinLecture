@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommandations — Mon Coin Lecture</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    .reco-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .reco-hero {
+      background: linear-gradient(135deg, #1a1d3d 0%, #20254d 100%);
+      border-radius: 30px;
+      padding: 42px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(20, 24, 50, 0.18);
+    }
+
+    .reco-hero::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(210,147,63,0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .reco-eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(210,147,63,0.12);
+      border: 1px solid rgba(210,147,63,0.35);
+      color: #e3a252;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .reco-title {
+      font-family: "Lora", serif;
+      font-size: 52px;
+      line-height: 1.08;
+      margin: 0 0 14px;
+      color: #ffffff;
+      max-width: 720px;
+    }
+
+    .reco-title em {
+      font-style: italic;
+      color: #d2933f;
+    }
+
+    .reco-sub {
+      max-width: 640px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.78);
+      margin: 0;
+    }
+
+    .reco-card {
+      background: #ffffff;
+      border: 1px solid #ece6dc;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(26, 29, 61, 0.06);
+    }
+
+    .card-title-custom {
+      font-family: "Lora", serif;
+      font-size: 34px;
+      color: #23263f;
+      margin-bottom: 8px;
+    }
+
+    .card-sub-custom {
+      color: #7a8098;
+      font-size: 15px;
+      margin-bottom: 22px;
+      line-height: 1.6;
+    }
+
+    .reco-form {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .reco-input {
+      flex: 1;
+      min-width: 260px;
+      height: 50px;
+      border: 1px solid #ddd8ce;
+      border-radius: 14px;
+      padding: 0 16px;
+      font-size: 15px;
+      font-family: "DM Sans", sans-serif;
+      background: #fffdfa;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .reco-input:focus {
+      border-color: #d2933f;
+      box-shadow: 0 0 0 3px rgba(210, 147, 63, 0.12);
+    }
+
+    .reco-btn {
+      height: 50px;
+      border: none;
+      border-radius: 14px;
+      padding: 0 20px;
+      background: #1f2140;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: "DM Sans", sans-serif;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .reco-btn:hover {
+      background: #2b2f57;
+    }
+
+    .genre-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .genre-tag {
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: #f6ede1;
+      border: 1px solid #ead7be;
+      color: #b97832;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .genre-tag:hover {
+      background: #f2e2cb;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 18px;
+    }
+
+    .book-card {
+      background: #ffffff;
+      border: 1px solid #ebe5db;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(25, 29, 58, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .book-genre {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #f6ede1;
+      color: #b97832;
+      border: 1px solid #ead7be;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .book-title {
+      font-family: "Lora", serif;
+      font-size: 28px;
+      line-height: 1.2;
+      color: #23263f;
+      margin: 0;
+    }
+
+    .book-author {
+      font-size: 15px;
+      color: #6f758d;
+      margin: 0;
+    }
+
+    .book-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #7a8098;
+      margin-top: 2px;
+    }
+
+    .empty-state {
+      border: 1px dashed #d9dbe7;
+      border-radius: 20px;
+      background: #fcfcff;
+      padding: 42px 20px;
+      text-align: center;
+    }
+
+    .empty-title {
+      font-family: "Lora", serif;
+      font-size: 30px;
+      color: #23263f;
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      font-size: 15px;
+      color: #7a8098;
+    }
+
+    @media (max-width: 900px) {
+      .reco-title {
+        font-size: 40px;
+      }
+
+      .reco-hero {
+        padding: 30px 24px;
+      }
+
+      .card-title-custom {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+  <div class="logo">
+    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <span class="logo-sub">Ta bibliothèque</span>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn header-btn-ghost">Connexion</button>
+    <button class="header-btn header-btn-accent">Commencer</button>
+  </div>
+</header>
+
+  <nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html">Accueil</a>
+
+    <div class="nav-dropdown nav-mega">
+      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
+
+      <div class="nav-dropdown-menu mega-menu">
+        <div class="mega-left">
+          <div class="mega-badge">Explorer</div>
+          <h3 class="mega-heading">Ma bibliothèque</h3>
+          <p class="mega-text">
+            Retrouve tous tes livres, organise tes envies de lecture,
+            garde tes favoris et lance une recherche en un instant.
+          </p>
+        </div>
+
+        <div class="mega-links">
+          <a href="livres.html" class="mega-card">
+            <span class="mega-icon">📚</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Mes livres</span>
+              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
+            </span>
+          </a>
+
+          <a href="favoris.html" class="mega-card">
+            <span class="mega-icon">❤️</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Favoris</span>
+              <span class="mega-card-desc">Retrouver tes livres préférés</span>
+            </span>
+          </a>
+
+          <a href="a-lire.html" class="mega-card">
+            <span class="mega-icon">🕮</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">À lire</span>
+              <span class="mega-card-desc">Gérer ta liste d’envies</span>
+            </span>
+          </a>
+
+          <a href="recherche.html" class="mega-card">
+            <span class="mega-icon">🔎</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Recherche</span>
+              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
+
+  <main class="main">
+    <div class="reco-layout">
+
+      <section class="reco-hero">
+        <div class="reco-eyebrow">📚 Suggestions personnalisées</div>
+        <h1 class="reco-title">Trouve ta prochaine <em>lecture coup de cœur</em></h1>
+        <p class="reco-sub">
+          Choisis un genre pour découvrir des idées de livres selon tes envies du moment.
+        </p>
+      </section>
+
+      <section class="reco-card">
+        <div class="card-title-custom">Choisir un genre</div>
+        <div class="card-sub-custom">
+          Entre un genre ou clique sur un des exemples ci-dessous pour afficher des recommandations.
+        </div>
+
+        <div class="reco-form">
+          <input
+            type="text"
+            id="genreInput"
+            class="reco-input"
+            placeholder="Ex : Roman, Fantasy, Manga, Romance..."
+          />
+          <button class="reco-btn" onclick="afficherRecommandations()">Voir</button>
+        </div>
+
+        <div class="genre-tags">
+          <span class="genre-tag" onclick="setGenre('Roman')">Roman</span>
+          <span class="genre-tag" onclick="setGenre('Fantasy')">Fantasy</span>
+          <span class="genre-tag" onclick="setGenre('Manga')">Manga</span>
+          <span class="genre-tag" onclick="setGenre('Romance')">Romance</span>
+          <span class="genre-tag" onclick="setGenre('Classiques')">Classiques</span>
+          <span class="genre-tag" onclick="setGenre('Sci-Fi')">Sci-Fi</span>
+        </div>
+      </section>
+
+      <section class="reco-card">
+        <div class="card-title-custom">Suggestions</div>
+        <div class="card-sub-custom">
+          Voici quelques idées selon le genre choisi.
+        </div>
+
+        <div id="results" class="results-grid">
+          <div class="empty-state">
+            <div class="empty-title">Aucune recommandation affichée</div>
+            <div class="empty-text">Choisis un genre pour voir des propositions.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const recommandations = {
+      roman: [
+        {
+          titre: "Les Misérables",
+          auteur: "Victor Hugo",
+          description: "Un grand classique français, intense, humain et marquant."
+        },
+        {
+          titre: "Le Comte de Monte-Cristo",
+          auteur: "Alexandre Dumas",
+          description: "Une histoire de vengeance, de justice et d'aventure."
+        },
+        {
+          titre: "L'Étranger",
+          auteur: "Albert Camus",
+          description: "Un roman court, profond et incontournable."
+        }
+      ],
+      fantasy: [
+        {
+          titre: "Harry Potter à l'école des sorciers",
+          auteur: "J.K. Rowling",
+          description: "Un univers magique culte, parfait pour s'évader."
+        },
+        {
+          titre: "Le Seigneur des Anneaux",
+          auteur: "J.R.R. Tolkien",
+          description: "Une aventure épique dans un monde riche et légendaire."
+        },
+        {
+          titre: "La Passe-miroir",
+          auteur: "Christelle Dabos",
+          description: "Une fantasy française originale, poétique et captivante."
+        }
+      ],
+      manga: [
+        {
+          titre: "Death Note",
+          auteur: "Tsugumi Ohba & Takeshi Obata",
+          description: "Un manga intelligent, sombre et addictif."
+        },
+        {
+          titre: "One Piece",
+          auteur: "Eiichiro Oda",
+          description: "Une aventure immense, drôle et pleine d'émotion."
+        },
+        {
+          titre: "Attack on Titan",
+          auteur: "Hajime Isayama",
+          description: "Un manga intense, rythmé et rempli de mystères."
+        }
+      ],
+      romance: [
+        {
+          titre: "Orgueil et Préjugés",
+          auteur: "Jane Austen",
+          description: "Une romance classique, élégante et intemporelle."
+        },
+        {
+          titre: "Avant toi",
+          auteur: "Jojo Moyes",
+          description: "Une histoire touchante, moderne et émouvante."
+        },
+        {
+          titre: "Jamais plus",
+          auteur: "Colleen Hoover",
+          description: "Une romance contemporaine très populaire."
+        }
+      ],
+      classiques: [
+        {
+          titre: "Madame Bovary",
+          auteur: "Gustave Flaubert",
+          description: "Un classique fort sur les illusions et les désirs."
+        },
+        {
+          titre: "Germinal",
+          auteur: "Émile Zola",
+          description: "Un roman puissant et socialement marquant."
+        },
+        {
+          titre: "Le Rouge et le Noir",
+          auteur: "Stendhal",
+          description: "Un grand classique psychologique et ambitieux."
+        }
+      ],
+      "sci-fi": [
+        {
+          titre: "Dune",
+          auteur: "Frank Herbert",
+          description: "Une œuvre culte de science-fiction, riche et fascinante."
+        },
+        {
+          titre: "Fondation",
+          auteur: "Isaac Asimov",
+          description: "Un incontournable de la science-fiction classique."
+        },
+        {
+          titre: "La Horde du Contrevent",
+          auteur: "Alain Damasio",
+          description: "Une lecture exigeante, originale et immersive."
+        }
+      ]
+    };
+
+    function setGenre(val) {
+      document.getElementById("genreInput").value = val;
+      afficherRecommandations();
+    }
+
+    function afficherRecommandations() {
+      const input = document.getElementById("genreInput").value.trim().toLowerCase();
+      const results = document.getElementById("results");
+
+      let cle = input;
+
+      if (input === "science-fiction" || input === "science fiction" || input === "scifi") {
+        cle = "sci-fi";
+      }
+
+      const livres = recommandations[cle];
+
+      if (!livres) {
+        results.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-title">Genre non trouvé</div>
+            <div class="empty-text">Essaie avec Roman, Fantasy, Manga, Romance, Classiques ou Sci-Fi.</div>
+          </div>
+        `;
+        return;
+      }
+
+      results.innerHTML = "";
+
+      livres.forEach(livre => {
+        const card = document.createElement("div");
+        card.className = "book-card";
+
+        card.innerHTML = `
+          <div class="book-genre">${input}</div>
+          <h3 class="book-title">${livre.titre}</h3>
+          <p class="book-author">${livre.auteur}</p>
+          <div class="book-desc">${livre.description}</div>
+        `;
+
+        results.appendChild(card);
+      });
+    }
+
+    document.getElementById("genreInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        afficherRecommandations();
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mes livres — Mon Coin Lecture</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+
+</head>
+
+<body>
+
+  <header class="site-header">
+  <div class="logo">
+    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <span class="logo-sub">Ta bibliothèque</span>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn header-btn-ghost">Connexion</button>
+    <button class="header-btn header-btn-accent">Commencer</button>
+  </div>
+</header>
+
+  <nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html">Accueil</a>
+
+    <div class="nav-dropdown nav-mega">
+      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
+
+      <div class="nav-dropdown-menu mega-menu">
+        <div class="mega-left">
+          <div class="mega-badge">Explorer</div>
+          <h3 class="mega-heading">Ma bibliothèque</h3>
+          <p class="mega-text">
+            Retrouve tous tes livres, organise tes envies de lecture,
+            garde tes favoris et lance une recherche en un instant.
+          </p>
+        </div>
+
+        <div class="mega-links">
+          <a href="livres.html" class="mega-card">
+            <span class="mega-icon">📚</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Mes livres</span>
+              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
+            </span>
+          </a>
+
+          <a href="favoris.html" class="mega-card">
+            <span class="mega-icon">❤️</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Favoris</span>
+              <span class="mega-card-desc">Retrouver tes livres préférés</span>
+            </span>
+          </a>
+
+          <a href="a-lire.html" class="mega-card">
+            <span class="mega-icon">🕮</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">À lire</span>
+              <span class="mega-card-desc">Gérer ta liste d’envies</span>
+            </span>
+          </a>
+
+          <a href="recherche.html" class="mega-card">
+            <span class="mega-icon">🔎</span>
+            <span class="mega-card-content">
+              <span class="mega-card-title">Recherche</span>
+              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
+
+  <main class="main">
+    <div class="books-page-layout">
+
+      <div class="side-card add-book-card">
+        <div class="card-title">Ajouter un livre</div>
+        <div class="card-sub">Ajoute un livre à ta bibliothèque personnelle.</div>
+
+        <div class="form-stack">
+          <div class="field-group">
+            <label class="field-label" for="inputTitre">Titre</label>
+            <input
+              type="text"
+              id="inputTitre"
+              class="field-input"
+              placeholder="Ex : Dune, Les Misérables..."
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inputAuteur">Auteur</label>
+            <input
+              type="text"
+              id="inputAuteur"
+              class="field-input"
+              placeholder="Ex : Victor Hugo, Frank Herbert..."
+            />
+          </div>
+
+          <button id="btnAjouter" class="add-book-btn">Ajouter</button>
+        </div>
+      </div>
+
+      <div class="side-card books-list-card">
+        <div class="books-list-header">
+          <div>
+            <div class="card-title">Mes livres ajoutés</div>
+            <div class="card-sub">Retrouve ici tous les livres que tu as enregistrés.</div>
+          </div>
+          <div class="books-counter" id="compteurLivres">0 livre</div>
+        </div>
+
+        <div id="listeLivres" class="books-grid"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const inputTitre = document.getElementById("inputTitre");
+    const inputAuteur = document.getElementById("inputAuteur");
+    const btnAjouter = document.getElementById("btnAjouter");
+    const listeLivres = document.getElementById("listeLivres");
+    const compteurLivres = document.getElementById("compteurLivres");
+
+    function getLivres() {
+      return JSON.parse(localStorage.getItem("mesLivres")) || [];
+    }
+
+    function saveLivres(livres) {
+      localStorage.setItem("mesLivres", JSON.stringify(livres));
+    }
+
+    function updateCompteur(nombre) {
+      compteurLivres.textContent = nombre > 1 ? `${nombre} livres` : `${nombre} livre`;
+    }
+
+    function afficherLivres() {
+      const livres = getLivres();
+      listeLivres.innerHTML = "";
+      updateCompteur(livres.length);
+
+      if (livres.length === 0) {
+        listeLivres.innerHTML = `
+          <div class="empty-books">
+            <div class="empty-books-title">Aucun livre ajouté</div>
+            <div class="empty-books-text">Ajoute ton premier livre avec le formulaire à gauche.</div>
+          </div>
+        `;
+        return;
+      }
+
+      livres.forEach((livre, index) => {
+        const card = document.createElement("div");
+        card.className = "book-item";
+
+        card.innerHTML = `
+          <div class="book-item-title">${livre.titre}</div>
+          <div class="book-item-author"><strong>Auteur :</strong> ${livre.auteur}</div>
+          <button class="delete-book-btn" onclick="supprimerLivre(${index})">Supprimer</button>
+        `;
+
+        listeLivres.appendChild(card);
+      });
+    }
+
+    function ajouterLivre() {
+      const titre = inputTitre.value.trim();
+      const auteur = inputAuteur.value.trim();
+
+      if (!titre || !auteur) {
+        alert("Merci de remplir le titre et l'auteur.");
+        return;
+      }
+
+      const livres = getLivres();
+      livres.push({ titre, auteur });
+      saveLivres(livres);
+
+      inputTitre.value = "";
+      inputAuteur.value = "";
+      afficherLivres();
+    }
+
+    function supprimerLivre(index) {
+      const livres = getLivres();
+      livres.splice(index, 1);
+      saveLivres(livres);
+      afficherLivres();
+    }
+
+    btnAjouter.addEventListener("click", ajouterLivre);
+
+    inputTitre.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") ajouterLivre();
+    });
+
+    inputAuteur.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") ajouterLivre();
+    });
+
+    afficherLivres();
+  </script>
+
+</body>
+</html>
