@@ -1,139 +1,1286 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Favoris</title>
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mes Favoris — Mon Coin Lecture</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:         #1a1410;
+      --ink-soft:    #3d322a;
+      --muted:       #8a7b6e;
+      --muted-light: #b5a89b;
+      --bg:          #faf7f2;
+      --bg-warm:     #f3ede3;
+      --bg-card:     #fffcf7;
+      --border:      #e8e0d4;
+      --border-warm: #d4c8b8;
+      --accent:      #c4602a;
+      --accent-light:#fdf0e8;
+      --accent-deep: #9e3e14;
+      --gold:        #b8933f;
+      --gold-light:  #faf3e0;
+
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Instrument Sans', system-ui, sans-serif;
+      --radius:     12px;
+      --shadow-sm:  0 1px 4px rgba(26,20,16,0.06);
+      --shadow-md:  0 4px 20px rgba(26,20,16,0.09);
+      --shadow-lg:  0 12px 48px rgba(26,20,16,0.12);
+
+      /* Shelf wood colors */
+      --shelf-top:   #c8a97a;
+      --shelf-face:  #a67c52;
+      --shelf-shadow:#7a5a35;
+    }
+
+    html { font-size: 15px; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,247,242,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+    }
+
+    .logo { display: flex; align-items: baseline; gap: 10px; }
+    .logo-mark { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+    .logo-mark em { font-style: italic; color: var(--accent); }
+    .logo-divider { width: 1px; height: 14px; background: var(--border-warm); }
+    .logo-sub { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .header-btn { font-family: var(--font-sans); font-size: 0.8rem; font-weight: 500; padding: 7px 18px; border-radius: 99px; cursor: pointer; letter-spacing: 0.02em; transition: all 0.18s ease; border: none; }
+    .header-btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--border-warm); }
+    .header-btn-ghost:hover { background: var(--bg-warm); }
+    .header-btn-accent { background: var(--ink); color: var(--bg); }
+    .header-btn-accent:hover { background: var(--ink-soft); }
+
+    /* ── NAV ── */
+    .site-nav { border-bottom: 1px solid var(--border); background: var(--bg-card); }
+    .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 48px; display: flex; align-items: center; gap: 4px; height: 46px; }
+    .nav-inner a { font-size: 0.8rem; font-weight: 500; color: var(--muted); text-decoration: none; padding: 5px 14px; border-radius: 6px; letter-spacing: 0.03em; transition: all 0.15s; }
+    .nav-inner a:hover { color: var(--ink); background: var(--bg-warm); }
+    .nav-inner a.active { color: var(--accent); background: var(--accent-light); }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 44px 48px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 44px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .page-header-left {}
+
+    .page-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .page-title em { font-style: italic; color: var(--accent); }
+
+    .page-subtitle {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .page-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 4px;
+    }
+
+    .sort-select {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      padding: 7px 16px;
+      background: var(--bg-card);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7b6e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      transition: border-color 0.18s;
+    }
+    .sort-select:focus { border-color: var(--accent); }
+
+    .view-toggle {
+      display: flex;
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .view-btn {
+      width: 36px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .view-btn.active { background: var(--ink); color: #fff; }
+    .view-btn svg { width: 14px; height: 14px; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 32px;
+      margin-bottom: 44px;
+      box-shadow: var(--shadow-sm);
+      animation: fadeUp 0.5s 0.07s ease both;
+    }
+
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 0 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── BOOKSHELF ── */
+    .shelf-section {
+      margin-bottom: 56px;
+      animation: fadeUp 0.5s 0.14s ease both;
+    }
+
+    .shelf-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .shelf-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .shelf-count {
+      font-size: 0.75rem;
+      color: var(--muted-light);
+    }
+
+    .shelf-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.15s;
+    }
+    .shelf-link:hover { opacity: 0.7; }
+
+    /* THE ACTUAL SHELF */
+    .bookshelf {
+      position: relative;
+      padding-top: 20px;
+    }
+
+    .books-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      padding: 0 16px 0 24px;
+      min-height: 170px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Shelf plank */
+    .shelf-plank {
+      position: relative;
+      height: 22px;
+      background: linear-gradient(180deg, var(--shelf-top) 0%, var(--shelf-top) 55%, var(--shelf-face) 55%, var(--shelf-face) 100%);
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 6px 20px rgba(100,60,20,0.25), 0 2px 4px rgba(100,60,20,0.15), inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+
+    .shelf-plank::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      top: 0; height: 3px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* Wall background */
+    .shelf-wall {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #f0e8dc 0%, #e8ddd0 100%);
+      border-radius: 10px;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .shelf-wall::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(180,160,130,0.06) 24px, rgba(180,160,130,0.06) 25px),
+        repeating-linear-gradient(90deg, transparent, transparent 24px, rgba(180,160,130,0.04) 24px, rgba(180,160,130,0.04) 25px);
+    }
+
+    .shelf-container {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 20px 0 0;
+      background: linear-gradient(180deg, #f0e8dc 0%, #e8ddd0 100%);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-warm);
+    }
+
+    /* BOOK ITEM */
+    .book-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      padding: 0 3px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: bottom center;
+    }
+
+    .book-item:hover {
+      transform: translateY(-14px);
+      z-index: 10;
+    }
+
+    .book-item:hover .book-tooltip { opacity: 1; transform: translateY(0); }
+
+    /* BOOK SPINE */
+    .book-spine {
+      border-radius: 2px 4px 4px 2px;
+      position: relative;
+      cursor: pointer;
+      box-shadow:
+        -2px 0 4px rgba(0,0,0,0.15),
+        2px 0 4px rgba(0,0,0,0.08),
+        inset -3px 0 8px rgba(0,0,0,0.12),
+        inset 2px 0 4px rgba(255,255,255,0.18);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .book-spine::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0; bottom: 0;
+      width: 5px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 2px 0 0 2px;
+    }
+
+    .book-spine::after {
+      content: '';
+      position: absolute;
+      right: 3px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .book-spine-title {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 8px 4px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Book heart indicator */
+    .book-heart {
+      position: absolute;
+      top: 6px;
+      right: -2px;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .book-item:hover .book-heart { opacity: 1; }
+    .book-heart svg { width: 8px; height: 8px; color: white; }
+
+    /* TOOLTIP */
+    .book-tooltip {
+      position: absolute;
+      bottom: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: var(--ink);
+      border-radius: 10px;
+      padding: 12px 14px;
+      min-width: 160px;
+      max-width: 190px;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.2s ease;
+      z-index: 20;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .book-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--ink);
+    }
+
+    .tt-title {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #f5f0e8;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+
+    .tt-author {
+      font-size: 0.7rem;
+      color: var(--muted-light);
+      margin-bottom: 8px;
+    }
+
+    .tt-genre {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: rgba(196,96,42,0.25);
+      color: #e8a070;
+    }
+
+    .tt-rating {
+      display: flex;
+      gap: 2px;
+      margin-top: 8px;
+    }
+
+    .tt-star {
+      width: 10px;
+      height: 10px;
+      color: var(--gold);
+    }
+
+    /* BOOK COLORS */
+    .bc-1  { background: linear-gradient(160deg, #2c4a8f, #1a2f5c); }
+    .bc-2  { background: linear-gradient(160deg, #2a6b4c, #1a4230); }
+    .bc-3  { background: linear-gradient(160deg, #8b1a2a, #5c0e1a); }
+    .bc-4  { background: linear-gradient(160deg, #4a3580, #2a1a5c); }
+    .bc-5  { background: linear-gradient(160deg, #b8933f, #8a6a20); }
+    .bc-6  { background: linear-gradient(160deg, #3a6b8a, #1a3a5c); }
+    .bc-7  { background: linear-gradient(160deg, #8a3a2a, #5c1a10); }
+    .bc-8  { background: linear-gradient(160deg, #2a7a5a, #1a4c38); }
+    .bc-9  { background: linear-gradient(160deg, #6a4a1a, #3c2a08); }
+    .bc-10 { background: linear-gradient(160deg, #1a4a6a, #0e2a3c); }
+    .bc-11 { background: linear-gradient(160deg, #7a2a5a, #4c1038); }
+    .bc-12 { background: linear-gradient(160deg, #3a5a2a, #1c3a0e); }
+
+    /* Text colors on spine */
+    .tc-light { color: rgba(255,255,255,0.85); }
+    .tc-gold   { color: rgba(220,185,100,0.9); }
+
+    /* ── ADD BOOK PLACEHOLDER ── */
+    .book-add {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 3px;
+      cursor: pointer;
+    }
+
+    .book-add-spine {
+      border-radius: 2px 4px 4px 2px;
+      border: 2px dashed var(--border-warm);
+      background: rgba(244,237,228,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .book-add-spine:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .book-add-spine svg { width: 16px; height: 16px; color: var(--muted-light); transition: color 0.2s; }
+    .book-add-spine:hover svg { color: var(--accent); }
+
+    /* ── LIST VIEW ── */
+    .list-view { display: none; }
+    .list-view.active { display: flex; flex-direction: column; gap: 0; }
+    .shelf-view.hidden { display: none; }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      transition: background 0.15s;
+    }
+    .list-item:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+    .list-item:last-child { border-bottom: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); }
+    .list-item:hover { background: var(--bg-warm); }
+
+    .list-book-cover {
+      width: 44px;
+      height: 60px;
+      border-radius: 3px 6px 6px 3px;
+      flex-shrink: 0;
+      box-shadow: -2px 0 4px rgba(0,0,0,0.12), 2px 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .list-book-info { flex: 1; min-width: 0; }
+
+    .list-book-title {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .list-book-author {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .list-tags {
+      display: flex;
+      gap: 6px;
+    }
+
+    .list-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--bg);
+    }
+
+    .list-book-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .list-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .list-star {
+      width: 12px;
+      height: 12px;
+    }
+
+    .list-date {
+      font-size: 0.7rem;
+      color: var(--muted-light);
+    }
+
+    .unfav-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.18s;
+      flex-shrink: 0;
+    }
+    .unfav-btn:hover {
+      border-color: #e05c7a;
+      color: #e05c7a;
+      background: #fff0f3;
+    }
+    .unfav-btn svg { width: 13px; height: 13px; }
+
+    /* ── EMPTY STATE ── */
+    .empty-shelf {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: var(--muted-light);
+    }
+
+    /* ── GENRE FILTER PILLS ── */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .filter-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .filter-pill {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 99px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .filter-pill:hover {
+      border-color: var(--border-warm);
+      background: var(--bg-warm);
+      color: var(--ink-soft);
+    }
+    .filter-pill.active {
+      background: var(--accent-light);
+      border-color: #e8b490;
+      color: var(--accent);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .shelf-section:nth-child(1) { animation-delay: 0.14s; }
+    .shelf-section:nth-child(2) { animation-delay: 0.22s; }
+    .shelf-section:nth-child(3) { animation-delay: 0.30s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .page-wrap { padding: 28px 24px 60px; }
+      .site-header, .nav-inner { padding-inline: 24px; }
+    }
+
+    @media (max-width: 768px) {
+      .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .page-header-right { width: 100%; justify-content: flex-end; }
+      .books-row { gap: 0; }
+    }
+  </style>
 </head>
 
 <body>
 
+  <!-- HEADER -->
   <header class="site-header">
-  <div class="logo">
-    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
-    <span class="logo-sub">Ta bibliothèque</span>
-  </div>
-  <div class="header-actions">
-    <button class="header-btn header-btn-ghost">Connexion</button>
-    <button class="header-btn header-btn-accent">Commencer</button>
-  </div>
-</header>
+    <div class="logo">
+      <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+      <div class="logo-divider"></div>
+      <span class="logo-sub">Ta bibliothèque</span>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn header-btn-ghost">Connexion</button>
+      <button class="header-btn header-btn-accent">Commencer</button>
+    </div>
+  </header>
 
+  <!-- NAV -->
   <nav class="site-nav">
-  <div class="nav-inner">
-    <a href="index.html">Accueil</a>
+    <div class="nav-inner">
+      <a href="index.html">Accueil</a>
+      <a href="livres.html">Bibliothèque</a>
+      <a href="favoris.html" class="active">Favoris</a>
+      <a href="recommandations.html">Recommandations</a>
+    </div>
+  </nav>
 
-    <div class="nav-dropdown nav-mega">
-      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
+  <!-- MAIN -->
+  <main class="page-wrap">
 
-      <div class="nav-dropdown-menu mega-menu">
-        <div class="mega-left">
-          <div class="mega-badge">Explorer</div>
-          <h3 class="mega-heading">Ma bibliothèque</h3>
-          <p class="mega-text">
-            Retrouve tous tes livres, organise tes envies de lecture,
-            garde tes favoris et lance une recherche en un instant.
-          </p>
-        </div>
-
-        <div class="mega-links">
-          <a href="livres.html" class="mega-card">
-            <span class="mega-icon">📚</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Mes livres</span>
-              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
-            </span>
-          </a>
-
-          <a href="favoris.html" class="mega-card">
-            <span class="mega-icon">❤️</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Favoris</span>
-              <span class="mega-card-desc">Retrouver tes livres préférés</span>
-            </span>
-          </a>
-
-          <a href="a-lire.html" class="mega-card">
-            <span class="mega-icon">🕮</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">À lire</span>
-              <span class="mega-card-desc">Gérer ta liste d’envies</span>
-            </span>
-          </a>
-
-          <a href="recherche.html" class="mega-card">
-            <span class="mega-icon">🔎</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Recherche</span>
-              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
-            </span>
-          </a>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-eyebrow">Ma collection</div>
+        <h1 class="page-title">Mes livres <em>favoris</em></h1>
+        <p class="page-subtitle">Les œuvres qui t'ont marqué, rangées avec soin sur tes étagères.</p>
+      </div>
+      <div class="page-header-right">
+        <select class="sort-select" id="sortSelect" onchange="sortBooks()">
+          <option value="recent">Ajout récent</option>
+          <option value="title">Titre A–Z</option>
+          <option value="genre">Par genre</option>
+          <option value="rating">Mieux notés</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" id="btnShelf" onclick="setView('shelf')" title="Étagère">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/>
+            </svg>
+          </button>
+          <button class="view-btn" id="btnList" onclick="setView('list')" title="Liste">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+              <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <a href="recommandations.html">Recommandations</a>
-  </div>
-</nav>
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num" id="totalCount">12</div>
+        <div class="stat-label">Favoris</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Genres</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4,4</div>
+        <div class="stat-label">Note moy.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2024</div>
+        <div class="stat-label">Dernier ajout</div>
+      </div>
+    </div>
 
-<div class="container">
+    <!-- FILTER PILLS -->
+    <div class="filter-row">
+      <span class="filter-label">Genre :</span>
+      <button class="filter-pill active" onclick="filterGenre('all', this)">Tous</button>
+      <button class="filter-pill" onclick="filterGenre('roman', this)">Roman</button>
+      <button class="filter-pill" onclick="filterGenre('fantasy', this)">Fantasy</button>
+      <button class="filter-pill" onclick="filterGenre('classique', this)">Classiques</button>
+      <button class="filter-pill" onclick="filterGenre('crime', this)">Crime</button>
+      <button class="filter-pill" onclick="filterGenre('sci-fi', this)">Sci-Fi</button>
+    </div>
 
-  <div class="card">
-    <h2>Mes favoris ⭐</h2>
-    <p>Les livres que tu as mis en favoris apparaîtront ici.</p><br>
-    <ul id="listeFavoris"></ul>
-    <br>
-    <button id="btnActualiserFavoris">Actualiser</button>
-  </div>
+    <!-- ========== SHELF VIEW ========== -->
+    <div id="shelfView" class="shelf-view">
 
-</div>
+      <!-- SHELF 1 — Classiques -->
+      <div class="shelf-section" data-shelf="classiques">
+        <div class="shelf-section-header">
+          <div>
+            <span class="shelf-label">Classiques</span>
+            <span class="shelf-count" style="margin-left:10px">4 livres</span>
+          </div>
+          <a href="#" class="shelf-link">
+            Voir l'étagère complète
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="shelf-container">
+          <div class="books-row" id="shelf-classiques">
+            <!-- Book 1 -->
+            <div class="book-item" data-genre="classique" data-title="Les Misérables" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Les Misérables</div>
+                <div class="tt-author">Victor Hugo · 1862</div>
+                <span class="tt-genre">Classique</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-1 tc-gold" style="width:34px;height:152px">
+                <span class="book-spine-title">Les Misérables</span>
+              </div>
+            </div>
 
-<script src="assets/js/script.js"></script>
+            <!-- Book 2 -->
+            <div class="book-item" data-genre="classique" data-title="Le Comte de Monte-Cristo" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Le Comte de Monte-Cristo</div>
+                <div class="tt-author">Alexandre Dumas · 1844</div>
+                <span class="tt-genre">Classique</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-3 tc-gold" style="width:42px;height:164px">
+                <span class="book-spine-title">Le Comte de Monte-Cristo</span>
+              </div>
+            </div>
 
-<script>
+            <!-- Book 3 -->
+            <div class="book-item" data-genre="classique" data-title="L'Étranger" data-rating="4">
+              <div class="book-tooltip">
+                <div class="tt-title">L'Étranger</div>
+                <div class="tt-author">Albert Camus · 1942</div>
+                <span class="tt-genre">Classique</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-9 tc-light" style="width:24px;height:118px">
+                <span class="book-spine-title">L'Étranger</span>
+              </div>
+            </div>
 
-function chargerFavoris() {
+            <!-- Book 4 -->
+            <div class="book-item" data-genre="classique" data-title="Madame Bovary" data-rating="4">
+              <div class="book-tooltip">
+                <div class="tt-title">Madame Bovary</div>
+                <div class="tt-author">Gustave Flaubert · 1857</div>
+                <span class="tt-genre">Classique</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-11 tc-light" style="width:28px;height:136px">
+                <span class="book-spine-title">Madame Bovary</span>
+              </div>
+            </div>
 
-  fetch("api/livres_favoris.php")
+            <!-- Add placeholder -->
+            <div class="book-add">
+              <div class="book-add-spine" style="width:30px;height:120px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="shelf-plank"></div>
+        </div>
+      </div>
 
-  .then(response => response.json())
+      <!-- SHELF 2 — Fantasy & Sci-Fi -->
+      <div class="shelf-section" data-shelf="fantasy-scifi">
+        <div class="shelf-section-header">
+          <div>
+            <span class="shelf-label">Fantasy &amp; Sci-Fi</span>
+            <span class="shelf-count" style="margin-left:10px">5 livres</span>
+          </div>
+          <a href="#" class="shelf-link">
+            Voir l'étagère complète
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="shelf-container">
+          <div class="books-row" id="shelf-fantasy">
+            <div class="book-item" data-genre="fantasy" data-title="Le Seigneur des Anneaux" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Le Seigneur des Anneaux</div>
+                <div class="tt-author">J.R.R. Tolkien · 1954</div>
+                <span class="tt-genre">Fantasy</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-2 tc-gold" style="width:44px;height:162px">
+                <span class="book-spine-title">Le Seigneur des Anneaux</span>
+              </div>
+            </div>
 
-  .then(livres => {
+            <div class="book-item" data-genre="fantasy" data-title="Harry Potter" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Harry Potter T.1</div>
+                <div class="tt-author">J.K. Rowling · 1997</div>
+                <span class="tt-genre">Fantasy</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-4 tc-gold" style="width:32px;height:140px">
+                <span class="book-spine-title">Harry Potter</span>
+              </div>
+            </div>
 
-    const container = document.getElementById("listeFavoris");
+            <div class="book-item" data-genre="sci-fi" data-title="Dune" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Dune</div>
+                <div class="tt-author">Frank Herbert · 1965</div>
+                <span class="tt-genre">Sci-Fi</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-5 tc-light" style="width:38px;height:156px">
+                <span class="book-spine-title">Dune</span>
+              </div>
+            </div>
 
-    container.innerHTML = "";
+            <div class="book-item" data-genre="sci-fi" data-title="Fondation" data-rating="4">
+              <div class="book-tooltip">
+                <div class="tt-title">Fondation</div>
+                <div class="tt-author">Isaac Asimov · 1951</div>
+                <span class="tt-genre">Sci-Fi</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-6 tc-light" style="width:30px;height:130px">
+                <span class="book-spine-title">Fondation</span>
+              </div>
+            </div>
 
-    if (livres.length === 0) {
-      container.innerHTML = "<p>Aucun livre en favoris.</p>";
-      return;
+            <div class="book-item" data-genre="sci-fi" data-title="1984" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">1984</div>
+                <div class="tt-author">George Orwell · 1949</div>
+                <span class="tt-genre">Sci-Fi</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-10 tc-light" style="width:26px;height:122px">
+                <span class="book-spine-title">1984</span>
+              </div>
+            </div>
+
+            <div class="book-add">
+              <div class="book-add-spine" style="width:30px;height:120px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="shelf-plank"></div>
+        </div>
+      </div>
+
+      <!-- SHELF 3 — Romans & Crime -->
+      <div class="shelf-section" data-shelf="romans">
+        <div class="shelf-section-header">
+          <div>
+            <span class="shelf-label">Romans &amp; Crime</span>
+            <span class="shelf-count" style="margin-left:10px">3 livres</span>
+          </div>
+          <a href="#" class="shelf-link">
+            Voir l'étagère complète
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="shelf-container">
+          <div class="books-row" id="shelf-romans">
+            <div class="book-item" data-genre="crime" data-title="Le Meurtre de Roger Ackroyd" data-rating="5">
+              <div class="book-tooltip">
+                <div class="tt-title">Le Meurtre de Roger Ackroyd</div>
+                <div class="tt-author">Agatha Christie · 1926</div>
+                <span class="tt-genre">Crime</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-7 tc-light" style="width:32px;height:138px">
+                <span class="book-spine-title">Le Meurtre de Roger Ackroyd</span>
+              </div>
+            </div>
+
+            <div class="book-item" data-genre="roman" data-title="La Peste" data-rating="4">
+              <div class="book-tooltip">
+                <div class="tt-title">La Peste</div>
+                <div class="tt-author">Albert Camus · 1947</div>
+                <span class="tt-genre">Roman</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-8 tc-light" style="width:26px;height:118px">
+                <span class="book-spine-title">La Peste</span>
+              </div>
+            </div>
+
+            <div class="book-item" data-genre="roman" data-title="Anna Karénine" data-rating="4">
+              <div class="book-tooltip">
+                <div class="tt-title">Anna Karénine</div>
+                <div class="tt-author">Léon Tolstoï · 1877</div>
+                <span class="tt-genre">Roman</span>
+                <div class="tt-rating">
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div class="book-spine bc-12 tc-gold" style="width:40px;height:160px">
+                <span class="book-spine-title">Anna Karénine</span>
+              </div>
+            </div>
+
+            <div class="book-add">
+              <div class="book-add-spine" style="width:30px;height:120px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="shelf-plank"></div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /shelfView -->
+
+    <!-- ========== LIST VIEW ========== -->
+    <div id="listView" class="list-view">
+
+      <!-- All 12 books as list items -->
+      <div class="list-item" data-genre="classique">
+        <div class="list-book-cover bc-1" style="border-radius:3px 6px 6px 3px"></div>
+        <div class="list-book-info">
+          <div class="list-book-title">Les Misérables</div>
+          <div class="list-book-author">Victor Hugo · 1862</div>
+          <div class="list-tags"><span class="list-tag">Classique</span><span class="list-tag">Roman</span></div>
+        </div>
+        <div class="list-book-meta">
+          <div class="list-stars">
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="list-date">Ajouté il y a 3 mois</div>
+        </div>
+        <button class="unfav-btn" title="Retirer des favoris">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <div class="list-item" data-genre="classique">
+        <div class="list-book-cover bc-3" style="border-radius:3px 6px 6px 3px"></div>
+        <div class="list-book-info">
+          <div class="list-book-title">Le Comte de Monte-Cristo</div>
+          <div class="list-book-author">Alexandre Dumas · 1844</div>
+          <div class="list-tags"><span class="list-tag">Classique</span><span class="list-tag">Aventure</span></div>
+        </div>
+        <div class="list-book-meta">
+          <div class="list-stars">
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="list-date">Ajouté il y a 1 semaine</div>
+        </div>
+        <button class="unfav-btn" title="Retirer des favoris">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <div class="list-item" data-genre="fantasy">
+        <div class="list-book-cover bc-2" style="border-radius:3px 6px 6px 3px"></div>
+        <div class="list-book-info">
+          <div class="list-book-title">Le Seigneur des Anneaux</div>
+          <div class="list-book-author">J.R.R. Tolkien · 1954</div>
+          <div class="list-tags"><span class="list-tag">Fantasy</span></div>
+        </div>
+        <div class="list-book-meta">
+          <div class="list-stars">
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="list-date">Ajouté il y a 2 mois</div>
+        </div>
+        <button class="unfav-btn" title="Retirer des favoris">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <div class="list-item" data-genre="sci-fi">
+        <div class="list-book-cover bc-5" style="border-radius:3px 6px 6px 3px"></div>
+        <div class="list-book-info">
+          <div class="list-book-title">Dune</div>
+          <div class="list-book-author">Frank Herbert · 1965</div>
+          <div class="list-tags"><span class="list-tag">Sci-Fi</span></div>
+        </div>
+        <div class="list-book-meta">
+          <div class="list-stars">
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="list-date">Ajouté il y a 5 jours</div>
+        </div>
+        <button class="unfav-btn" title="Retirer des favoris">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <div class="list-item" data-genre="crime">
+        <div class="list-book-cover bc-7" style="border-radius:3px 6px 6px 3px"></div>
+        <div class="list-book-info">
+          <div class="list-book-title">Le Meurtre de Roger Ackroyd</div>
+          <div class="list-book-author">Agatha Christie · 1926</div>
+          <div class="list-tags"><span class="list-tag">Crime</span><span class="list-tag">Mystère</span></div>
+        </div>
+        <div class="list-book-meta">
+          <div class="list-stars">
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg class="list-star" viewBox="0 0 24 24" fill="#b8933f"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="list-date">Ajouté il y a 1 mois</div>
+        </div>
+        <button class="unfav-btn" title="Retirer des favoris">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+    </div>
+    <!-- /listView -->
+
+  </main>
+
+  <script>
+    /* ── VIEW TOGGLE ── */
+    function setView(mode) {
+      const shelf = document.getElementById('shelfView');
+      const list  = document.getElementById('listView');
+      const btnS  = document.getElementById('btnShelf');
+      const btnL  = document.getElementById('btnList');
+      if (mode === 'shelf') {
+        shelf.classList.remove('hidden');
+        list.classList.remove('active');
+        btnS.classList.add('active');
+        btnL.classList.remove('active');
+      } else {
+        shelf.classList.add('hidden');
+        list.classList.add('active');
+        btnL.classList.add('active');
+        btnS.classList.remove('active');
+      }
     }
 
-    livres.forEach(livre => {
+    /* ── FILTER BY GENRE ── */
+    function filterGenre(genre, el) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
 
-      const div = document.createElement("div");
+      // Shelf view: show/hide individual book items
+      document.querySelectorAll('.book-item').forEach(book => {
+        const bg = book.dataset.genre;
+        book.style.display = (genre === 'all' || bg === genre) ? 'flex' : 'none';
+      });
 
-      div.className = "livre-card";
+      // List view
+      document.querySelectorAll('.list-item').forEach(item => {
+        const ig = item.dataset.genre;
+        item.style.display = (genre === 'all' || ig === genre) ? 'flex' : 'none';
+      });
 
-      div.innerHTML = `
-        <strong>${livre.titre}</strong><br>
-        Auteur : ${livre.auteur}<br>
-        Genre : ${livre.genre}<br>
-        Note : ${livre.note ?? "Non noté"}
-      `;
+      // Update count
+      const visible = document.querySelectorAll('.book-item[style=""]').length || 12;
+      document.getElementById('totalCount').textContent = genre === 'all' ? 12 : visible;
+    }
 
-      container.appendChild(div);
-
+    /* ── UNFAV (remove from list) ── */
+    document.querySelectorAll('.unfav-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const item = this.closest('.list-item');
+        item.style.transition = 'opacity 0.3s, transform 0.3s';
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(20px)';
+        setTimeout(() => item.remove(), 300);
+      });
     });
 
-  });
+    /* ── SORT (visual only, no backend) ── */
+    function sortBooks() {
+      const val = document.getElementById('sortSelect').value;
+      // In a real app: call PHP/MySQL endpoint here
+      console.log('Sort by:', val);
+    }
+  </script>
 
-}
-
-document.getElementById("btnActualiserFavoris").addEventListener("click", chargerFavoris);
-
-chargerFavoris();
-
-</script>
 </body>
 </html>
