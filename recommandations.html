@@ -1,535 +1,571 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Recommandations — Mon Coin Lecture</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/style.css" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .reco-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#1a1410;--ink-soft:#3d322a;--muted:#8a7b6e;--muted-light:#b5a89b;
+      --bg:#faf7f2;--bg-warm:#f3ede3;--bg-card:#fffcf7;
+      --border:#e8e0d4;--border-warm:#d4c8b8;
+      --accent:#c4602a;--accent-light:#fdf0e8;--accent-deep:#9e3e14;
+      --gold:#b8933f;--sage:#5a9e6a;--lav:#8b6ec4;--teal:#3aada8;--blush:#e06090;
+      --font-serif:'Playfair Display',Georgia,serif;
+      --font-sans:'Instrument Sans',system-ui,sans-serif;
+      --font-hand:'Caveat',cursive;
+      --radius:12px;--radius-lg:18px;
+      --shadow-sm:0 1px 4px rgba(26,20,16,0.06);
+      --shadow-md:0 4px 20px rgba(26,20,16,0.09);
+      --shadow-lg:0 12px 48px rgba(26,20,16,0.14);
+      --shadow-card:0 8px 32px rgba(26,20,16,0.15),0 2px 8px rgba(26,20,16,0.08);
+    }
+    html{font-size:15px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+    /* ── HEADER ── */
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px}
+    .logo{display:flex;align-items:baseline;gap:10px}.logo-mark{font-family:var(--font-serif);font-size:1.25rem;font-weight:500;color:var(--ink);letter-spacing:-0.01em}.logo-mark em{font-style:italic;color:var(--accent)}.logo-divider{width:1px;height:14px;background:var(--border-warm)}.logo-sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-weight:500}
+    .header-actions{display:flex;align-items:center;gap:10px}.header-btn{font-family:var(--font-sans);font-size:0.8rem;font-weight:500;padding:7px 18px;border-radius:99px;cursor:pointer;letter-spacing:0.02em;transition:all 0.18s;border:none}.btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border-warm)}.btn-ghost:hover{background:var(--bg-warm)}.btn-accent{background:var(--ink);color:var(--bg)}.btn-accent:hover{background:var(--ink-soft)}
+    .site-nav{border-bottom:1px solid var(--border);background:var(--bg-card)}.nav-inner{max-width:1400px;margin:0 auto;padding:0 48px;display:flex;align-items:center;gap:4px;height:46px}.nav-inner a{font-size:0.8rem;font-weight:500;color:var(--muted);text-decoration:none;padding:5px 14px;border-radius:6px;letter-spacing:0.03em;transition:all 0.15s}.nav-inner a:hover{color:var(--ink);background:var(--bg-warm)}.nav-inner a.active{color:var(--accent);background:var(--accent-light)}
+    .nav-dropdown{position:relative}.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:20px;width:480px;flex-direction:row;z-index:200}.nav-dropdown:hover .nav-dropdown-menu{display:flex}
+    .mega-left{flex:1;padding-right:20px;border-right:1px solid var(--border)}.mega-badge{display:inline-block;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:99px;margin-bottom:10px}.mega-heading{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:8px}.mega-text{font-size:0.78rem;color:var(--muted);line-height:1.55}.mega-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1.2}.mega-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;transition:background 0.15s}.mega-card:hover{background:var(--bg-warm)}.mega-icon{width:32px;height:32px;border-radius:8px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}.mega-icon svg{width:15px;height:15px}.mega-card-title{display:block;font-size:0.8rem;font-weight:600;color:var(--ink)}.mega-card-desc{display:block;font-size:0.7rem;color:var(--muted)}
+
+    /* ══ PAGE ══ */
+    .page-wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes swing{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+    @keyframes floatPin{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+    /* ── HERO ── */
+    .reco-hero{
+      background:var(--ink);
+      border-radius:0 0 28px 28px;
+      padding:52px 60px 44px;
+      margin-bottom:56px;
+      position:relative;overflow:hidden;
+      animation:fadeUp 0.5s ease both;
+    }
+    .reco-hero::before{content:'"';position:absolute;font-family:var(--font-serif);font-size:28rem;line-height:1;color:rgba(255,255,255,0.022);top:-60px;right:-10px;pointer-events:none}
+    .reco-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(196,96,42,0.14),transparent 55%);pointer-events:none}
+    .reco-hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px}
+    .reco-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.4);margin-bottom:12px}
+    .reco-title{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#f5f0e8;letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px}
+    .reco-title em{font-style:italic;font-weight:400;color:var(--accent)}
+    .reco-sub{font-size:0.86rem;color:rgba(245,240,232,0.5);line-height:1.65;max-width:460px}
+    .reco-stats{display:flex;gap:28px;flex-shrink:0}
+    .reco-stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:#f5f0e8;line-height:1;margin-bottom:3px}
+    .reco-stat-label{font-size:0.62rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:rgba(181,168,155,0.55)}
+
+    /* ── SÉLECTEUR HUMEUR ── */
+    .mood-section{margin-bottom:52px;animation:fadeUp 0.4s 0.1s ease both}
+    .mood-section-head{margin-bottom:20px}
+    .section-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .section-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--border-warm)}
+    .section-title{font-family:var(--font-serif);font-size:1.6rem;font-weight:500;color:var(--ink);letter-spacing:-0.02em}
+    .section-title em{font-style:italic;color:var(--accent)}
+
+    .mood-row{display:flex;gap:10px;flex-wrap:wrap}
+    .mood-chip{
+      padding:10px 20px;border-radius:99px;border:2px solid var(--border);
+      background:var(--bg-card);font-family:var(--font-sans);font-size:0.8rem;font-weight:600;
+      color:var(--muted);cursor:pointer;transition:all 0.2s;
+      display:flex;align-items:center;gap:7px;
+    }
+    .mood-chip:hover{border-color:var(--border-warm);color:var(--ink);background:var(--bg-warm);transform:translateY(-2px)}
+    .mood-chip.on{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:var(--shadow-md)}
+    .mood-chip-icon{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center}
+    .mood-chip-icon svg{width:12px;height:12px}
+    .mood-chip.on .mood-chip-icon{background:rgba(255,255,255,0.15)}
+
+    /* ══════════════════════════════
+       MOOD BOARD — tableau créatif
+    ══════════════════════════════ */
+    .board-section{
+      margin-bottom:60px;
+      animation:fadeUp 0.5s 0.15s ease both;
     }
 
-    .reco-hero {
-      background: linear-gradient(135deg, #1a1d3d 0%, #20254d 100%);
-      border-radius: 30px;
-      padding: 42px;
-      color: white;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 18px 40px rgba(20, 24, 50, 0.18);
+    /* Fond tableau liège / papier */
+    .mood-board{
+      background: #f5efe4;
+      border-radius:24px;
+      padding:52px 44px 48px;
+      position:relative;
+      overflow:hidden;
+      min-height:620px;
+      /* Texture grain */
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(196,150,80,0.06) 1px, transparent 0),
+        linear-gradient(135deg,#f5efe4,#ede5d5);
+      background-size:20px 20px, 100% 100%;
+      border:1.5px solid var(--border-warm);
+      box-shadow:inset 0 2px 12px rgba(80,40,10,0.06), var(--shadow-md);
     }
 
-    .reco-hero::after {
-      content: "";
-      position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(210,147,63,0.22), transparent 70%);
-      pointer-events: none;
+    /* SVG fils connecteurs */
+    .board-threads{position:absolute;inset:0;pointer-events:none;z-index:0}
+
+    /* Conteneur positionnel des cartes */
+    .board-cards{position:relative;z-index:1;min-height:500px}
+
+    /* CARTE POLAROÏD */
+    .pcard{
+      position:absolute;
+      width:170px;
+      cursor:pointer;
+      transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s, z-index 0s;
+      z-index:2;
+    }
+    .pcard:hover{z-index:20;transform:var(--pc-rotate) translateY(-14px) scale(1.06) !important}
+    .pcard:hover .pcard-inner{box-shadow:0 20px 60px rgba(26,20,16,0.28)}
+
+    .pcard-inner{
+      background:#fff;
+      border-radius:4px;
+      padding:8px 8px 32px;
+      box-shadow:var(--shadow-card);
+      position:relative;
     }
 
-    .reco-eyebrow {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(210,147,63,0.12);
-      border: 1px solid rgba(210,147,63,0.35);
-      color: #e3a252;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 18px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    /* Zone image du polaroïd */
+    .pcard-img{
+      width:100%;
+      aspect-ratio:2/2.8;
+      border-radius:2px;
+      overflow:hidden;
+      position:relative;
+    }
+    .pcard-cover{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .pcard-cover::before{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:12px;
+      background:rgba(0,0,0,0.22);
+    }
+    .pcard-cover::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,0.02) 0%,rgba(0,0,0,0.25) 100%);
+    }
+    .pcard-init{
+      font-family:var(--font-serif);font-size:2rem;font-weight:700;
+      color:rgba(255,255,255,0.88);text-shadow:0 2px 8px rgba(0,0,0,0.4);
+      position:relative;z-index:1;letter-spacing:-0.03em;
     }
 
-    .reco-title {
-      font-family: "Lora", serif;
-      font-size: 52px;
-      line-height: 1.08;
-      margin: 0 0 14px;
-      color: #ffffff;
-      max-width: 720px;
+    /* Texte en bas du polaroïd (écriture à la main) */
+    .pcard-label{
+      position:absolute;bottom:6px;left:0;right:0;
+      text-align:center;
+      font-family:var(--font-hand);
+      font-size:0.82rem;
+      color:var(--ink-soft);
+      line-height:1.2;
+      padding:0 6px;
     }
 
-    .reco-title em {
-      font-style: italic;
-      color: #d2933f;
+    /* Épingle */
+    .pcard-pin{
+      position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+      width:18px;height:18px;border-radius:50%;
+      z-index:3;
+      box-shadow:0 2px 6px rgba(0,0,0,0.35);
+      animation:floatPin 3s ease-in-out infinite;
     }
 
-    .reco-sub {
-      max-width: 640px;
-      font-size: 18px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.78);
-      margin: 0;
+    /* Scotch / washi tape */
+    .pcard-tape{
+      position:absolute;
+      width:48px;height:18px;
+      border-radius:2px;
+      opacity:0.7;
+      z-index:3;
+    }
+    .tape-top{top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg)}
+    .tape-tl{top:-9px;left:10px;transform:rotate(-8deg)}
+    .tape-tr{top:-9px;right:10px;transform:rotate(6deg)}
+
+    /* Trombone SVG */
+    .pcard-clip{
+      position:absolute;
+      z-index:4;
+    }
+    .pcard-clip svg{
+      width:28px;height:28px;
+      filter:drop-shadow(1px 2px 3px rgba(0,0,0,0.25));
     }
 
-    .reco-card {
-      background: #ffffff;
-      border: 1px solid #ece6dc;
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: 0 10px 30px rgba(26, 29, 61, 0.06);
+    /* Note manuscrite */
+    .board-note{
+      position:absolute;
+      background:#fef9d4;
+      border-radius:2px;
+      padding:10px 14px 12px;
+      box-shadow:2px 3px 12px rgba(0,0,0,0.12);
+      font-family:var(--font-hand);
+      font-size:1rem;
+      color:#4a3a1a;
+      line-height:1.4;
+      z-index:2;
+      transform:rotate(2deg);
+      max-width:140px;
     }
 
-    .card-title-custom {
-      font-family: "Lora", serif;
-      font-size: 34px;
-      color: #23263f;
-      margin-bottom: 8px;
+    /* Tooltip au hover */
+    .pcard-tooltip{
+      position:absolute;
+      bottom:calc(100% + 12px);
+      left:50%;transform:translateX(-50%);
+      background:var(--ink);color:#f5f0e8;
+      border-radius:10px;padding:12px 14px;
+      width:200px;
+      box-shadow:var(--shadow-lg);
+      opacity:0;pointer-events:none;
+      transition:opacity 0.2s,transform 0.2s;
+      transform:translateX(-50%) translateY(6px);
+      z-index:30;
     }
+    .pcard:hover .pcard-tooltip{opacity:1;transform:translateX(-50%) translateY(0)}
+    .pcard-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink)}
+    .tt-title{font-family:var(--font-serif);font-size:0.88rem;font-weight:500;color:#f5f0e8;margin-bottom:3px}
+    .tt-author{font-size:0.7rem;color:var(--muted-light);margin-bottom:6px}
+    .tt-desc{font-size:0.72rem;color:rgba(245,240,232,0.6);line-height:1.5;margin-bottom:8px}
+    .tt-btn{display:inline-block;padding:4px 12px;background:var(--accent);color:#fff;border-radius:99px;font-size:0.68rem;font-weight:600;cursor:pointer;border:none;font-family:var(--font-sans);transition:background 0.15s}
+    .tt-btn:hover{background:var(--accent-deep)}
 
-    .card-sub-custom {
-      color: #7a8098;
-      font-size: 15px;
-      margin-bottom: 22px;
-      line-height: 1.6;
+    /* ── SECTION GENRES ── */
+    .genres-section{margin-bottom:52px;animation:fadeUp 0.5s 0.2s ease both}
+    .genre-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
+    .genre-tile{
+      border-radius:16px;padding:20px 14px 18px;
+      cursor:pointer;transition:transform 0.22s,box-shadow 0.22s;
+      text-decoration:none;display:flex;flex-direction:column;gap:10px;
+      position:relative;overflow:hidden;
     }
+    .genre-tile:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+    .genre-tile::before{content:'';position:absolute;bottom:-10px;right:-10px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none}
+    .genre-tile-icon{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center}
+    .genre-tile-icon svg{width:18px;height:18px;color:#fff}
+    .genre-tile-name{font-family:var(--font-serif);font-size:0.95rem;font-weight:500;color:#fff}
+    .genre-tile-count{font-size:0.66rem;color:rgba(255,255,255,0.55);font-weight:500}
+    .gt-roman{background:linear-gradient(145deg,#c84030,#8c1e20)}.gt-fantasy{background:linear-gradient(145deg,#3870c0,#1a4080)}.gt-manga{background:linear-gradient(145deg,#c8a020,#8a6808)}.gt-crime{background:linear-gradient(145deg,#283880,#101840)}.gt-romance{background:linear-gradient(145deg,#c83070,#880028)}.gt-scifi{background:linear-gradient(145deg,#28a8a0,#086860)}.gt-classique{background:linear-gradient(145deg,#9060c0,#481880)}
 
-    .reco-form {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
+    /* TOAST */
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5f0e8;padding:12px 22px;border-radius:99px;font-size:0.82rem;font-weight:500;box-shadow:var(--shadow-lg);z-index:999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:8px}.toast.show{transform:translateX(-50%) translateY(0);opacity:1}.toast svg{width:14px;height:14px;color:var(--sage)}
 
-    .reco-input {
-      flex: 1;
-      min-width: 260px;
-      height: 50px;
-      border: 1px solid #ddd8ce;
-      border-radius: 14px;
-      padding: 0 16px;
-      font-size: 15px;
-      font-family: "DM Sans", sans-serif;
-      background: #fffdfa;
-      outline: none;
-      transition: 0.2s ease;
-    }
+    /* Couleurs couvertures */
+    .cv-roman{background:linear-gradient(155deg,#c84030,#8c1e20)}.cv-fantasy{background:linear-gradient(155deg,#3870c0,#1a4080)}.cv-manga{background:linear-gradient(155deg,#c8a020,#8a6808)}.cv-crime{background:linear-gradient(155deg,#283880,#101840)}.cv-romance{background:linear-gradient(155deg,#c83070,#880028)}.cv-scifi{background:linear-gradient(155deg,#28a8a0,#086860)}.cv-classique{background:linear-gradient(155deg,#9060c0,#481880)}
 
-    .reco-input:focus {
-      border-color: #d2933f;
-      box-shadow: 0 0 0 3px rgba(210, 147, 63, 0.12);
-    }
-
-    .reco-btn {
-      height: 50px;
-      border: none;
-      border-radius: 14px;
-      padding: 0 20px;
-      background: #1f2140;
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: "DM Sans", sans-serif;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .reco-btn:hover {
-      background: #2b2f57;
-    }
-
-    .genre-tags {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .genre-tag {
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: #f6ede1;
-      border: 1px solid #ead7be;
-      color: #b97832;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .genre-tag:hover {
-      background: #f2e2cb;
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 18px;
-    }
-
-    .book-card {
-      background: #ffffff;
-      border: 1px solid #ebe5db;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(25, 29, 58, 0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .book-genre {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: #f6ede1;
-      color: #b97832;
-      border: 1px solid #ead7be;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .book-title {
-      font-family: "Lora", serif;
-      font-size: 28px;
-      line-height: 1.2;
-      color: #23263f;
-      margin: 0;
-    }
-
-    .book-author {
-      font-size: 15px;
-      color: #6f758d;
-      margin: 0;
-    }
-
-    .book-desc {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #7a8098;
-      margin-top: 2px;
-    }
-
-    .empty-state {
-      border: 1px dashed #d9dbe7;
-      border-radius: 20px;
-      background: #fcfcff;
-      padding: 42px 20px;
-      text-align: center;
-    }
-
-    .empty-title {
-      font-family: "Lora", serif;
-      font-size: 30px;
-      color: #23263f;
-      margin-bottom: 8px;
-    }
-
-    .empty-text {
-      font-size: 15px;
-      color: #7a8098;
-    }
-
-    @media (max-width: 900px) {
-      .reco-title {
-        font-size: 40px;
-      }
-
-      .reco-hero {
-        padding: 30px 24px;
-      }
-
-      .card-title-custom {
-        font-size: 28px;
-      }
-    }
+    @media(max-width:1100px){.genre-row{grid-template-columns:repeat(4,1fr)}.reco-hero-inner{grid-template-columns:1fr}}
+    @media(max-width:768px){.page-wrap{padding:0 24px 60px}.site-header,.nav-inner{padding-inline:24px}.reco-hero{padding:40px 28px}.genre-row{grid-template-columns:repeat(3,1fr)}.mood-board{padding:32px 20px}.pcard{width:140px}}
   </style>
 </head>
-
 <body>
 
-  <header class="site-header">
-  <div class="logo">
-    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
-    <span class="logo-sub">Ta bibliothèque</span>
-  </div>
-  <div class="header-actions">
-    <button class="header-btn header-btn-ghost">Connexion</button>
-    <button class="header-btn header-btn-accent">Commencer</button>
-  </div>
+<header class="site-header">
+  <div class="logo"><span class="logo-mark">Mon <em>Coin</em> Lecture</span><div class="logo-divider"></div><span class="logo-sub">Ta bibliothèque</span></div>
+  <div class="header-actions"><a href="connexion.html" class="header-btn btn-ghost" style="text-decoration:none">Connexion</a><a href="inscrire.html" class="header-btn btn-accent" style="text-decoration:none">Commencer</a></div>
 </header>
-
-  <nav class="site-nav">
+<nav class="site-nav">
   <div class="nav-inner">
     <a href="index.html">Accueil</a>
-
-    <div class="nav-dropdown nav-mega">
-      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
-
-      <div class="nav-dropdown-menu mega-menu">
-        <div class="mega-left">
-          <div class="mega-badge">Explorer</div>
-          <h3 class="mega-heading">Ma bibliothèque</h3>
-          <p class="mega-text">
-            Retrouve tous tes livres, organise tes envies de lecture,
-            garde tes favoris et lance une recherche en un instant.
-          </p>
-        </div>
-
+    <div class="nav-dropdown">
+      <a href="livres.html">Bibliothèque</a>
+      <div class="nav-dropdown-menu">
+        <div class="mega-left"><div class="mega-badge">Explorer</div><h3 class="mega-heading">Ma bibliothèque</h3><p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture.</p></div>
         <div class="mega-links">
-          <a href="livres.html" class="mega-card">
-            <span class="mega-icon">📚</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Mes livres</span>
-              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
-            </span>
-          </a>
-
-          <a href="favoris.html" class="mega-card">
-            <span class="mega-icon">❤️</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Favoris</span>
-              <span class="mega-card-desc">Retrouver tes livres préférés</span>
-            </span>
-          </a>
-
-          <a href="a-lire.html" class="mega-card">
-            <span class="mega-icon">🕮</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">À lire</span>
-              <span class="mega-card-desc">Gérer ta liste d’envies</span>
-            </span>
-          </a>
-
-          <a href="recherche.html" class="mega-card">
-            <span class="mega-icon">🔎</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Recherche</span>
-              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
-            </span>
-          </a>
+          <a href="mes-livres.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><span class="mega-card-title">Mes livres</span><span class="mega-card-desc">Toute ta bibliothèque</span></span></a>
+          <a href="favoris.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span><span class="mega-card-title">Favoris</span><span class="mega-card-desc">Tes livres préférés</span></span></a>
+          <a href="a-lire.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span><span class="mega-card-title">À lire</span><span class="mega-card-desc">Ta liste d'envies</span></span></a>
+          <a href="recherche.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span><span class="mega-card-title">Recherche</span><span class="mega-card-desc">Titre, auteur, genre</span></span></a>
         </div>
       </div>
     </div>
-
-    <a href="recommandations.html">Recommandations</a>
+    <a href="recommandations.html" class="active">Recommandations</a>
   </div>
 </nav>
 
-  <main class="main">
-    <div class="reco-layout">
+<div class="page-wrap">
 
-      <section class="reco-hero">
-        <div class="reco-eyebrow">📚 Suggestions personnalisées</div>
-        <h1 class="reco-title">Trouve ta prochaine <em>lecture coup de cœur</em></h1>
-        <p class="reco-sub">
-          Choisis un genre pour découvrir des idées de livres selon tes envies du moment.
-        </p>
-      </section>
+  <!-- HERO -->
+  <div class="reco-hero">
+    <div class="reco-hero-inner">
+      <div>
+        <div class="reco-eyebrow">Suggestions personnalisées</div>
+        <h1 class="reco-title">Tes prochaines <em>grandes lectures</em></h1>
+        <p class="reco-sub">Des suggestions adaptées à ton humeur du moment. Survole les livres pour en savoir plus.</p>
+      </div>
+      <div class="reco-stats">
+        <div><div class="reco-stat-num">42</div><div class="reco-stat-label">Suggestions</div></div>
+        <div><div class="reco-stat-num">7</div><div class="reco-stat-label">Genres</div></div>
+      </div>
+    </div>
+  </div>
 
-      <section class="reco-card">
-        <div class="card-title-custom">Choisir un genre</div>
-        <div class="card-sub-custom">
-          Entre un genre ou clique sur un des exemples ci-dessous pour afficher des recommandations.
-        </div>
+  <!-- SÉLECTEUR HUMEUR -->
+  <div class="mood-section">
+    <div class="mood-section-head">
+      <div class="section-eyebrow">Personnalisé</div>
+      <div class="section-title">Selon ton <em>humeur</em></div>
+    </div>
+    <div class="mood-row">
+      <button class="mood-chip on" data-m="calme" onclick="setMood(this,'calme')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Calme</button>
+      <button class="mood-chip" data-m="aventure" onclick="setMood(this,'aventure')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Aventure</button>
+      <button class="mood-chip" data-m="emotion" onclick="setMood(this,'emotion')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Émotion</button>
+      <button class="mood-chip" data-m="legerete" onclick="setMood(this,'legerete')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 3 4 3 4-3 4-3"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Légèreté</button>
+      <button class="mood-chip" data-m="reflexion" onclick="setMood(this,'reflexion')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg></span>Réfléchi</button>
+      <button class="mood-chip" data-m="frisson" onclick="setMood(this,'frisson')"><span class="mood-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></span>Frisson</button>
+    </div>
+  </div>
 
-        <div class="reco-form">
-          <input
-            type="text"
-            id="genreInput"
-            class="reco-input"
-            placeholder="Ex : Roman, Fantasy, Manga, Romance..."
-          />
-          <button class="reco-btn" onclick="afficherRecommandations()">Voir</button>
-        </div>
+  <!-- MOOD BOARD -->
+  <div class="board-section">
+    <div class="mood-board" id="moodBoard">
 
-        <div class="genre-tags">
-          <span class="genre-tag" onclick="setGenre('Roman')">Roman</span>
-          <span class="genre-tag" onclick="setGenre('Fantasy')">Fantasy</span>
-          <span class="genre-tag" onclick="setGenre('Manga')">Manga</span>
-          <span class="genre-tag" onclick="setGenre('Romance')">Romance</span>
-          <span class="genre-tag" onclick="setGenre('Classiques')">Classiques</span>
-          <span class="genre-tag" onclick="setGenre('Sci-Fi')">Sci-Fi</span>
-        </div>
-      </section>
+      <!-- Fils SVG connecteurs — DERRIÈRE les cartes -->
+      <svg class="board-threads" id="boardThreads" viewBox="0 0 900 620" preserveAspectRatio="none">
+      </svg>
 
-      <section class="reco-card">
-        <div class="card-title-custom">Suggestions</div>
-        <div class="card-sub-custom">
-          Voici quelques idées selon le genre choisi.
-        </div>
-
-        <div id="results" class="results-grid">
-          <div class="empty-state">
-            <div class="empty-title">Aucune recommandation affichée</div>
-            <div class="empty-text">Choisis un genre pour voir des propositions.</div>
-          </div>
-        </div>
-      </section>
+      <!-- Les cartes sont injectées ici par JS -->
+      <div class="board-cards" id="boardCards"></div>
 
     </div>
-  </main>
+  </div>
 
-  <script>
-    const recommandations = {
-      roman: [
-        {
-          titre: "Les Misérables",
-          auteur: "Victor Hugo",
-          description: "Un grand classique français, intense, humain et marquant."
-        },
-        {
-          titre: "Le Comte de Monte-Cristo",
-          auteur: "Alexandre Dumas",
-          description: "Une histoire de vengeance, de justice et d'aventure."
-        },
-        {
-          titre: "L'Étranger",
-          auteur: "Albert Camus",
-          description: "Un roman court, profond et incontournable."
-        }
-      ],
-      fantasy: [
-        {
-          titre: "Harry Potter à l'école des sorciers",
-          auteur: "J.K. Rowling",
-          description: "Un univers magique culte, parfait pour s'évader."
-        },
-        {
-          titre: "Le Seigneur des Anneaux",
-          auteur: "J.R.R. Tolkien",
-          description: "Une aventure épique dans un monde riche et légendaire."
-        },
-        {
-          titre: "La Passe-miroir",
-          auteur: "Christelle Dabos",
-          description: "Une fantasy française originale, poétique et captivante."
-        }
-      ],
-      manga: [
-        {
-          titre: "Death Note",
-          auteur: "Tsugumi Ohba & Takeshi Obata",
-          description: "Un manga intelligent, sombre et addictif."
-        },
-        {
-          titre: "One Piece",
-          auteur: "Eiichiro Oda",
-          description: "Une aventure immense, drôle et pleine d'émotion."
-        },
-        {
-          titre: "Attack on Titan",
-          auteur: "Hajime Isayama",
-          description: "Un manga intense, rythmé et rempli de mystères."
-        }
-      ],
-      romance: [
-        {
-          titre: "Orgueil et Préjugés",
-          auteur: "Jane Austen",
-          description: "Une romance classique, élégante et intemporelle."
-        },
-        {
-          titre: "Avant toi",
-          auteur: "Jojo Moyes",
-          description: "Une histoire touchante, moderne et émouvante."
-        },
-        {
-          titre: "Jamais plus",
-          auteur: "Colleen Hoover",
-          description: "Une romance contemporaine très populaire."
-        }
-      ],
-      classiques: [
-        {
-          titre: "Madame Bovary",
-          auteur: "Gustave Flaubert",
-          description: "Un classique fort sur les illusions et les désirs."
-        },
-        {
-          titre: "Germinal",
-          auteur: "Émile Zola",
-          description: "Un roman puissant et socialement marquant."
-        },
-        {
-          titre: "Le Rouge et le Noir",
-          auteur: "Stendhal",
-          description: "Un grand classique psychologique et ambitieux."
-        }
-      ],
-      "sci-fi": [
-        {
-          titre: "Dune",
-          auteur: "Frank Herbert",
-          description: "Une œuvre culte de science-fiction, riche et fascinante."
-        },
-        {
-          titre: "Fondation",
-          auteur: "Isaac Asimov",
-          description: "Un incontournable de la science-fiction classique."
-        },
-        {
-          titre: "La Horde du Contrevent",
-          auteur: "Alain Damasio",
-          description: "Une lecture exigeante, originale et immersive."
-        }
-      ]
-    };
+  <!-- PAR GENRE -->
+  <div class="genres-section">
+    <div style="margin-bottom:20px">
+      <div class="section-eyebrow">Explorer</div>
+      <div class="section-title">Par <em>genre</em></div>
+    </div>
+    <div class="genre-row">
+      <a href="recherche.html?q=Roman" class="genre-tile gt-roman"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="genre-tile-name">Roman</div><div class="genre-tile-count">12 suggestions</div></a>
+      <a href="recherche.html?q=Fantasy" class="genre-tile gt-fantasy"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="genre-tile-name">Fantasy</div><div class="genre-tile-count">8 suggestions</div></a>
+      <a href="recherche.html?q=Manga" class="genre-tile gt-manga"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg></div><div class="genre-tile-name">Manga</div><div class="genre-tile-count">6 suggestions</div></a>
+      <a href="recherche.html?q=Crime" class="genre-tile gt-crime"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="genre-tile-name">Crime</div><div class="genre-tile-count">5 suggestions</div></a>
+      <a href="recherche.html?q=Romance" class="genre-tile gt-romance"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="genre-tile-name">Romance</div><div class="genre-tile-count">4 suggestions</div></a>
+      <a href="recherche.html?q=Sci-Fi" class="genre-tile gt-scifi"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="genre-tile-name">Sci-Fi</div><div class="genre-tile-count">7 suggestions</div></a>
+      <a href="recherche.html?q=Classiques" class="genre-tile gt-classique"><div class="genre-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="genre-tile-name">Classiques</div><div class="genre-tile-count">9 suggestions</div></a>
+    </div>
+  </div>
 
-    function setGenre(val) {
-      document.getElementById("genreInput").value = val;
-      afficherRecommandations();
-    }
+</div>
 
-    function afficherRecommandations() {
-      const input = document.getElementById("genreInput").value.trim().toLowerCase();
-      const results = document.getElementById("results");
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
 
-      let cle = input;
+<script>
+const moodData = {
+  calme:[
+    {titre:"Le Vieil Homme et la Mer",auteur:"Hemingway",genre:"roman",desc:"Contemplatif, sur la solitude et la mer.",tag:"Paisible"},
+    {titre:"L'Élégance du hérisson",auteur:"Muriel Barbery",genre:"roman",desc:"Doux et philosophique.",tag:"Poétique"},
+    {titre:"Lettres à un jeune poète",auteur:"Rilke",genre:"classique",desc:"Des lettres lumineuses sur la création.",tag:"Intime"},
+    {titre:"Les Heures",auteur:"Michael Cunningham",genre:"roman",desc:"Trois femmes, trois époques, une mélodie.",tag:"Délicat"},
+    {titre:"Siddhartha",auteur:"Herman Hesse",genre:"classique",desc:"Un voyage spirituel au cœur de l'Inde.",tag:"Sage"},
+  ],
+  aventure:[
+    {titre:"Le Seigneur des Anneaux",auteur:"J.R.R. Tolkien",genre:"fantasy",desc:"Une épopée grandiose et inoubliable.",tag:"Épique"},
+    {titre:"Dune",auteur:"Frank Herbert",genre:"scifi",desc:"L'univers de SF le plus riche jamais construit.",tag:"Immersif"},
+    {titre:"L'Appel de la forêt",auteur:"Jack London",genre:"roman",desc:"Un récit d'aventure sauvage.",tag:"Puissant"},
+    {titre:"Eragon",auteur:"Christopher Paolini",genre:"fantasy",desc:"Dragons et magie dans un monde épique.",tag:"Haletant"},
+    {titre:"L'Île au trésor",auteur:"Stevenson",genre:"classique",desc:"Pirates, cartes et trésors cachés.",tag:"Classique"},
+  ],
+  emotion:[
+    {titre:"Les Fleurs pour Algernon",auteur:"Daniel Keyes",genre:"scifi",desc:"Bouleversant, sur l'intelligence et l'amour.",tag:"Déchirant"},
+    {titre:"La Voleuse de livres",auteur:"Markus Zusak",genre:"roman",desc:"L'Allemagne nazie vue par la Mort.",tag:"Poignant"},
+    {titre:"Un monstre me appelle",auteur:"Patrick Ness",genre:"roman",desc:"La perte et le deuil vus par un enfant.",tag:"Bouleversant"},
+    {titre:"Mémoires d'une geisha",auteur:"Arthur Golden",genre:"roman",desc:"Poétique et sensible, un chef-d'œuvre.",tag:"Magnifique"},
+    {titre:"Norwegian Wood",auteur:"Murakami",genre:"roman",desc:"Mélancolie, amour et perte de l'innocence.",tag:"Nostalgique"},
+  ],
+  legerete:[
+    {titre:"Le Petit Prince",auteur:"Saint-Exupéry",genre:"classique",desc:"Une fable douce pleine de sagesse.",tag:"Tendre"},
+    {titre:"Good Omens",auteur:"Pratchett & Gaiman",genre:"fantasy",desc:"Drôle, absurde et brillant.",tag:"Hilarant"},
+    {titre:"La Princesse de Montpensier",auteur:"Mme de Lafayette",genre:"classique",desc:"Court et élégant, un bijou.",tag:"Raffiné"},
+    {titre:"Bridget Jones",auteur:"Helen Fielding",genre:"romance",desc:"Hilarant et touchant à la fois.",tag:"Fun"},
+    {titre:"Terry Pratchett Disc.",auteur:"Terry Pratchett",genre:"fantasy",desc:"L'humour britannique au meilleur.",tag:"Irrésistible"},
+  ],
+  reflexion:[
+    {titre:"L'Étranger",auteur:"Albert Camus",genre:"classique",desc:"Court et profond, sur l'absurde.",tag:"Philosophique"},
+    {titre:"1984",auteur:"George Orwell",genre:"scifi",desc:"Visionnaire et terriblement actuel.",tag:"Essentiel"},
+    {titre:"Le Meilleur des mondes",auteur:"Huxley",genre:"scifi",desc:"Dystopie troublante.",tag:"Prophétique"},
+    {titre:"Sapiens",auteur:"Yuval Noah Harari",genre:"roman",desc:"L'histoire de l'humanité revisitée.",tag:"Fascinant"},
+    {titre:"Crime et Châtiment",auteur:"Dostoïevski",genre:"classique",desc:"La culpabilité et la rédemption.",tag:"Intense"},
+  ],
+  frisson:[
+    {titre:"Shining",auteur:"Stephen King",genre:"crime",desc:"Un huis clos terrifiant.",tag:"Glaçant"},
+    {titre:"Millenium T.1",auteur:"Stieg Larsson",genre:"crime",desc:"Thriller nordique haletant.",tag:"Addictif"},
+    {titre:"Le Nom de la rose",auteur:"Umberto Eco",genre:"crime",desc:"Mystère médiéval fascinant.",tag:"Envoûtant"},
+    {titre:"Rebecca",auteur:"Daphne du Maurier",genre:"romance",desc:"Gothique, mystérieux, captivant.",tag:"Envoûtant"},
+    {titre:"L'Exorciste",auteur:"William Peter Blatty",genre:"crime",desc:"Le roman d'horreur par excellence.",tag:"Terrifiant"},
+  ]
+};
 
-      if (input === "science-fiction" || input === "science fiction" || input === "scifi") {
-        cle = "sci-fi";
-      }
+const genreColors={roman:'cv-roman',fantasy:'cv-fantasy',manga:'cv-manga',crime:'cv-crime',romance:'cv-romance',scifi:'cv-scifi',classique:'cv-classique'};
+const pinColors=['#8b6ec4','#c4602a','#3aada8','#e06090','#5a9e6a','#b8933f'];
+const tapeColors=['rgba(200,180,255,0.6)','rgba(196,96,42,0.35)','rgba(58,173,168,0.4)','rgba(224,96,144,0.35)','rgba(90,158,106,0.4)'];
+const clipColors=['#8b6ec4','#c4602a','#3aada8','#e06090'];
 
-      const livres = recommandations[cle];
+// Positions relatives en % du board pour 5 cartes — dispersées naturellement
+const positions = [
+  {x:5,  y:4,  rot:-6,  pin:0, tape:'top',   clip:'tr', note:null},
+  {x:58, y:2,  rot:5,   pin:1, tape:'tl',    clip:'tl', note:"un coup de ♥"},
+  {x:30, y:42, rot:-3,  pin:2, tape:'top',   clip:'tr', note:null},
+  {x:62, y:52, rot:7,   pin:3, tape:'tl',    clip:null, note:null},
+  {x:8,  y:68, rot:-5,  pin:0, tape:'tr',    clip:'tl', note:"must read !"},
+];
 
-      if (!livres) {
-        results.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-title">Genre non trouvé</div>
-            <div class="empty-text">Essaie avec Roman, Fantasy, Manga, Romance, Classiques ou Sci-Fi.</div>
+// Points de connexion pour les fils (centre de chaque carte %)
+// On trace des fils entre certaines cartes
+const threads = [
+  {from:0, to:1, color:'#8b6ec4', width:1.5},
+  {from:1, to:3, color:'#c4602a', width:1.5},
+  {from:2, to:3, color:'#3aada8', width:1.5},
+  {from:2, to:4, color:'#8b6ec4', width:1.5},
+];
+
+let currentMood = 'calme';
+
+function setMood(el, m) {
+  document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on'); currentMood = m; renderBoard();
+}
+
+function initials(t) {
+  return t.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0].toUpperCase()).join('')||t.slice(0,2).toUpperCase();
+}
+
+// SVG trombone
+function clipSVG(color) {
+  return `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 4C12 4 9 7 9 11C9 15 12 18 16 18L20 18C22 18 24 20 24 22C24 24 22 26 20 26C18 26 17 25 16 24L10 18C7 15 7 11 10 8" stroke="${color}" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    <path d="M20 4C22 4 24 6 24 8L24 22" stroke="${color}" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.5"/>
+  </svg>`;
+}
+
+function renderBoard() {
+  const books = moodData[currentMood] || [];
+  const board = document.getElementById('boardCards');
+  const boardEl = document.getElementById('moodBoard');
+  const W = boardEl.offsetWidth || 900;
+  const H = Math.max(boardEl.offsetHeight, 620);
+  const cardW = 170;
+
+  board.innerHTML = '';
+
+  books.slice(0,5).forEach((b, i) => {
+    const pos = positions[i];
+    const left = Math.min(pos.x / 100 * (W - 40) , W - cardW - 20);
+    const top = pos.y / 100 * (H - 60);
+    const pin = pinColors[pos.pin % pinColors.length];
+    const tape = tapeColors[i % tapeColors.length];
+    const clipColor = clipColors[i % clipColors.length];
+    const init = initials(b.titre);
+    const cvCls = genreColors[b.genre] || 'cv-roman';
+
+    // Clip position
+    let clipStyle = '';
+    if (pos.clip === 'tr') clipStyle = 'top:-14px;right:-8px;transform:rotate(20deg)';
+    else if (pos.clip === 'tl') clipStyle = 'top:-14px;left:-8px;transform:rotate(-15deg)';
+
+    const noteHtml = pos.note ? `<div class="board-note" style="right:-${Math.random()>0.5?110:100}px;top:${20+Math.random()*30}px;transform:rotate(${-2+Math.random()*5}deg)">${pos.note}</div>` : '';
+
+    const card = document.createElement('div');
+    card.className = 'pcard';
+    card.style.cssText = `left:${left}px;top:${top}px;transform:rotate(${pos.rot}deg);--pc-rotate:rotate(${pos.rot}deg)`;
+    card.innerHTML = `
+      <div class="pcard-pin" style="background:${pin}"></div>
+      <div class="pcard-tape ${pos.tape}" style="background:${tape}"></div>
+      ${pos.clip ? `<div class="pcard-clip" style="${clipStyle}">${clipSVG(clipColor)}</div>` : ''}
+      <div class="pcard-inner">
+        <div class="pcard-img">
+          <div class="pcard-cover ${cvCls}">
+            <span class="pcard-init">${init}</span>
           </div>
-        `;
-        return;
-      }
+        </div>
+        <div class="pcard-label">${b.titre.length > 18 ? b.titre.slice(0,16)+'…' : b.titre}<br><span style="font-size:0.72rem;opacity:0.6">${b.auteur.split(' ').pop()}</span></div>
+      </div>
+      ${noteHtml}
+      <div class="pcard-tooltip">
+        <div class="tt-title">${b.titre}</div>
+        <div class="tt-author">${b.auteur}</div>
+        <div class="tt-desc">${b.desc}</div>
+        <button class="tt-btn" onclick="event.stopPropagation();addToList('${b.titre.replace(/'/g,"\\'")}','${b.auteur.replace(/'/g,"\\'")}','${b.genre}')">+ Ajouter à ma liste</button>
+      </div>
+    `;
+    board.appendChild(card);
+  });
 
-      results.innerHTML = "";
+  // Dessiner les fils après rendu
+  requestAnimationFrame(() => drawThreads(books.slice(0,5)));
+}
 
-      livres.forEach(livre => {
-        const card = document.createElement("div");
-        card.className = "book-card";
+function drawThreads(books) {
+  const svg = document.getElementById('boardThreads');
+  const boardEl = document.getElementById('moodBoard');
+  const W = boardEl.offsetWidth || 900;
+  const H = Math.max(boardEl.offsetHeight, 620);
+  const cardW = 170;
 
-        card.innerHTML = `
-          <div class="book-genre">${input}</div>
-          <h3 class="book-title">${livre.titre}</h3>
-          <p class="book-author">${livre.auteur}</p>
-          <div class="book-desc">${livre.description}</div>
-        `;
+  // Les fils partent du CENTRE DE L'ÉPINGLE (en haut au centre de chaque carte)
+  // L'épingle est à top:-16px, left=50% de la carte → y = top de la carte - 16px + 9px (rayon)
+  // padding du board : 52px top, 44px left
+  // Même calcul exact que dans renderBoard pour aligner parfaitement
+  const boardPad = {top: 52, left: 44}; // padding du .mood-board
+  const pinPoints = positions.slice(0, books.length).map(pos => {
+    const left = Math.min(pos.x / 100 * (W - 40), W - cardW - 20);
+    const top  = pos.y / 100 * (H - 60);
+    return {
+      x: boardPad.left + left + cardW / 2,  // centre de l'épingle horizontalement
+      y: boardPad.top  + top - 7,           // centre de l'épingle (au-dessus de la carte)
+    };
+  });
 
-        results.appendChild(card);
-      });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  let paths = '';
+
+  // Graine fixe pour que les courbes ne changent pas à chaque render
+  const offsets = [
+    {mx:30,  my:-30},
+    {mx:-40, my:20},
+    {mx:20,  my:30},
+    {mx:-25, my:-20},
+  ];
+
+  threads.forEach((t, i) => {
+    if (t.from < pinPoints.length && t.to < pinPoints.length) {
+      const a = pinPoints[t.from];
+      const b = pinPoints[t.to];
+      const off = offsets[i % offsets.length];
+      const mx = (a.x + b.x) / 2 + off.mx;
+      const my = (a.y + b.y) / 2 + off.my;
+      // Fil qui part de l'épingle A et arrive à l'épingle B
+      paths += `<path d="M${a.x.toFixed(1)},${a.y.toFixed(1)} Q${mx.toFixed(1)},${my.toFixed(1)} ${b.x.toFixed(1)},${b.y.toFixed(1)}" stroke="${t.color}" stroke-width="${t.width}" fill="none" opacity="0.7"/>`;
+      // Point de départ (épingle A visible)
+      paths += `<circle cx="${a.x.toFixed(1)}" cy="${a.y.toFixed(1)}" r="5" fill="${t.color}" opacity="0.85"/>`;
+      // Point d'arrivée (épingle B)
+      paths += `<circle cx="${b.x.toFixed(1)}" cy="${b.y.toFixed(1)}" r="5" fill="${t.color}" opacity="0.85"/>`;
     }
+  });
+  svg.innerHTML = paths;
+}
 
-    document.getElementById("genreInput").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        afficherRecommandations();
-      }
-    });
-  </script>
+function addToList(titre, auteur, genre) {
+  const al = JSON.parse(localStorage.getItem('mcl_alire')||'[]');
+  al.unshift({id:Date.now(),titre,auteur,genre,priorite:'normale',date:new Date().toLocaleDateString('fr-FR')});
+  localStorage.setItem('mcl_alire',JSON.stringify(al));
+  showToast('Ajouté à ta liste À lire !');
+}
 
+function showToast(msg) {
+  const t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// Init
+renderBoard();
+window.addEventListener('resize', () => renderBoard());
+</script>
 </body>
 </html>
