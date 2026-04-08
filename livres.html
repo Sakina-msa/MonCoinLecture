@@ -3,218 +3,536 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mes livres — Mon Coin Lecture</title>
-
+  <title>Bibliothèque — Mon Coin Lecture</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:#1a1410; --ink-soft:#3d322a; --muted:#8a7b6e; --muted-light:#b5a89b;
+      --bg:#faf7f2; --bg-warm:#f3ede3; --bg-card:#fffcf7;
+      --border:#e8e0d4; --border-warm:#d4c8b8;
+      --accent:#c4602a; --accent-light:#fdf0e8; --accent-deep:#9e3e14;
+      --gold:#b8933f;
+      --font-serif:'Playfair Display',Georgia,serif;
+      --font-sans:'Instrument Sans',system-ui,sans-serif;
+      --radius:12px;
+      --shadow-sm:0 1px 4px rgba(26,20,16,0.06);
+      --shadow-md:0 4px 20px rgba(26,20,16,0.09);
+      --shadow-lg:0 12px 48px rgba(26,20,16,0.12);
+    }
+    html { font-size:15px; }
+    body { background:var(--bg); color:var(--ink); font-family:var(--font-sans); -webkit-font-smoothing:antialiased; min-height:100vh; }
 
-  <link rel="stylesheet" href="assets/css/style.css" />
+    /* ── HEADER ── */
+    .site-header { position:sticky; top:0; z-index:100; background:rgba(250,247,242,0.88); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:64px; }
+    .logo { display:flex; align-items:baseline; gap:10px; }
+    .logo-mark { font-family:var(--font-serif); font-size:1.25rem; font-weight:500; color:var(--ink); letter-spacing:-0.01em; }
+    .logo-mark em { font-style:italic; color:var(--accent); }
+    .logo-divider { width:1px; height:14px; background:var(--border-warm); }
+    .logo-sub { font-size:0.75rem; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; font-weight:500; }
+    .header-actions { display:flex; align-items:center; gap:10px; }
+    .header-btn { font-family:var(--font-sans); font-size:0.8rem; font-weight:500; padding:7px 18px; border-radius:99px; cursor:pointer; letter-spacing:0.02em; transition:all 0.18s; border:none; }
+    .header-btn-ghost { background:transparent; color:var(--ink-soft); border:1px solid var(--border-warm); }
+    .header-btn-ghost:hover { background:var(--bg-warm); }
+    .header-btn-accent { background:var(--ink); color:var(--bg); }
+    .header-btn-accent:hover { background:var(--ink-soft); }
 
+    /* ── NAV ── */
+    .site-nav { border-bottom:1px solid var(--border); background:var(--bg-card); }
+    .nav-inner { max-width:1400px; margin:0 auto; padding:0 48px; display:flex; align-items:center; gap:4px; height:46px; }
+    .nav-inner a { font-size:0.8rem; font-weight:500; color:var(--muted); text-decoration:none; padding:5px 14px; border-radius:6px; letter-spacing:0.03em; transition:all 0.15s; }
+    .nav-inner a:hover { color:var(--ink); background:var(--bg-warm); }
+    .nav-inner a.active { color:var(--accent); background:var(--accent-light); }
+    .nav-dropdown { position:relative; }
+    .nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); padding:20px; width:480px; flex-direction:row; z-index:200; }
+    .nav-dropdown:hover .nav-dropdown-menu { display:flex; }
+    .mega-left { flex:1; padding-right:20px; border-right:1px solid var(--border); }
+    .mega-badge { display:inline-block; font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:99px; margin-bottom:10px; }
+    .mega-heading { font-family:var(--font-serif); font-size:1rem; font-weight:500; color:var(--ink); margin-bottom:8px; }
+    .mega-text { font-size:0.78rem; color:var(--muted); line-height:1.55; }
+    .mega-links { display:grid; grid-template-columns:1fr 1fr; gap:6px; flex:1.2; }
+    .mega-card { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; text-decoration:none; transition:background 0.15s; }
+    .mega-card:hover { background:var(--bg-warm); }
+    .mega-icon { width:32px; height:32px; border-radius:8px; background:var(--bg-warm); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent); }
+    .mega-icon svg { width:15px; height:15px; }
+    .mega-card-title { display:block; font-size:0.8rem; font-weight:600; color:var(--ink); }
+    .mega-card-desc { display:block; font-size:0.7rem; color:var(--muted); }
 
+    /* ── PAGE ── */
+    .page-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 52px 48px 80px;
+    }
+
+    /* ── HERO TITRE ── */
+    .page-hero {
+      margin-bottom: 52px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .page-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .page-eyebrow::before {
+      content: ''; width: 24px; height: 1px; background: var(--border-warm);
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .page-title em { font-style: italic; color: var(--accent); }
+    .page-subtitle {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.65;
+      max-width: 480px;
+    }
+
+    /* ── INTERCALAIRES ── */
+    /*
+      Structure : un conteneur qui empile 4 cartes
+      Chaque carte a un onglet et un corps.
+      L'effet d'empilement vient du z-index + margin-top négatif.
+    */
+    .tabs-wrapper {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      align-items: end;
+      margin-bottom: -1px; /* pour fusionner avec la grande carte dessous */
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    /* L'onglet cliquable au-dessus de chaque carte */
+    .tab-trigger {
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      /* L'onglet est plus petit que le contenu → illusion intercalaire */
+    }
+
+    .tab-trigger:nth-child(1) { z-index: 4; }
+    .tab-trigger:nth-child(2) { z-index: 3; }
+    .tab-trigger:nth-child(3) { z-index: 2; }
+    .tab-trigger:nth-child(4) { z-index: 1; }
+
+    /* La "langue" de l'intercalaire */
+    .tab-ear {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 20px 10px;
+      border-radius: 10px 10px 0 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-left: 16px;
+      position: relative;
+      transition: padding-bottom 0.2s;
+      white-space: nowrap;
+    }
+
+    /* Le grand rectangle du dossier */
+    .tab-body {
+      width: 100%;
+      min-height: 340px;
+      border-radius: 0 12px 0 0;
+      padding: 32px 30px 28px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: min-height 0.25s ease;
+      border-top: 2px solid rgba(255,255,255,0.15);
+    }
+
+    /* 1er dossier: coins arrondis à gauche en plus */
+    .tab-trigger:first-child .tab-body { border-radius: 12px 12px 0 0; }
+    /* dernier: coins à droite */
+    .tab-trigger:last-child .tab-body { border-radius: 0 12px 0 0; }
+
+    /* Hover : le dossier se soulève légèrement */
+    .tab-trigger:hover .tab-body {
+      min-height: 360px;
+    }
+    .tab-trigger:hover .tab-ear {
+      padding-bottom: 14px;
+    }
+
+    /* Ligne décorative en relief (comme le carton d'un vrai intercalaire) */
+    .tab-body::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Grand titre stylisé sur le dossier (comme "Ma bibliothèque" sur la ref) */
+    .tab-big-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 10px;
+      position: relative; z-index: 1;
+    }
+
+    .tab-name {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      position: relative; z-index: 1;
+      margin-bottom: 14px;
+    }
+
+    .tab-name em { font-style: italic; }
+
+    .tab-desc {
+      font-size: 0.78rem;
+      line-height: 1.6;
+      opacity: 0.65;
+      max-width: 220px;
+      position: relative; z-index: 1;
+    }
+
+    /* Flèche discrète */
+    .tab-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+      position: relative; z-index: 1;
+      margin-top: 20px;
+      transition: opacity 0.18s, gap 0.18s;
+    }
+    .tab-trigger:hover .tab-cta { opacity: 1; gap: 10px; }
+    .tab-cta svg { width: 14px; height: 14px; }
+
+    /* Numéro décoratif en filigrane */
+    .tab-watermark {
+      position: absolute;
+      bottom: -20px; right: -10px;
+      font-family: var(--font-serif);
+      font-size: 8rem;
+      font-weight: 700;
+      line-height: 1;
+      opacity: 0.06;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* ── COULEURS DES 4 DOSSIERS ── */
+
+    /* 1 — Mes livres : terre cuite / accent */
+    .tab-1 .tab-ear  { background: #c4602a; color: #fff; }
+    .tab-1 .tab-body { background: linear-gradient(145deg, #c4602a 0%, #a03818 100%); color: #fff; }
+
+    /* 2 — Favoris : or profond */
+    .tab-2 .tab-ear  { background: #b8933f; color: #fff; }
+    .tab-2 .tab-body { background: linear-gradient(145deg, #b8933f 0%, #8a6820 100%); color: #fff; }
+
+    /* 3 — À lire : vert forêt */
+    .tab-3 .tab-ear  { background: #3a6e50; color: #fff; }
+    .tab-3 .tab-body { background: linear-gradient(145deg, #3a6e50 0%, #1e4232 100%); color: #fff; }
+
+    /* 4 — Recherche : encre noire */
+    .tab-4 .tab-ear  { background: #1a1410; color: rgba(245,240,232,0.85); }
+    .tab-4 .tab-body { background: linear-gradient(145deg, #2a2018 0%, #0e0c0a 100%); color: #f5f0e8; }
+
+    /* ── BANDE DU BAS ── */
+    /* Le sol sous les dossiers — comme un bureau */
+    .tabs-floor {
+      height: 20px;
+      background: var(--border-warm);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 8px 24px rgba(26,20,16,0.1);
+      animation: fadeUp 0.5s 0.1s ease both;
+      margin-bottom: 48px;
+    }
+
+    /* ── STATS EN BAS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      animation: fadeUp 0.5s 0.22s ease both;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stat-bar {
+      height: 3px;
+      border-radius: 99px;
+      margin: 10px auto 0;
+      width: 60%;
+    }
+
+    /* ── CITATION ── */
+    .quote-band {
+      margin-top: 48px;
+      padding: 36px 48px;
+      background: var(--ink);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+    .quote-mark {
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      color: var(--accent);
+      line-height: 0.7;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .quote-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      font-style: italic;
+      color: #f5f0e8;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+    }
+    .quote-author {
+      font-size: 0.75rem;
+      color: var(--muted-light);
+      margin-top: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+
+    @media(max-width:1024px){
+      .page-wrap{padding:32px 24px 60px}
+      .site-header,.nav-inner{padding-inline:24px}
+      .tabs-wrapper{grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+      .tab-body{border-radius:0 12px 12px 12px!important;min-height:260px}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .quote-band{flex-direction:column;gap:16px;padding:28px 24px}
+    }
+    @media(max-width:640px){
+      .tabs-wrapper{grid-template-columns:1fr}
+      .stats-row{grid-template-columns:1fr 1fr}
+    }
+  </style>
 </head>
-
 <body>
 
-  <header class="site-header">
+<!-- HEADER -->
+<header class="site-header">
   <div class="logo">
     <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <div class="logo-divider"></div>
     <span class="logo-sub">Ta bibliothèque</span>
   </div>
   <div class="header-actions">
-    <button class="header-btn header-btn-ghost">Connexion</button>
-    <button class="header-btn header-btn-accent">Commencer</button>
+    <a href="connexion.html" class="header-btn header-btn-ghost" style="text-decoration:none">Connexion</a>
+    <a href="inscrire.html" class="header-btn header-btn-accent" style="text-decoration:none">Commencer</a>
   </div>
 </header>
 
-  <nav class="site-nav">
+<!-- NAV -->
+<nav class="site-nav">
   <div class="nav-inner">
     <a href="index.html">Accueil</a>
-
     <div class="nav-dropdown nav-mega">
-      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
-
+      <a href="livres.html" class="active">Bibliothèque</a>
       <div class="nav-dropdown-menu mega-menu">
         <div class="mega-left">
           <div class="mega-badge">Explorer</div>
           <h3 class="mega-heading">Ma bibliothèque</h3>
-          <p class="mega-text">
-            Retrouve tous tes livres, organise tes envies de lecture,
-            garde tes favoris et lance une recherche en un instant.
-          </p>
+          <p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture, garde tes favoris.</p>
         </div>
-
         <div class="mega-links">
-          <a href="livres.html" class="mega-card">
-            <span class="mega-icon">📚</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Mes livres</span>
-              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
-            </span>
-          </a>
-
-          <a href="favoris.html" class="mega-card">
-            <span class="mega-icon">❤️</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Favoris</span>
-              <span class="mega-card-desc">Retrouver tes livres préférés</span>
-            </span>
-          </a>
-
-          <a href="a-lire.html" class="mega-card">
-            <span class="mega-icon">🕮</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">À lire</span>
-              <span class="mega-card-desc">Gérer ta liste d’envies</span>
-            </span>
-          </a>
-
-          <a href="recherche.html" class="mega-card">
-            <span class="mega-icon">🔎</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Recherche</span>
-              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
-            </span>
-          </a>
+          <a href="mes-livres.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><span class="mega-card-title">Mes livres</span><span class="mega-card-desc">Toute ta bibliothèque</span></span></a>
+          <a href="favoris.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span><span class="mega-card-title">Favoris</span><span class="mega-card-desc">Tes livres préférés</span></span></a>
+          <a href="a-lire.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span><span class="mega-card-title">À lire</span><span class="mega-card-desc">Ta liste d'envies</span></span></a>
+          <a href="recherche.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span><span class="mega-card-title">Recherche</span><span class="mega-card-desc">Titre, auteur, genre</span></span></a>
         </div>
       </div>
     </div>
-
     <a href="recommandations.html">Recommandations</a>
   </div>
 </nav>
 
-  <main class="main">
-    <div class="books-page-layout">
+<div class="page-wrap">
 
-      <div class="side-card add-book-card">
-        <div class="card-title">Ajouter un livre</div>
-        <div class="card-sub">Ajoute un livre à ta bibliothèque personnelle.</div>
+  <!-- TITRE -->
+  <div class="page-hero">
+    <div class="page-eyebrow">Ma collection</div>
+    <h1 class="page-title">Ma <em>bibliothèque</em></h1>
+    <p class="page-subtitle">Tous tes livres en un seul endroit — explore, retrouve et organise tes lectures avec soin.</p>
+  </div>
 
-        <div class="form-stack">
-          <div class="field-group">
-            <label class="field-label" for="inputTitre">Titre</label>
-            <input
-              type="text"
-              id="inputTitre"
-              class="field-input"
-              placeholder="Ex : Dune, Les Misérables..."
-            />
-          </div>
+  <!-- 4 INTERCALAIRES -->
+  <div class="tabs-wrapper">
 
-          <div class="field-group">
-            <label class="field-label" for="inputAuteur">Auteur</label>
-            <input
-              type="text"
-              id="inputAuteur"
-              class="field-input"
-              placeholder="Ex : Victor Hugo, Frank Herbert..."
-            />
-          </div>
-
-          <button id="btnAjouter" class="add-book-btn">Ajouter</button>
+    <!-- 1 — Mes livres -->
+    <a href="mes-livres.html" class="tab-trigger tab-1">
+      <div class="tab-ear">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Mes livres
+      </div>
+      <div class="tab-body">
+        <div class="tab-watermark">1</div>
+        <div>
+          <div class="tab-big-label">Collection</div>
+          <div class="tab-name">Ma<br><em>bibliothèque</em></div>
+          <div class="tab-desc">Tous les livres lus, en cours ou à venir.</div>
+        </div>
+        <div class="tab-cta">
+          Ouvrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
+    </a>
 
-      <div class="side-card books-list-card">
-        <div class="books-list-header">
-          <div>
-            <div class="card-title">Mes livres ajoutés</div>
-            <div class="card-sub">Retrouve ici tous les livres que tu as enregistrés.</div>
-          </div>
-          <div class="books-counter" id="compteurLivres">0 livre</div>
-        </div>
-
-        <div id="listeLivres" class="books-grid"></div>
+    <!-- 2 — Favoris -->
+    <a href="favoris.html" class="tab-trigger tab-2">
+      <div class="tab-ear">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Favoris
       </div>
+      <div class="tab-body">
+        <div class="tab-watermark">2</div>
+        <div>
+          <div class="tab-big-label">Coups de cœur</div>
+          <div class="tab-name">Mes<br><em>favoris</em></div>
+          <div class="tab-desc">Les œuvres qui t'ont le plus marqué.</div>
+        </div>
+        <div class="tab-cta">
+          Ouvrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
 
+    <!-- 3 — À lire -->
+    <a href="a-lire.html" class="tab-trigger tab-3">
+      <div class="tab-ear">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        À lire
+      </div>
+      <div class="tab-body">
+        <div class="tab-watermark">3</div>
+        <div>
+          <div class="tab-big-label">Liste de souhaits</div>
+          <div class="tab-name">À lire<br><em>bientôt</em></div>
+          <div class="tab-desc">Les livres qui t'attendent avec impatience.</div>
+        </div>
+        <div class="tab-cta">
+          Ouvrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- 4 — Recherche -->
+    <a href="recherche.html" class="tab-trigger tab-4">
+      <div class="tab-ear">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Recherche
+      </div>
+      <div class="tab-body">
+        <div class="tab-watermark">4</div>
+        <div>
+          <div class="tab-big-label">Trouver</div>
+          <div class="tab-name">Rechercher<br><em>un titre</em></div>
+          <div class="tab-desc">Cherche par titre, auteur ou genre.</div>
+        </div>
+        <div class="tab-cta">
+          Ouvrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- SOL SOUS LES DOSSIERS -->
+  <div class="tabs-floor"></div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--accent)">12</div>
+      <div class="stat-label">Livres lus</div>
+      <div class="stat-bar" style="background:var(--accent-light)"><div style="height:100%;width:60%;background:var(--accent);border-radius:99px"></div></div>
     </div>
-  </main>
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--gold)">7</div>
+      <div class="stat-label">Favoris</div>
+      <div class="stat-bar" style="background:var(--gold-light,#faf3e0)"><div style="height:100%;width:35%;background:var(--gold);border-radius:99px"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#3a6e50">38</div>
+      <div class="stat-label">À lire</div>
+      <div class="stat-bar" style="background:#eaf4ee"><div style="height:100%;width:90%;background:#3a6e50;border-radius:99px"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--ink)">5</div>
+      <div class="stat-label">En cours</div>
+      <div class="stat-bar" style="background:var(--bg-warm)"><div style="height:100%;width:25%;background:var(--ink);border-radius:99px"></div></div>
+    </div>
+  </div>
 
-  <script>
-    const inputTitre = document.getElementById("inputTitre");
-    const inputAuteur = document.getElementById("inputAuteur");
-    const btnAjouter = document.getElementById("btnAjouter");
-    const listeLivres = document.getElementById("listeLivres");
-    const compteurLivres = document.getElementById("compteurLivres");
+  <!-- CITATION -->
+  <div class="quote-band">
+    <div class="quote-mark">"</div>
+    <div>
+      <div class="quote-text">Un lecteur vit mille vies avant de mourir.<br>Celui qui ne lit jamais n'en vit qu'une.</div>
+      <div class="quote-author">— George R.R. Martin</div>
+    </div>
+  </div>
 
-    function getLivres() {
-      return JSON.parse(localStorage.getItem("mesLivres")) || [];
-    }
-
-    function saveLivres(livres) {
-      localStorage.setItem("mesLivres", JSON.stringify(livres));
-    }
-
-    function updateCompteur(nombre) {
-      compteurLivres.textContent = nombre > 1 ? `${nombre} livres` : `${nombre} livre`;
-    }
-
-    function afficherLivres() {
-      const livres = getLivres();
-      listeLivres.innerHTML = "";
-      updateCompteur(livres.length);
-
-      if (livres.length === 0) {
-        listeLivres.innerHTML = `
-          <div class="empty-books">
-            <div class="empty-books-title">Aucun livre ajouté</div>
-            <div class="empty-books-text">Ajoute ton premier livre avec le formulaire à gauche.</div>
-          </div>
-        `;
-        return;
-      }
-
-      livres.forEach((livre, index) => {
-        const card = document.createElement("div");
-        card.className = "book-item";
-
-        card.innerHTML = `
-          <div class="book-item-title">${livre.titre}</div>
-          <div class="book-item-author"><strong>Auteur :</strong> ${livre.auteur}</div>
-          <button class="delete-book-btn" onclick="supprimerLivre(${index})">Supprimer</button>
-        `;
-
-        listeLivres.appendChild(card);
-      });
-    }
-
-    function ajouterLivre() {
-      const titre = inputTitre.value.trim();
-      const auteur = inputAuteur.value.trim();
-
-      if (!titre || !auteur) {
-        alert("Merci de remplir le titre et l'auteur.");
-        return;
-      }
-
-      const livres = getLivres();
-      livres.push({ titre, auteur });
-      saveLivres(livres);
-
-      inputTitre.value = "";
-      inputAuteur.value = "";
-      afficherLivres();
-    }
-
-    function supprimerLivre(index) {
-      const livres = getLivres();
-      livres.splice(index, 1);
-      saveLivres(livres);
-      afficherLivres();
-    }
-
-    btnAjouter.addEventListener("click", ajouterLivre);
-
-    inputTitre.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") ajouterLivre();
-    });
-
-    inputAuteur.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") ajouterLivre();
-    });
-
-    afficherLivres();
-  </script>
+</div>
 
 </body>
 </html>
