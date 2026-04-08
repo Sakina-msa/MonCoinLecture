@@ -1,1164 +1,308 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>À lire — Mon Coin Lecture</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink:         #1a1410;
-      --ink-soft:    #3d322a;
-      --muted:       #8a7b6e;
-      --muted-light: #b5a89b;
-      --bg:          #faf7f2;
-      --bg-warm:     #f3ede3;
-      --bg-card:     #fffcf7;
-      --border:      #e8e0d4;
-      --border-warm: #d4c8b8;
-      --accent:      #c4602a;
-      --accent-light:#fdf0e8;
-      --accent-deep: #9e3e14;
-      --gold:        #b8933f;
-      --gold-light:  #faf3e0;
-      --green:       #3a7d52;
-      --green-light: #eaf4ee;
-      --red:         #b03535;
-      --red-light:   #fdeaea;
-
-      --font-serif: 'Playfair Display', Georgia, serif;
-      --font-sans:  'Instrument Sans', system-ui, sans-serif;
-      --radius:     12px;
-      --shadow-sm:  0 1px 4px rgba(26,20,16,0.06);
-      --shadow-md:  0 4px 20px rgba(26,20,16,0.09);
-      --shadow-lg:  0 12px 48px rgba(26,20,16,0.12);
-    }
-
-    html { font-size: 15px; }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
-
-    /* ── HEADER ── */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(250,247,242,0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 64px;
-    }
-
-    .logo { display: flex; align-items: baseline; gap: 10px; }
-    .logo-mark {
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-    .logo-mark em { font-style: italic; color: var(--accent); }
-    .logo-divider { width: 1px; height: 14px; background: var(--border-warm); }
-    .logo-sub {
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .header-actions { display: flex; align-items: center; gap: 10px; }
-    .header-btn {
-      font-family: var(--font-sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 7px 18px;
-      border-radius: 99px;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: all 0.18s ease;
-      border: none;
-    }
-    .header-btn-ghost {
-      background: transparent;
-      color: var(--ink-soft);
-      border: 1px solid var(--border-warm);
-    }
-    .header-btn-ghost:hover { background: var(--bg-warm); }
-    .header-btn-accent { background: var(--ink); color: var(--bg); }
-    .header-btn-accent:hover { background: var(--ink-soft); }
-
-    /* ── NAV ── */
-    .site-nav {
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-card);
-    }
-    .nav-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 48px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      height: 46px;
-    }
-    .nav-inner a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 5px 14px;
-      border-radius: 6px;
-      letter-spacing: 0.03em;
-      transition: all 0.15s;
-    }
-    .nav-inner a:hover { color: var(--ink); background: var(--bg-warm); }
-    .nav-inner a.active { color: var(--accent); background: var(--accent-light); }
-
-    /* ── MAIN ── */
-    .main {
-      max-width: 1400px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 36px 48px 64px;
-    }
-
-    /* ── CARD LABEL / TITLE ── */
-    .card-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .card-title {
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 16px;
-    }
-
-    /* ── CHALLENGE BANNER ── */
-    .challenge-banner {
-      background: var(--ink);
-      border-radius: 16px;
-      padding: 36px 48px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 28px;
-      animation: fadeUp 0.5s ease both;
-    }
-    .challenge-banner::before {
-      content: '📚';
-      position: absolute;
-      font-size: 18rem;
-      line-height: 1;
-      opacity: 0.04;
-      top: -30px;
-      right: -20px;
-      pointer-events: none;
-      user-select: none;
-    }
-    .challenge-banner::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 80% 50%, rgba(196,96,42,0.18), transparent 60%);
-      pointer-events: none;
-    }
-
-    .challenge-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted-light);
-      margin-bottom: 14px;
-    }
-    .challenge-eyebrow-dot {
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50% { opacity:0.5; transform:scale(0.8); }
-    }
-
-    .challenge-title {
-      font-family: var(--font-serif);
-      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-      font-weight: 400;
-      color: #f5f0e8;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-    .challenge-title em { font-style: italic; color: var(--accent); }
-
-    .challenge-sub {
-      font-size: 0.85rem;
-      color: var(--muted-light);
-      margin-bottom: 24px;
-    }
-
-    .progress-track {
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--gold));
-      border-radius: 99px;
-      transition: width 0.6s cubic-bezier(.4,0,.2,1);
-    }
-    .progress-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: rgba(245,240,232,0.55);
-      font-weight: 500;
-      margin-bottom: 20px;
-    }
-
-    .challenge-stats {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .stat-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 99px;
-      background: rgba(255,255,255,0.1);
-      color: rgba(245,240,232,0.75);
-      letter-spacing: 0.02em;
-    }
-
-    /* ── LAYOUT ── */
-    .wishlist-layout {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    /* ── CARD BASE ── */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 26px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .form-card {
-      position: sticky;
-      top: calc(64px + 46px + 20px);
-      animation: fadeUp 0.5s 0.07s ease both;
-    }
-
-    /* ── FORM ── */
-    .form-stack { display: flex; flex-direction: column; gap: 14px; }
-
-    .field-group { display: flex; flex-direction: column; gap: 5px; }
-    .field-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--ink-soft);
-      letter-spacing: 0.04em;
-    }
-
-    .field-input, .field-select, .field-textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 0 12px;
-      font-size: 0.83rem;
-      font-family: var(--font-sans);
-      outline: none;
-      background: var(--bg);
-      color: var(--ink);
-      transition: border-color 0.18s, box-shadow 0.18s;
-    }
-    .field-input, .field-select { height: 40px; }
-    .field-textarea { padding: 10px 12px; height: 76px; resize: vertical; line-height: 1.5; }
-    .field-input::placeholder, .field-textarea::placeholder { color: var(--muted-light); }
-    .field-input:focus, .field-select:focus, .field-textarea:focus {
-      border-color: var(--accent);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(196,96,42,0.08);
-    }
-
-    .priority-row { display: flex; gap: 6px; }
-    .prio-btn {
-      flex: 1;
-      height: 36px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg);
-      font-size: 0.72rem;
-      font-weight: 600;
-      font-family: var(--font-sans);
-      cursor: pointer;
-      color: var(--muted);
-      transition: all 0.18s;
-      letter-spacing: 0.02em;
-    }
-    .prio-btn:hover { background: var(--bg-warm); color: var(--ink-soft); }
-    .prio-btn.active-low  { border-color: var(--green); background: var(--green-light); color: var(--green); }
-    .prio-btn.active-med  { border-color: var(--gold);  background: var(--gold-light);  color: #8a6820; }
-    .prio-btn.active-high { border-color: var(--red);   background: var(--red-light);   color: var(--red); }
-
-    .add-btn {
-      height: 44px;
-      border: none;
-      border-radius: 99px;
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-sans);
-      font-size: 0.83rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      cursor: pointer;
-      transition: all 0.18s;
-      margin-top: 4px;
-    }
-    .add-btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
-    .add-btn:active { transform: none; }
-
-    /* ── LIST CARD ── */
-    .list-card { animation: fadeUp 0.5s 0.14s ease both; }
-
-    .wishlist-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 16px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .wishlist-counter {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 99px;
-      background: var(--accent-light);
-      color: var(--accent);
-      border: 1px solid #e8c4aa;
-    }
-
-    /* ── TOOLS BAR ── */
-    .wishlist-tools {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .tool-input, .tool-select {
-      height: 38px;
-      border: 1.5px solid var(--border);
-      border-radius: 99px;
-      padding: 0 14px;
-      font-size: 0.78rem;
-      font-family: var(--font-sans);
-      background: var(--bg);
-      outline: none;
-      color: var(--ink);
-      transition: border-color 0.18s;
-    }
-    .tool-input { flex: 1; min-width: 180px; }
-    .tool-input:focus, .tool-select:focus { border-color: var(--accent); }
-    .tool-input::placeholder { color: var(--muted-light); }
-
-    .tool-btn {
-      height: 38px;
-      border: 1.5px solid var(--border);
-      border-radius: 99px;
-      padding: 0 16px;
-      background: var(--bg);
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 500;
-      font-family: var(--font-sans);
-      cursor: pointer;
-      transition: all 0.18s;
-      white-space: nowrap;
-    }
-    .tool-btn:hover { background: var(--bg-warm); color: var(--ink-soft); border-color: var(--border-warm); }
-
-    .view-toggle { display: flex; gap: 4px; }
-    .view-btn {
-      width: 38px; height: 38px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg);
-      cursor: pointer;
-      font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.18s;
-      color: var(--muted);
-    }
-    .view-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
-
-    /* ── WISH ITEMS — GRID ── */
-    .wishlist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-    }
-    .wishlist-list { display: flex; flex-direction: column; gap: 8px; }
-
-    .wish-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-      animation: fadeUp 0.3s ease both;
-    }
-    .wish-item:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-      border-color: var(--border-warm);
-    }
-
-    /* list view */
-    .wishlist-list .wish-item {
-      flex-direction: row;
-      align-items: center;
-      padding: 12px 16px;
-      gap: 12px;
-    }
-    .wishlist-list .wish-body { flex: 1; min-width: 0; }
-    .wishlist-list .wish-actions { margin-top: 0; flex-shrink: 0; }
-    .wishlist-list .wish-date { display: none; }
-    .wishlist-list .wish-note-wrap { display: none; }
-
-    .prio-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .prio-dot.low  { background: var(--green); }
-    .prio-dot.med  { background: var(--gold); }
-    .prio-dot.high { background: var(--red); }
-
-    .wish-title {
-      font-family: var(--font-serif);
-      font-size: 0.98rem;
-      font-weight: 500;
-      line-height: 1.3;
-      color: var(--ink);
-    }
-    .wish-author { font-size: 0.72rem; color: var(--muted); margin-top: 2px; font-style: italic; }
-
-    .wish-meta-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
-
-    .tag {
-      display: inline-block;
-      padding: 2px 9px;
-      border-radius: 99px;
-      font-size: 0.66rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-    .tag-genre { background: var(--bg-warm); color: var(--muted); border: 1px solid var(--border); }
-    .tag-prio-low  { background: var(--green-light); color: var(--green); border: 1px solid #c0ddc9; }
-    .tag-prio-med  { background: var(--gold-light);  color: #8a6820; border: 1px solid #e0cc9a; }
-    .tag-prio-high { background: var(--red-light);   color: var(--red); border: 1px solid #f0c0c0; }
-
-    .wish-note {
-      font-size: 0.75rem;
-      color: var(--ink-soft);
-      background: var(--bg-warm);
-      border-radius: 8px;
-      padding: 8px 10px;
-      line-height: 1.5;
-      border-left: 3px solid var(--border-warm);
-    }
-
-    .wish-date { font-size: 0.66rem; color: var(--muted-light); margin-top: auto; }
-
-    .wish-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-
-    .wish-btn {
-      border: none;
-      border-radius: 99px;
-      padding: 6px 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      font-family: var(--font-sans);
-      cursor: pointer;
-      transition: all 0.18s;
-      letter-spacing: 0.02em;
-    }
-    .wish-btn:hover { filter: brightness(0.92); transform: translateY(-1px); }
-    .wish-btn:active { transform: none; }
-    .delete-btn  { background: var(--red-light);   color: var(--red); }
-    .mark-btn    { background: var(--green-light);  color: var(--green); }
-    .edit-btn    { background: var(--accent-light); color: var(--accent); }
-
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      grid-column: 1 / -1;
-      border: 1.5px dashed var(--border-warm);
-      border-radius: var(--radius);
-      background: var(--bg-warm);
-      padding: 48px 20px;
-      text-align: center;
-    }
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 12px;
-    }
-    .empty-title {
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-    .empty-text { font-size: 0.8rem; color: var(--muted); }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(26,20,16,0.45);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 200;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-    .modal {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      width: min(460px, 95vw);
-      box-shadow: var(--shadow-lg);
-      transform: translateY(16px);
-      transition: transform 0.25s ease;
-    }
-    .modal-overlay.open .modal { transform: translateY(0); }
-
-    .modal-title {
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 20px;
-    }
-    .modal-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
-    .modal-cancel {
-      height: 40px; padding: 0 16px; border-radius: 99px;
-      border: 1px solid var(--border-warm); background: var(--bg-warm);
-      font-family: var(--font-sans); font-size: 0.8rem; font-weight: 500;
-      cursor: pointer; color: var(--ink-soft); transition: all 0.18s;
-    }
-    .modal-cancel:hover { background: var(--bg); }
-    .modal-save {
-      height: 40px; padding: 0 20px; border-radius: 99px;
-      border: none; background: var(--accent);
-      font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; color: #fff; transition: all 0.18s;
-    }
-    .modal-save:hover { background: var(--accent-deep); }
-
-    /* ── TOAST ── */
-    .toast-wrap {
-      position: fixed; bottom: 28px; right: 28px; z-index: 300;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .toast {
-      background: var(--ink);
-      color: #f5f0e8;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      box-shadow: var(--shadow-lg);
-      display: flex; align-items: center; gap: 8px;
-      animation: slideIn 0.3s ease;
-      min-width: 220px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .toast.success { background: #2a4d35; }
-    .toast.error   { background: #6e2020; }
-    @keyframes slideIn {
-      from { opacity:0; transform: translateX(20px); }
-      to   { opacity:1; transform: translateX(0); }
-    }
-
-    /* ── CONFETTI ── */
-    .confetti-particle {
-      position: fixed;
-      width: 7px; height: 7px;
-      border-radius: 2px;
-      pointer-events: none;
-      z-index: 500;
-      animation: confettiFall 1.2s ease-in forwards;
-    }
-    @keyframes confettiFall {
-      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1024px) {
-      .main { padding: 28px 24px 48px; }
-      .site-header, .nav-inner { padding-inline: 24px; }
-      .wishlist-layout { grid-template-columns: 1fr; }
-      .form-card { position: static; }
-    }
-    @media (max-width: 640px) {
-      .challenge-banner { padding: 28px 24px; }
-      .wishlist-grid { grid-template-columns: 1fr; }
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#1a1410;--ink-soft:#3d322a;--muted:#8a7b6e;--muted-light:#b5a89b;
+      --bg:#faf7f2;--bg-warm:#f3ede3;--bg-card:#fffcf7;
+      --border:#e8e0d4;--border-warm:#d4c8b8;
+      --accent:#c4602a;--accent-light:#fdf0e8;--accent-deep:#9e3e14;
+      --gold:#b8933f;--sage:#5a9e6a;--sage-light:#edf7ef;
+      --lav:#8b6ec4;--lav-light:#f2edfb;
+      --font-serif:'Playfair Display',Georgia,serif;
+      --font-sans:'Instrument Sans',system-ui,sans-serif;
+      --radius:12px;--radius-lg:18px;
+      --shadow-sm:0 1px 4px rgba(26,20,16,0.06);
+      --shadow-md:0 4px 20px rgba(26,20,16,0.09);
+      --shadow-lg:0 12px 48px rgba(26,20,16,0.14);
+    }
+    html{font-size:15px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+    /* HEADER */
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px}
+    .logo{display:flex;align-items:baseline;gap:10px}
+    .logo-mark{font-family:var(--font-serif);font-size:1.25rem;font-weight:500;color:var(--ink);letter-spacing:-0.01em}
+    .logo-mark em{font-style:italic;color:var(--accent)}
+    .logo-divider{width:1px;height:14px;background:var(--border-warm)}
+    .logo-sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-weight:500}
+    .header-actions{display:flex;align-items:center;gap:10px}
+    .header-btn{font-family:var(--font-sans);font-size:0.8rem;font-weight:500;padding:7px 18px;border-radius:99px;cursor:pointer;letter-spacing:0.02em;transition:all 0.18s;border:none}
+    .btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border-warm)}.btn-ghost:hover{background:var(--bg-warm)}
+    .btn-accent{background:var(--ink);color:var(--bg)}.btn-accent:hover{background:var(--ink-soft)}
+    /* NAV */
+    .site-nav{border-bottom:1px solid var(--border);background:var(--bg-card)}
+    .nav-inner{max-width:1400px;margin:0 auto;padding:0 48px;display:flex;align-items:center;gap:4px;height:46px}
+    .nav-inner a{font-size:0.8rem;font-weight:500;color:var(--muted);text-decoration:none;padding:5px 14px;border-radius:6px;letter-spacing:0.03em;transition:all 0.15s}
+    .nav-inner a:hover{color:var(--ink);background:var(--bg-warm)}
+    .nav-inner a.active{color:var(--accent);background:var(--accent-light)}
+    .nav-dropdown{position:relative}
+    .nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:20px;width:480px;flex-direction:row;z-index:200}
+    .nav-dropdown:hover .nav-dropdown-menu{display:flex}
+    .mega-left{flex:1;padding-right:20px;border-right:1px solid var(--border)}
+    .mega-badge{display:inline-block;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:99px;margin-bottom:10px}
+    .mega-heading{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:8px}
+    .mega-text{font-size:0.78rem;color:var(--muted);line-height:1.55}
+    .mega-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1.2}
+    .mega-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;transition:background 0.15s}.mega-card:hover{background:var(--bg-warm)}
+    .mega-icon{width:32px;height:32px;border-radius:8px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}.mega-icon svg{width:15px;height:15px}
+    .mega-card-title{display:block;font-size:0.8rem;font-weight:600;color:var(--ink)}.mega-card-desc{display:block;font-size:0.7rem;color:var(--muted)}
+    /* PAGE */
+    .page-wrap{max-width:1400px;margin:0 auto;padding:44px 48px 80px}
+    .page-header{margin-bottom:36px;animation:fadeUp 0.5s ease both}
+    .page-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .page-eyebrow::before{content:'';width:22px;height:1.5px;background:var(--border-warm)}
+    .page-title{font-family:var(--font-serif);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px}
+    .page-title em{font-style:italic;font-weight:400;color:#3a6e50}
+    .page-sub{font-size:0.88rem;color:var(--muted);line-height:1.6}
+    /* LAYOUT */
+    .main-layout{display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start;animation:fadeUp 0.5s 0.08s ease both}
+    /* FORM CARD */
+    .form-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md);position:sticky;top:120px}
+    .form-head{background:linear-gradient(135deg,#3a6e50,#1e4232);padding:22px 26px;display:flex;align-items:center;gap:12px}
+    .form-head-icon{width:38px;height:38px;background:rgba(255,255,255,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .form-head-icon svg{width:18px;height:18px;color:#fff}
+    .form-head-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:500;color:#fff}
+    .form-head-sub{font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:1px}
+    .form-body{padding:24px 26px;display:flex;flex-direction:column;gap:14px}
+    .form-group{display:flex;flex-direction:column;gap:5px}
+    .form-label{font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+    .form-label span{color:var(--accent);margin-left:2px}
+    .form-input,.form-select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);font-family:var(--font-sans);font-size:0.88rem;color:var(--ink);outline:none;transition:border-color 0.18s,box-shadow 0.18s}
+    .form-input:focus,.form-select:focus{border-color:#3a6e50;box-shadow:0 0 0 3px rgba(58,110,80,0.1);background:#fff}
+    .form-input::placeholder{color:var(--muted-light)}
+    .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7b6e' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+    .priority-pills{display:flex;gap:8px}
+    .priority-pill{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);font-size:0.75rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent;font-family:var(--font-sans)}
+    .priority-pill:hover{border-color:var(--border-warm);background:var(--bg-warm)}
+    .priority-pill.p-haute{background:#fff5f0;border-color:#f0a080;color:var(--accent)}
+    .priority-pill.p-normale{background:var(--sage-light);border-color:#8dd49d;color:var(--sage)}
+    .priority-pill.p-basse{background:var(--lav-light);border-color:#c0a8e0;color:var(--lav)}
+    .btn-add{width:100%;padding:14px;background:linear-gradient(135deg,#3a6e50,#1e4232);color:#fff;border:none;border-radius:10px;font-family:var(--font-sans);font-size:0.88rem;font-weight:600;cursor:pointer;letter-spacing:0.03em;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-add:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(58,110,80,0.3)}
+    .btn-add svg{width:16px;height:16px}
+    /* LISTE */
+    .books-panel{display:flex;flex-direction:column;gap:16px}
+    .filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .filter-search{flex:1;min-width:180px;position:relative}
+    .filter-search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted-light);pointer-events:none}
+    .filter-search-input{width:100%;height:40px;padding:0 14px 0 38px;border:1.5px solid var(--border);border-radius:99px;background:var(--bg-card);font-family:var(--font-sans);font-size:0.82rem;color:var(--ink);outline:none;transition:border-color 0.18s}
+    .filter-search-input:focus{border-color:#3a6e50}.filter-search-input::placeholder{color:var(--muted-light)}
+    .filter-pill{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);font-size:0.75rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;background:var(--bg-card);white-space:nowrap}
+    .filter-pill:hover{border-color:var(--border-warm);color:var(--ink)}
+    .filter-pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+    /* ITEM LISTE */
+    .alire-list{display:flex;flex-direction:column;gap:10px}
+    .alire-item{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow-sm);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+    .alire-item:hover{transform:translateX(4px);box-shadow:var(--shadow-md)}
+    .alire-spine{width:32px;height:46px;border-radius:3px 5px 5px 3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.15)}
+    .alire-spine::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2)}
+    .alire-spine span{font-family:var(--font-serif);font-size:0.58rem;font-weight:700;color:rgba(255,255,255,0.8);position:relative;z-index:1}
+    .alire-info{flex:1;min-width:0}
+    .alire-title{font-family:var(--font-serif);font-size:0.92rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+    .alire-author{font-size:0.72rem;color:var(--muted);margin-bottom:6px}
+    .alire-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .alire-genre{font-size:0.62rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--bg-warm);border:1px solid var(--border);color:var(--muted)}
+    .alire-priority{font-size:0.62rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+    .pri-haute{background:#fff5f0;border:1px solid #f0a080;color:var(--accent)}
+    .pri-normale{background:var(--sage-light);border:1px solid #8dd49d;color:var(--sage)}
+    .pri-basse{background:var(--lav-light);border:1px solid #c0a8e0;color:var(--lav)}
+    .alire-date{font-size:0.65rem;color:var(--muted-light)}
+    .alire-actions{display:flex;gap:8px;flex-shrink:0}
+    .alire-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+    .alire-btn:hover{border-color:var(--border-warm);background:var(--bg-warm)}
+    .alire-btn.del:hover{border-color:#f09080;background:#fff5f0}
+    .alire-btn svg{width:13px;height:13px;color:var(--muted)}
+    .alire-btn.del:hover svg{color:var(--accent)}
+    /* Spine colors */
+    .sc-roman{background:linear-gradient(145deg,#c84030,#8c1e20)}
+    .sc-fantasy{background:linear-gradient(145deg,#3870c0,#1a4080)}
+    .sc-manga{background:linear-gradient(145deg,#c8a020,#8a6808)}
+    .sc-crime{background:linear-gradient(145deg,#283880,#101840)}
+    .sc-romance{background:linear-gradient(145deg,#c83070,#880028)}
+    .sc-scifi{background:linear-gradient(145deg,#28a8a0,#086860)}
+    .sc-classique{background:linear-gradient(145deg,#9060c0,#481880)}
+    .sc-default{background:linear-gradient(145deg,#8a7b6e,#4a3a2e)}
+    /* EMPTY */
+    .empty-state{text-align:center;padding:60px 32px;background:var(--bg-card);border:2px dashed var(--border);border-radius:var(--radius-lg)}
+    .empty-icon{width:64px;height:64px;background:var(--bg-warm);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .empty-icon svg{width:28px;height:28px;color:var(--muted-light)}
+    .empty-title{font-family:var(--font-serif);font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:6px}
+    .empty-sub{font-size:0.82rem;color:var(--muted);line-height:1.6}
+    /* TOAST */
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5f0e8;padding:12px 22px;border-radius:99px;font-size:0.82rem;font-weight:500;box-shadow:var(--shadow-lg);z-index:999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:8px}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .toast svg{width:14px;height:14px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:1100px){.main-layout{grid-template-columns:1fr}.form-card{position:static}}
+    @media(max-width:768px){.page-wrap{padding:32px 24px 60px}.site-header,.nav-inner{padding-inline:24px}}
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="logo">
-      <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
-      <div class="logo-divider"></div>
-      <span class="logo-sub">Ta bibliothèque</span>
-    </div>
-    <div class="header-actions">
-      <button class="header-btn header-btn-ghost">Connexion</button>
-      <button class="header-btn header-btn-accent">Commencer</button>
-    </div>
-  </header>
-
-  <!-- NAV -->
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <a href="index.html">Accueil</a>
-      <a href="livres.html">Bibliothèque</a>
-      <a href="favoris.html">Favoris</a>
-      <a href="a-lire.html" class="active">À lire</a>
-      <a href="recommandations.html">Recommandations</a>
-    </div>
-  </nav>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- CHALLENGE BANNER -->
-    <div class="challenge-banner">
-      <div class="challenge-eyebrow">
-        <div class="challenge-eyebrow-dot"></div>
-        Défi 2024
-      </div>
-      <h1 class="challenge-title">Mon <em>challenge</em> lecture</h1>
-      <p class="challenge-sub" id="challengeSub">4 livres lus sur 12 — continue comme ça !</p>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressBar" style="width:33%"></div>
-      </div>
-      <div class="progress-labels">
-        <span id="progressLabel">4 / 12 livres lus</span>
-        <span id="progressPct">33%</span>
-      </div>
-      <div class="challenge-stats">
-        <div class="stat-pill" id="statWishlist">📚 0 dans la liste</div>
-        <div class="stat-pill" id="statHigh">🔴 0 priorité haute</div>
-        <div class="stat-pill" id="statNextRead">📖 Prochain : —</div>
+<header class="site-header">
+  <div class="logo"><span class="logo-mark">Mon <em>Coin</em> Lecture</span><div class="logo-divider"></div><span class="logo-sub">Ta bibliothèque</span></div>
+  <div class="header-actions"><a href="connexion.html" class="header-btn btn-ghost" style="text-decoration:none">Connexion</a><a href="inscrire.html" class="header-btn btn-accent" style="text-decoration:none">Commencer</a></div>
+</header>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html">Accueil</a>
+    <div class="nav-dropdown">
+      <a href="livres.html" class="active">Bibliothèque</a>
+      <div class="nav-dropdown-menu">
+        <div class="mega-left"><div class="mega-badge">Explorer</div><h3 class="mega-heading">Ma bibliothèque</h3><p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture, garde tes favoris.</p></div>
+        <div class="mega-links">
+          <a href="mes-livres.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><span class="mega-card-title">Mes livres</span><span class="mega-card-desc">Toute ta bibliothèque</span></span></a>
+          <a href="favoris.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span><span class="mega-card-title">Favoris</span><span class="mega-card-desc">Tes livres préférés</span></span></a>
+          <a href="a-lire.html" class="mega-card" style="background:var(--bg-warm)"><span class="mega-icon" style="background:#edf7ef;color:#3a6e50"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span><span class="mega-card-title">À lire</span><span class="mega-card-desc">Ta liste d'envies</span></span></a>
+          <a href="recherche.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span><span class="mega-card-title">Recherche</span><span class="mega-card-desc">Titre, auteur, genre</span></span></a>
+        </div>
       </div>
     </div>
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
 
-    <!-- LAYOUT -->
-    <div class="wishlist-layout">
-
-      <!-- FORM CARD -->
-      <div class="card form-card">
-        <div class="card-label">Ajouter</div>
-        <div class="card-title">Un nouveau livre</div>
-        <div class="form-stack">
-
-          <div class="field-group">
-            <label class="field-label" for="inputTitre">Titre *</label>
-            <input type="text" id="inputTitre" class="field-input" placeholder="Ex : Fondation, Dune…" />
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="inputAuteur">Auteur</label>
-            <input type="text" id="inputAuteur" class="field-input" placeholder="Ex : Isaac Asimov" />
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="inputGenre">Genre</label>
-            <select id="inputGenre" class="field-select">
-              <option value="">— Choisir un genre —</option>
-              <option>Roman</option>
-              <option>Science-fiction</option>
-              <option>Fantasy</option>
-              <option>Thriller</option>
-              <option>Policier</option>
-              <option>Biographie</option>
-              <option>Essai</option>
-              <option>Manga</option>
-              <option>BD</option>
-              <option>Jeunesse</option>
-              <option>Autre</option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">Priorité</label>
-            <div class="priority-row">
-              <button class="prio-btn active-low" data-prio="low">🟢 Basse</button>
-              <button class="prio-btn" data-prio="med">🟡 Moyenne</button>
-              <button class="prio-btn" data-prio="high">🔴 Haute</button>
-            </div>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="inputNote">Note personnelle</label>
-            <textarea id="inputNote" class="field-textarea" placeholder="Pourquoi ce livre t'intéresse ?"></textarea>
-          </div>
-
-          <button id="btnAjouter" class="add-btn">+ Ajouter à ma liste</button>
-        </div>
-      </div>
-
-      <!-- LIST CARD -->
-      <div class="card list-card">
-        <div class="wishlist-header">
-          <div>
-            <div class="card-label">Envies de lecture</div>
-            <div class="card-title" style="margin-bottom:0">Ma liste à lire</div>
-          </div>
-          <div class="wishlist-counter" id="compteur">0 livre</div>
-        </div>
-
-        <div class="wishlist-tools">
-          <input type="text" id="filtreInput" class="tool-input" placeholder="🔍 Filtrer par titre, auteur…" />
-          <select id="triSelect" class="tool-select">
-            <option value="date-desc">Plus récents</option>
-            <option value="date-asc">Plus anciens</option>
-            <option value="az">A → Z</option>
-            <option value="za">Z → A</option>
-            <option value="prio">Priorité ↑</option>
-          </select>
-          <select id="genreFilter" class="tool-select">
-            <option value="">Tous genres</option>
-          </select>
-          <div class="view-toggle">
-            <button class="view-btn active" id="btnGrid" title="Grille">⊞</button>
-            <button class="view-btn" id="btnList" title="Liste">☰</button>
-          </div>
-          <button id="btnReset" class="tool-btn">Réinitialiser</button>
-        </div>
-
-        <div id="listeALire" class="wishlist-grid"></div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- EDIT MODAL -->
-  <div class="modal-overlay" id="editModal">
-    <div class="modal">
-      <div class="modal-title">Modifier le livre</div>
-      <div class="form-stack">
-        <div class="field-group">
-          <label class="field-label">Titre *</label>
-          <input type="text" id="editTitre" class="field-input" />
-        </div>
-        <div class="field-group">
-          <label class="field-label">Auteur</label>
-          <input type="text" id="editAuteur" class="field-input" />
-        </div>
-        <div class="field-group">
-          <label class="field-label">Genre</label>
-          <select id="editGenre" class="field-select">
-            <option value="">— Choisir —</option>
-            <option>Roman</option><option>Science-fiction</option><option>Fantasy</option>
-            <option>Thriller</option><option>Policier</option><option>Biographie</option>
-            <option>Essai</option><option>Manga</option><option>BD</option>
-            <option>Jeunesse</option><option>Autre</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Priorité</label>
-          <div class="priority-row" id="editPrioRow">
-            <button class="prio-btn" data-prio="low">🟢 Basse</button>
-            <button class="prio-btn" data-prio="med">🟡 Moyenne</button>
-            <button class="prio-btn" data-prio="high">🔴 Haute</button>
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Note</label>
-          <textarea id="editNote" class="field-textarea"></textarea>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="modal-cancel" id="btnModalCancel">Annuler</button>
-        <button class="modal-save" id="btnModalSave">Enregistrer</button>
-      </div>
-    </div>
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="page-eyebrow">Ma liste</div>
+    <h1 class="page-title">À lire <em>bientôt</em></h1>
+    <p class="page-sub">Garde une trace de tous les livres qui t'attendent — classe-les par priorité.</p>
   </div>
 
-  <!-- TOASTS -->
-  <div class="toast-wrap" id="toastWrap"></div>
+  <div class="main-layout">
+    <!-- FORMULAIRE -->
+    <div class="form-card">
+      <div class="form-head">
+        <div class="form-head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div><div class="form-head-title">Ajouter un livre</div><div class="form-head-sub">À ma liste de souhaits</div></div>
+      </div>
+      <div class="form-body">
+        <div class="form-group"><label class="form-label">Titre <span>*</span></label><input class="form-input" id="inputTitre" type="text" placeholder="Ex : Les Misérables…"/></div>
+        <div class="form-group"><label class="form-label">Auteur <span>*</span></label><input class="form-input" id="inputAuteur" type="text" placeholder="Ex : Victor Hugo…"/></div>
+        <div class="form-group"><label class="form-label">Genre</label>
+          <select class="form-select" id="inputGenre">
+            <option value="">Sélectionner…</option>
+            <option value="roman">Roman</option><option value="fantasy">Fantasy</option>
+            <option value="manga">Manga</option><option value="crime">Crime</option>
+            <option value="romance">Romance</option><option value="scifi">Sci-Fi</option>
+            <option value="classique">Classique</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Priorité</label>
+          <div class="priority-pills" id="prioGroup">
+            <button class="priority-pill p-haute" data-v="haute" onclick="setPrio(this,'haute')">Haute</button>
+            <button class="priority-pill" data-v="normale" onclick="setPrio(this,'normale')">Normale</button>
+            <button class="priority-pill" data-v="basse" onclick="setPrio(this,'basse')">Basse</button>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addBook()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+          Ajouter à ma liste
+        </button>
+      </div>
+    </div>
 
-  <script>
-    // ── Storage ──────────────────────────────────────────────────────
-    const STORE_KEY = "listeALire_v2";
-    const READ_KEY  = "livresLusCount";
-    function getLivres()    { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-    function saveLivres(l)  { localStorage.setItem(STORE_KEY, JSON.stringify(l)); }
-    function getLusCount()  { return parseInt(localStorage.getItem(READ_KEY) || "4", 10); }
-    function setLusCount(n) { localStorage.setItem(READ_KEY, n); }
+    <!-- LISTE -->
+    <div class="books-panel">
+      <div class="filter-bar">
+        <div class="filter-search">
+          <svg class="filter-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="filter-search-input" id="filterInput" type="text" placeholder="Filtrer…" oninput="render()"/>
+        </div>
+        <button class="filter-pill on" data-f="tous" onclick="setFilter(this,'tous')">Tous</button>
+        <button class="filter-pill" data-f="haute" onclick="setFilter(this,'haute')">Priorité haute</button>
+        <button class="filter-pill" data-f="normale" onclick="setFilter(this,'normale')">Normale</button>
+        <button class="filter-pill" data-f="basse" onclick="setFilter(this,'basse')">Basse</button>
+      </div>
+      <div class="alire-list" id="alireList"></div>
+    </div>
+  </div>
+</div>
 
-    // ── DOM refs ─────────────────────────────────────────────────────
-    const inputTitre  = document.getElementById("inputTitre");
-    const inputAuteur = document.getElementById("inputAuteur");
-    const inputGenre  = document.getElementById("inputGenre");
-    const inputNote   = document.getElementById("inputNote");
-    const btnAjouter  = document.getElementById("btnAjouter");
-    const listeEl     = document.getElementById("listeALire");
-    const compteurEl  = document.getElementById("compteur");
-    const filtreInput = document.getElementById("filtreInput");
-    const triSelect   = document.getElementById("triSelect");
-    const genreFilter = document.getElementById("genreFilter");
-    const btnReset    = document.getElementById("btnReset");
-    const btnGrid     = document.getElementById("btnGrid");
-    const btnList     = document.getElementById("btnList");
-    const editModal   = document.getElementById("editModal");
-    const toastWrap   = document.getElementById("toastWrap");
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
 
-    // Priority selection (form)
-    let selectedPrio = "low";
-    document.querySelectorAll(".priority-row:not(#editPrioRow) .prio-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".priority-row:not(#editPrioRow) .prio-btn")
-          .forEach(b => b.className = "prio-btn");
-        const cls = btn.dataset.prio === "low" ? "active-low" : btn.dataset.prio === "med" ? "active-med" : "active-high";
-        btn.classList.add(cls);
-        selectedPrio = btn.dataset.prio;
-      });
-    });
+<script>
+let books = JSON.parse(localStorage.getItem('mcl_alire') || '[]');
+let currentPrio = 'haute', currentFilter = 'tous';
+const genreColors = {roman:'sc-roman',fantasy:'sc-fantasy',manga:'sc-manga',crime:'sc-crime',romance:'sc-romance',scifi:'sc-scifi',classique:'sc-classique','':`sc-default`};
+const genreNames = {roman:'Roman',fantasy:'Fantasy',manga:'Manga',crime:'Crime',romance:'Romance',scifi:'Sci-Fi',classique:'Classique'};
+const prioNames = {haute:'Haute',normale:'Normale',basse:'Basse'};
 
-    // Edit modal priority
-    let editPrio = "low";
-    document.querySelectorAll("#editPrioRow .prio-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#editPrioRow .prio-btn").forEach(b => b.className = "prio-btn");
-        const cls = btn.dataset.prio === "low" ? "active-low" : btn.dataset.prio === "med" ? "active-med" : "active-high";
-        btn.classList.add(cls);
-        editPrio = btn.dataset.prio;
-      });
-    });
-
-    // View toggle
-    let currentView = "grid";
-    btnGrid.addEventListener("click", () => { currentView = "grid"; btnGrid.classList.add("active"); btnList.classList.remove("active"); afficher(); });
-    btnList.addEventListener("click", () => { currentView = "list"; btnList.classList.add("active"); btnGrid.classList.remove("active"); afficher(); });
-
-    // ── Toast ────────────────────────────────────────────────────────
-    function toast(msg, type = "") {
-      const t = document.createElement("div");
-      t.className = "toast " + type;
-      t.textContent = msg;
-      toastWrap.appendChild(t);
-      setTimeout(() => t.remove(), 3500);
-    }
-
-    // ── Confetti ─────────────────────────────────────────────────────
-    function confetti() {
-      const colors = ["#c4602a","#b8933f","#3a7d52","#e8c4aa","#f5e6d0"];
-      for (let i = 0; i < 40; i++) {
-        const p = document.createElement("div");
-        p.className = "confetti-particle";
-        p.style.cssText = `
-          left: ${Math.random()*100}vw; top: -10px;
-          background: ${colors[Math.floor(Math.random()*colors.length)]};
-          border-radius: ${Math.random() > .5 ? "50%" : "2px"};
-          animation-delay: ${Math.random()*.6}s;
-          animation-duration: ${1+Math.random()*.8}s;
-        `;
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 2500);
-      }
-    }
-
-    // ── Challenge ────────────────────────────────────────────────────
-    function updateChallenge() {
-      const livres = getLivres();
-      const lus    = getLusCount();
-      const goal   = 12;
-      const pct    = Math.min(100, Math.round(lus / goal * 100));
-
-      document.getElementById("progressBar").style.width = pct + "%";
-      document.getElementById("progressLabel").textContent = `${lus} / ${goal} livres lus`;
-      document.getElementById("progressPct").textContent   = pct + "%";
-      document.getElementById("challengeSub").textContent  =
-        lus >= goal ? "🎉 Objectif atteint ! Bravo !" :
-        lus >= 8    ? `${lus} livres lus — encore ${goal-lus} et c'est gagné !` :
-                      `${lus} livres lus sur ${goal} — continue comme ça !`;
-
-      const highPrio = livres.filter(l => l.prio === "high").length;
-      document.getElementById("statWishlist").textContent = `📚 ${livres.length} dans la liste`;
-      document.getElementById("statHigh").textContent     = `🔴 ${highPrio} priorité haute`;
-
-      const next = livres.find(l => l.prio === "high") ||
-                   livres.find(l => l.prio === "med")  ||
-                   livres[0];
-      document.getElementById("statNextRead").textContent = next ? `📖 ${next.titre}` : "📖 Prochain : —";
-    }
-
-    // ── Genre options ─────────────────────────────────────────────────
-    function updateGenreOptions() {
-      const genres  = [...new Set(getLivres().map(l => l.genre).filter(Boolean))].sort();
-      const current = genreFilter.value;
-      genreFilter.innerHTML = '<option value="">Tous genres</option>';
-      genres.forEach(g => {
-        const o = document.createElement("option");
-        o.value = o.textContent = g;
-        if (g === current) o.selected = true;
-        genreFilter.appendChild(o);
-      });
-    }
-
-    // ── Render ───────────────────────────────────────────────────────
-    const PRIO_ORDER = { high: 0, med: 1, low: 2 };
-    const PRIO_LABEL = { high: "Haute", med: "Moyenne", low: "Basse" };
-
-    function afficher() {
-      let livres   = getLivres();
-      const filtre = filtreInput.value.trim().toLowerCase();
-      const tri    = triSelect.value;
-      const genre  = genreFilter.value;
-
-      if (filtre) livres = livres.filter(l =>
-        l.titre.toLowerCase().includes(filtre) ||
-        (l.auteur || "").toLowerCase().includes(filtre)
-      );
-      if (genre) livres = livres.filter(l => l.genre === genre);
-
-      livres.sort((a, b) => {
-        if (tri === "az")       return a.titre.localeCompare(b.titre, "fr", {sensitivity:"base"});
-        if (tri === "za")       return b.titre.localeCompare(a.titre, "fr", {sensitivity:"base"});
-        if (tri === "prio")     return (PRIO_ORDER[a.prio]??2) - (PRIO_ORDER[b.prio]??2);
-        if (tri === "date-asc") return a.id - b.id;
-        return b.id - a.id;
-      });
-
-      const total = getLivres().length;
-      compteurEl.textContent = total > 1 ? `${total} livres` : `${total} livre`;
-
-      listeEl.className = currentView === "list" ? "wishlist-list" : "wishlist-grid";
-      listeEl.innerHTML = "";
-
-      if (livres.length === 0) {
-        listeEl.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">${filtre || genre ? "🔎" : "📭"}</div>
-            <div class="empty-title">${filtre || genre ? "Aucun résultat" : "Ta liste est vide"}</div>
-            <div class="empty-text">${filtre || genre ? "Essaie d'autres filtres." : "Ajoute un premier livre pour commencer !"}</div>
-          </div>`;
-        updateChallenge();
-        updateGenreOptions();
-        return;
-      }
-
-      const allLivres = getLivres();
-
-      livres.forEach(livre => {
-        const origIdx = allLivres.findIndex(l => l.id === livre.id);
-        const card    = document.createElement("div");
-        card.className = "wish-item";
-
-        const prioTag  = livre.prio  ? `<span class="tag tag-prio-${livre.prio}">${PRIO_LABEL[livre.prio]}</span>` : "";
-        const genreTag = livre.genre ? `<span class="tag tag-genre">${livre.genre}</span>` : "";
-        const noteHtml = livre.note  ? `<div class="wish-note-wrap"><div class="wish-note">${livre.note}</div></div>` : "";
-        const date     = new Date(livre.id).toLocaleDateString("fr-FR", {day:"2-digit", month:"short", year:"numeric"});
-
-        if (currentView === "list") {
-          card.innerHTML = `
-            <div class="prio-dot ${livre.prio || 'low'}"></div>
-            <div class="wish-body">
-              <div class="wish-title">${livre.titre}</div>
-              ${livre.auteur ? `<div class="wish-author">${livre.auteur}</div>` : ""}
-              <div class="wish-meta-row">${genreTag}${prioTag}</div>
-            </div>
-            <div class="wish-actions">
-              <button class="wish-btn edit-btn"   onclick="ouvrirEdition(${origIdx})">✏️</button>
-              <button class="wish-btn mark-btn"   onclick="marquerCommeLu(${origIdx})">✓ Lu</button>
-              <button class="wish-btn delete-btn" onclick="supprimer(${origIdx})">🗑</button>
-            </div>`;
-        } else {
-          card.innerHTML = `
-            <div class="wish-meta-row">${prioTag}${genreTag}</div>
-            <div class="wish-title">${livre.titre}</div>
-            ${livre.auteur ? `<div class="wish-author">par ${livre.auteur}</div>` : ""}
-            ${noteHtml}
-            <div class="wish-date">Ajouté le ${date}</div>
-            <div class="wish-actions">
-              <button class="wish-btn edit-btn"   onclick="ouvrirEdition(${origIdx})">✏️ Modifier</button>
-              <button class="wish-btn mark-btn"   onclick="marquerCommeLu(${origIdx})">✓ Lu</button>
-              <button class="wish-btn delete-btn" onclick="supprimer(${origIdx})">🗑 Supprimer</button>
-            </div>`;
-        }
-
-        listeEl.appendChild(card);
-      });
-
-      updateChallenge();
-      updateGenreOptions();
-    }
-
-    // ── Add ───────────────────────────────────────────────────────────
-    function ajouter() {
-      const titre = inputTitre.value.trim();
-      if (!titre) { toast("❗ Le titre est requis.", "error"); inputTitre.focus(); return; }
-      const livres = getLivres();
-      livres.push({
-        id:     Date.now(),
-        titre,
-        auteur: inputAuteur.value.trim(),
-        genre:  inputGenre.value,
-        prio:   selectedPrio,
-        note:   inputNote.value.trim()
-      });
-      saveLivres(livres);
-      inputTitre.value = inputAuteur.value = inputNote.value = "";
-      inputGenre.value = "";
-      toast("📚 Livre ajouté à ta liste !", "success");
-      afficher();
-    }
-
-    // ── Delete ────────────────────────────────────────────────────────
-    function supprimer(idx) {
-      const livres = getLivres();
-      livres.splice(idx, 1);
-      saveLivres(livres);
-      toast("🗑 Livre supprimé.");
-      afficher();
-    }
-
-    // ── Mark as read ──────────────────────────────────────────────────
-    function marquerCommeLu(idx) {
-      const livres = getLivres();
-      const livre  = livres[idx];
-      if (!livre) return;
-      const mesLivres = JSON.parse(localStorage.getItem("mesLivres") || "[]");
-      mesLivres.push({ titre: livre.titre, auteur: livre.auteur || "Auteur à compléter" });
-      localStorage.setItem("mesLivres", JSON.stringify(mesLivres));
-      livres.splice(idx, 1);
-      saveLivres(livres);
-      setLusCount(getLusCount() + 1);
-      confetti();
-      toast(`🎉 "${livre.titre}" marqué comme lu !`, "success");
-      afficher();
-    }
-
-    // ── Edit modal ────────────────────────────────────────────────────
-    let editIdx = -1;
-
-    function ouvrirEdition(idx) {
-      const l = getLivres()[idx];
-      if (!l) return;
-      editIdx = idx;
-      document.getElementById("editTitre").value  = l.titre;
-      document.getElementById("editAuteur").value = l.auteur || "";
-      document.getElementById("editGenre").value  = l.genre  || "";
-      document.getElementById("editNote").value   = l.note   || "";
-      editPrio = l.prio || "low";
-      document.querySelectorAll("#editPrioRow .prio-btn").forEach(btn => {
-        btn.className = "prio-btn";
-        if (btn.dataset.prio === editPrio) {
-          btn.classList.add(editPrio === "low" ? "active-low" : editPrio === "med" ? "active-med" : "active-high");
-        }
-      });
-      editModal.classList.add("open");
-    }
-
-    document.getElementById("btnModalCancel").addEventListener("click", () => editModal.classList.remove("open"));
-    editModal.addEventListener("click", e => { if (e.target === editModal) editModal.classList.remove("open"); });
-
-    document.getElementById("btnModalSave").addEventListener("click", () => {
-      const titre = document.getElementById("editTitre").value.trim();
-      if (!titre) { toast("❗ Le titre est requis.", "error"); return; }
-      const livres = getLivres();
-      livres[editIdx] = {
-        ...livres[editIdx],
-        titre,
-        auteur: document.getElementById("editAuteur").value.trim(),
-        genre:  document.getElementById("editGenre").value,
-        note:   document.getElementById("editNote").value.trim(),
-        prio:   editPrio
-      };
-      saveLivres(livres);
-      editModal.classList.remove("open");
-      toast("✅ Livre mis à jour !", "success");
-      afficher();
-    });
-
-    // ── Events ────────────────────────────────────────────────────────
-    btnAjouter.addEventListener("click", ajouter);
-    inputTitre.addEventListener("keydown", e => { if (e.key === "Enter") ajouter(); });
-    filtreInput.addEventListener("input", afficher);
-    triSelect.addEventListener("change", afficher);
-    genreFilter.addEventListener("change", afficher);
-    btnReset.addEventListener("click", () => {
-      filtreInput.value = "";
-      triSelect.value   = "date-desc";
-      genreFilter.value = "";
-      afficher();
-    });
-
-    // ── Expose globals & init ─────────────────────────────────────────
-    window.supprimer      = supprimer;
-    window.marquerCommeLu = marquerCommeLu;
-    window.ouvrirEdition  = ouvrirEdition;
-
-    afficher();
-  </script>
+function setPrio(el, v) {
+  document.querySelectorAll('.priority-pill').forEach(p => p.className = 'priority-pill');
+  el.classList.add(`p-${v}`); currentPrio = v;
+}
+function setFilter(el, f) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on'); currentFilter = f; render();
+}
+function addBook() {
+  const t = document.getElementById('inputTitre').value.trim();
+  const a = document.getElementById('inputAuteur').value.trim();
+  if (!t || !a) { showToast('Titre et auteur obligatoires !'); return; }
+  books.unshift({id:Date.now(),titre:t,auteur:a,genre:document.getElementById('inputGenre').value,priorite:currentPrio,date:new Date().toLocaleDateString('fr-FR')});
+  save(); render(); resetForm(); showToast('Ajouté à ta liste !');
+}
+function removeBook(id) { books = books.filter(b=>b.id!==id); save(); render(); showToast('Retiré de la liste.'); }
+function moveToMesLivres(id) {
+  const b = books.find(b=>b.id===id);
+  if (b) {
+    const ml = JSON.parse(localStorage.getItem('mcl_books') || '[]');
+    ml.unshift({...b, statut:'alire', note:0, commentaire:'', progression:null});
+    localStorage.setItem('mcl_books', JSON.stringify(ml));
+    removeBook(id); showToast('Déplacé vers Mes livres !');
+  }
+}
+function resetForm() {
+  document.getElementById('inputTitre').value = '';
+  document.getElementById('inputAuteur').value = '';
+  document.getElementById('inputGenre').value = '';
+  setPrio(document.querySelector('[data-v="haute"]'), 'haute');
+}
+function render() {
+  const list = document.getElementById('alireList');
+  const q = document.getElementById('filterInput').value.toLowerCase();
+  let filtered = books.filter(b => {
+    const mf = currentFilter === 'tous' || b.priorite === currentFilter;
+    const ms = !q || b.titre.toLowerCase().includes(q) || b.auteur.toLowerCase().includes(q);
+    return mf && ms;
+  });
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="empty-title">${books.length ? 'Aucun résultat' : 'Ta liste est vide'}</div><div class="empty-sub">Ajoute des livres que tu veux lire bientôt.</div></div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(b => `
+    <div class="alire-item">
+      <div class="alire-spine ${genreColors[b.genre]||'sc-default'}"><span>${b.titre.slice(0,2).toUpperCase()}</span></div>
+      <div class="alire-info">
+        <div class="alire-title">${b.titre}</div>
+        <div class="alire-author">${b.auteur}</div>
+        <div class="alire-meta">
+          ${b.genre?`<span class="alire-genre">${genreNames[b.genre]||''}</span>`:''}
+          <span class="alire-priority pri-${b.priorite}">${prioNames[b.priorite]}</span>
+          <span class="alire-date">Ajouté le ${b.date}</span>
+        </div>
+      </div>
+      <div class="alire-actions">
+        <button class="alire-btn" onclick="moveToMesLivres(${b.id})" title="Déplacer vers Mes livres">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </button>
+        <button class="alire-btn del" onclick="removeBook(${b.id})" title="Retirer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
+}
+function save() { localStorage.setItem('mcl_alire', JSON.stringify(books)); }
+function showToast(msg) {
+  const t = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2600);
+}
+render();
+</script>
 </body>
 </html>
