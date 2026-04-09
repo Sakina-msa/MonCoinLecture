@@ -384,7 +384,86 @@
 
     @media(max-width:1200px){.main-grid{grid-template-columns:1fr 1fr}.mood-section{grid-template-columns:1fr}}
     @media(max-width:900px){.hero{grid-template-columns:1fr;padding:48px 32px}.page-content{padding:36px 32px 60px}.site-header,.nav-inner{padding-inline:32px}.hero-right{min-height:260px}.main-grid{grid-template-columns:1fr}}
-  </style>
+  
+    /* ══════════════════════════════════════
+       SECTIONS ÉDITORIALES — style fluide
+    ══════════════════════════════════════ */
+    .ed-section{padding:72px 0;border-top:1px solid var(--border)}
+    .ed-section-alt{background:var(--bg-warm)}
+    .ed-inner{max-width:1100px;margin:0 auto;padding:0 60px}
+
+    /* Overline */
+    .ed-overline{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .ed-overline::before{content:'';width:20px;height:1.5px;background:var(--border-w)}
+
+    /* ── Livres en cours ── */
+    .ed-reading-row{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+    .ed-book-item{display:flex;align-items:center;gap:18px;text-decoration:none;transition:opacity 0.18s;flex:1;min-width:220px}
+    .ed-book-item:hover{opacity:0.72}
+    .ed-book-spine{width:44px;height:64px;border-radius:3px 6px 6px 3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:0.9rem;font-weight:700;color:rgba(255,255,255,0.85);flex-shrink:0;box-shadow:4px 6px 18px rgba(0,0,0,0.18),-2px 0 4px rgba(0,0,0,0.12)}
+    .ed-book-meta{flex:1}
+    .ed-book-title{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);line-height:1.2;margin-bottom:2px}
+    .ed-book-author{font-size:0.72rem;color:var(--muted);margin-bottom:10px}
+    .ed-book-bar{height:2px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:5px}
+    .ed-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease}
+    .ed-book-pct{font-size:0.68rem;font-weight:600;color:var(--muted)}
+    .ed-vline{width:1px;height:60px;background:var(--border);flex-shrink:0}
+    .ed-see-all{font-size:0.78rem;font-weight:600;color:var(--coral);text-decoration:none;white-space:nowrap;margin-left:auto;transition:gap 0.18s}
+    .ed-see-all:hover{text-decoration:underline}
+
+    /* ── Streak + Activité ── */
+    .ed-row-split{display:flex;gap:80px;align-items:flex-start}
+    .ed-streak{flex-shrink:0}
+    .ed-streak-num{font-family:var(--font-serif);font-size:5rem;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-0.04em}
+    .ed-streak-label{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:18px}
+    .ed-streak-days{display:flex;gap:6px}
+    .sd{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;background:var(--border);color:var(--muted)}
+    .sd.done{background:var(--gold);color:var(--ink)}
+    .sd.today{background:var(--coral);color:#fff}
+    .ed-mid-rule{width:1px;background:var(--border);align-self:stretch;flex-shrink:0}
+    .ed-activity{flex:1;padding-top:4px}
+    .ed-act-line{display:flex;align-items:baseline;gap:10px;font-size:0.88rem;color:var(--ink-soft);padding:14px 0;border-bottom:1px solid var(--border);line-height:1.4}
+    .ed-act-line:first-of-type{padding-top:0;border-top:none}
+    .ed-act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+    .ed-act-when{font-size:0.72rem;color:var(--muted);margin-left:auto;white-space:nowrap}
+
+    /* ── Humeur ── */
+    .ed-mood-section{background:var(--bg)}
+    .ed-mood-header{margin-bottom:36px}
+    .ed-mood-title{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--ink);letter-spacing:-0.03em;line-height:1.1;margin-top:10px}
+    .ed-mood-title em{font-style:italic;font-weight:400;color:var(--lav)}
+    .ed-mood-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+    .ed-pill{padding:10px 22px;border-radius:99px;border:1.5px solid var(--border-w);background:transparent;font-family:var(--font-sans);font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s}
+    .ed-pill:hover{border-color:var(--lav);color:var(--lav)}
+    .ed-pill.on{background:var(--lav);border-color:var(--lav);color:#fff}
+    .ed-mood-result{display:none;align-items:flex-start;gap:28px;padding:32px 0;border-top:1px solid var(--border);animation:fadeUp 0.35s ease}
+    .ed-mood-result.show{display:flex}
+    .ed-mr-book{width:52px;height:76px;border-radius:3px 7px 7px 3px;background:linear-gradient(155deg,var(--lav),#481880);flex-shrink:0;box-shadow:4px 6px 18px rgba(0,0,0,0.15)}
+    .ed-mr-genre{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--lav);margin-bottom:6px}
+    .ed-mr-title{font-family:var(--font-serif);font-size:1.5rem;font-weight:500;color:var(--ink);letter-spacing:-0.02em;margin-bottom:4px}
+    .ed-mr-author{font-size:0.78rem;color:var(--muted);margin-bottom:8px}
+    .ed-mr-desc{font-size:0.84rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;max-width:480px}
+    .ed-mr-link{font-size:0.78rem;font-weight:600;color:var(--coral);text-decoration:none}
+    .ed-mr-link:hover{text-decoration:underline}
+
+    /* ── Genres ── */
+    .ed-genres-section{background:var(--ink);border-top:none}
+    .ed-genres-section .ed-overline{color:rgba(245,240,232,0.35)}
+    .ed-genres-section .ed-overline::before{background:rgba(245,240,232,0.15)}
+    .ed-genres-scroll{display:flex;flex-wrap:wrap;gap:12px}
+    .ed-genre-chip{padding:14px 28px;border-radius:99px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-family:var(--font-sans);font-size:0.88rem;font-weight:600;color:rgba(245,240,232,0.75);text-decoration:none;transition:all 0.2s;position:relative;overflow:hidden}
+    .ed-genre-chip::before{content:'';position:absolute;inset:0;background:var(--c);opacity:0;transition:opacity 0.2s;border-radius:99px}
+    .ed-genre-chip:hover::before{opacity:0.15}
+    .ed-genre-chip:hover{border-color:rgba(255,255,255,0.25);color:#fff;transform:translateY(-2px)}
+
+    @media(max-width:900px){
+      .ed-inner{padding:0 28px}
+      .ed-reading-row{gap:24px}
+      .ed-vline{display:none}
+      .ed-row-split{flex-direction:column;gap:40px}
+      .ed-mid-rule{display:none}
+    }
+</style>
 </head>
 <body>
 
@@ -488,121 +567,145 @@
   </div>
 </section>
 
-<!-- SÉPARATEUR -->
-<div class="section-divider">
-  <div class="section-divider-line"></div>
-  <div class="section-divider-dot"></div>
-  <div class="section-divider-line"></div>
-</div>
 
-<!-- CONTENU -->
-<div class="page-content">
+<!-- ═══════════════════════════════════════
+     SECTION EN COURS — ligne éditoriale
+═══════════════════════════════════════ -->
+<section class="ed-section">
+  <div class="ed-inner">
 
-  <!-- EYEBROW -->
-  <div class="section-eyebrow fade-in">Tableau de bord</div>
+    <!-- Label flottant -->
+    <div class="ed-overline fade-in">En cours de lecture</div>
 
-  <!-- GRILLE 3 COL -->
-  <div class="main-grid fade-in">
-
-    <!-- COL 1 — Progression -->
-    <div class="card">
-      <div class="card-label">Progression</div>
-      <div class="card-title">En cours de lecture</div>
-      <div class="reading-list">
-        <div class="reading-item">
-          <div class="book-sm bs-coral"><span>LM</span></div>
-          <div class="reading-info">
-            <div class="reading-title">Les Misérables</div>
-            <div class="reading-author">Victor Hugo</div>
-            <div class="pbar"><div class="pbar-fill pbar-coral" style="width:62%"></div></div>
-            <div class="reading-pct">62% — p. 487 / 785</div>
-          </div>
+    <!-- Livres en cours — disposition horizontale aérée -->
+    <div class="ed-reading-row fade-in">
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#c84030,#8c1e20)">LM</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Les Misérables</div>
+          <div class="ed-book-author">Victor Hugo</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:62%;background:var(--coral)"></div></div>
+          <div class="ed-book-pct">62%</div>
         </div>
-        <div class="reading-item">
-          <div class="book-sm bs-teal"><span>DN</span></div>
-          <div class="reading-info">
-            <div class="reading-title">Dune</div>
-            <div class="reading-author">Frank Herbert</div>
-            <div class="pbar"><div class="pbar-fill pbar-teal" style="width:18%"></div></div>
-            <div class="reading-pct">18% — p. 112 / 624</div>
-          </div>
+      </a>
+      <div class="ed-vline"></div>
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#28a8a0,#086860)">DN</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Dune</div>
+          <div class="ed-book-author">Frank Herbert</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:18%;background:var(--teal)"></div></div>
+          <div class="ed-book-pct">18%</div>
         </div>
-        <div class="reading-item">
-          <div class="book-sm bs-lav"><span>HP</span></div>
-          <div class="reading-info">
-            <div class="reading-title">Harry Potter T.3</div>
-            <div class="reading-author">J.K. Rowling</div>
-            <div class="pbar"><div class="pbar-fill pbar-lav" style="width:44%"></div></div>
-            <div class="reading-pct">44% — p. 176 / 400</div>
-          </div>
+      </a>
+      <div class="ed-vline"></div>
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#8b6ec4,#481880)">HP</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Harry Potter T.3</div>
+          <div class="ed-book-author">J.K. Rowling</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:44%;background:var(--lav)"></div></div>
+          <div class="ed-book-pct">44%</div>
         </div>
+      </a>
+      <a href="mes-livres.html" class="ed-see-all">Voir tout →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION ACTIVITÉ — typographie seule
+═══════════════════════════════════════ -->
+<section class="ed-section ed-section-alt">
+  <div class="ed-inner ed-row-split">
+
+    <!-- Gauche : streak minimal -->
+    <div class="ed-streak fade-in">
+      <div class="ed-streak-num">7</div>
+      <div class="ed-streak-label">jours de lecture<br>consécutifs</div>
+      <div class="ed-streak-days">
+        <span class="sd done">L</span><span class="sd done">M</span><span class="sd done">M</span>
+        <span class="sd done">J</span><span class="sd done">V</span><span class="sd done">S</span>
+        <span class="sd today">D</span>
       </div>
     </div>
 
-    <!-- COL 2 — Carousel genres -->
-    <div class="genre-card">
-      <div class="card-label">Explorer</div>
-      <div class="card-title">Par genre</div>
-      <div class="carousel-area">
-        <div class="carousel-vp">
-          <div class="carousel-track" id="carouselTrack"></div>
-        </div>
-        <div class="shelf-plank"></div>
-      </div>
-    </div>
+    <!-- Séparateur vertical -->
+    <div class="ed-mid-rule"></div>
 
-    <!-- COL 3 — Streak + Activité -->
-    <div class="col3">
-      <div class="streak-card">
-        <div class="card-label">Habitude</div>
-        <div class="streak-title">Série de lecture</div>
-        <div class="streak-display"><div class="streak-num">7</div><div class="streak-unit">jours consécutifs</div></div>
-        <div class="streak-dots">
-          <div class="streak-day done">L</div><div class="streak-day done">M</div><div class="streak-day done">M</div>
-          <div class="streak-day done">J</div><div class="streak-day done">V</div><div class="streak-day done">S</div>
-          <div class="streak-day today">D</div>
-        </div>
+    <!-- Droite : activité récente en texte -->
+    <div class="ed-activity fade-in">
+      <div class="ed-overline" style="margin-bottom:20px">Activité récente</div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--teal)"></span>
+        Terminé <strong>L'Étranger</strong> — <span class="ed-act-when">il y a 2 jours</span>
       </div>
-      <div class="card activity-card">
-        <div class="card-label">Journal</div>
-        <div class="card-title">Activité récente</div>
-        <div class="activity-list">
-          <div class="activity-item"><div class="act-dot dot-read"></div><div><div class="act-text">Terminé <strong>L'Étranger</strong></div><div class="act-time">Il y a 2 jours</div></div></div>
-          <div class="activity-item"><div class="act-dot dot-want"></div><div><div class="act-text">Ajouté <strong>Fondation</strong> à ta liste</div><div class="act-time">Il y a 4 jours</div></div></div>
-          <div class="activity-item"><div class="act-dot dot-fav"></div><div><div class="act-text"><strong>Monte-Cristo</strong> en favori</div><div class="act-time">Il y a 1 semaine</div></div></div>
-        </div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--gold)"></span>
+        Ajouté <strong>Fondation</strong> à la liste — <span class="ed-act-when">il y a 4 jours</span>
+      </div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--coral)"></span>
+        <strong>Le Comte de Monte-Cristo</strong> en favori — <span class="ed-act-when">il y a 1 semaine</span>
       </div>
     </div>
 
   </div>
+</section>
 
-  <!-- MOOD SECTION -->
-  <div class="mood-section fade-in">
-    <div class="mood-deco-1"></div>
-    <div class="mood-deco-2"></div>
-    <div style="position:relative;z-index:1">
-      <div class="mood-label">Suggestion du jour</div>
-      <div class="mood-title">Comment tu te <em>sens</em><br>aujourd'hui ?</div>
-      <div class="mood-sub">Choisis ton humeur — on te propose le livre parfait pour ce moment.</div>
-      <div class="mood-result" id="moodSuggestion">
-        <div class="mr-label">Livre pour toi</div>
-        <div class="mr-title" id="msTitle"></div>
-        <div class="mr-author" id="msAuthor"></div>
-        <div class="mr-desc" id="msDesc"></div>
-        <span class="mr-genre" id="msGenre"></span>
+<!-- ═══════════════════════════════════════
+     SECTION HUMEUR — grande typographie
+═══════════════════════════════════════ -->
+<section class="ed-section ed-mood-section fade-in">
+  <div class="ed-inner">
+
+    <div class="ed-mood-header">
+      <div class="ed-overline">Suggestion du jour</div>
+      <h2 class="ed-mood-title">Comment tu te <em>sens</em> aujourd'hui ?</h2>
+    </div>
+
+    <div class="ed-mood-pills">
+      <button class="ed-pill" data-mood="calme">Calme</button>
+      <button class="ed-pill" data-mood="aventure">Aventure</button>
+      <button class="ed-pill" data-mood="emotion">Émotion</button>
+      <button class="ed-pill" data-mood="legerete">Légèreté</button>
+      <button class="ed-pill" data-mood="reflexion">Réfléchi</button>
+      <button class="ed-pill" data-mood="frisson">Frisson</button>
+    </div>
+
+    <!-- Résultat — apparaît au choix -->
+    <div class="ed-mood-result" id="moodResult">
+      <div class="ed-mr-book" id="mrSpine"></div>
+      <div class="ed-mr-text">
+        <div class="ed-mr-genre" id="mrGenre"></div>
+        <div class="ed-mr-title" id="mrTitle"></div>
+        <div class="ed-mr-author" id="mrAuthor"></div>
+        <div class="ed-mr-desc" id="mrDesc"></div>
+        <a href="recommandations.html" class="ed-mr-link">Voir plus de suggestions →</a>
       </div>
     </div>
-    <div class="mood-btns" style="position:relative;z-index:1">
-      <button class="mood-btn" data-mood="calme"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Calme</button>
-      <button class="mood-btn" data-mood="aventure"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Aventure</button>
-      <button class="mood-btn" data-mood="emotion"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Émotion</button>
-      <button class="mood-btn" data-mood="legerete"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 3 4 3 4-3 4-3"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Légèreté</button>
-      <button class="mood-btn" data-mood="reflexion"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg></span>Réfléchi</button>
-      <button class="mood-btn" data-mood="frisson"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg></span>Frisson</button>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION GENRES — défilement horizontal
+═══════════════════════════════════════ -->
+<section class="ed-section ed-genres-section fade-in">
+  <div class="ed-inner">
+    <div class="ed-overline">Explorer</div>
+    <div class="ed-genres-scroll">
+      <a href="recherche.html?q=Roman"     class="ed-genre-chip" style="--c:#c84030">Roman</a>
+      <a href="recherche.html?q=Fantasy"   class="ed-genre-chip" style="--c:#3870c0">Fantasy</a>
+      <a href="recherche.html?q=Manga"     class="ed-genre-chip" style="--c:#c8a020">Manga</a>
+      <a href="recherche.html?q=Crime"     class="ed-genre-chip" style="--c:#283880">Crime</a>
+      <a href="recherche.html?q=Romance"   class="ed-genre-chip" style="--c:#c83070">Romance</a>
+      <a href="recherche.html?q=Sci-Fi"    class="ed-genre-chip" style="--c:#28a8a0">Sci-Fi</a>
+      <a href="recherche.html?q=Classique" class="ed-genre-chip" style="--c:#9060c0">Classiques</a>
     </div>
   </div>
-
-</div>
+</section>
 
 <script>
 function setSearch(v){document.getElementById("searchInput").value=v;document.getElementById("searchInput").focus()}
@@ -617,34 +720,19 @@ const moodBooks={
   reflexion:{title:"L'Étranger",author:"Albert Camus",desc:"Court et profond, sur l'absurde.",genre:"Philosophie"},
   frisson:{title:"Shining",author:"Stephen King",desc:"Un huis clos terrifiant dans un hôtel hanté.",genre:"Thriller"}
 };
-document.querySelectorAll(".mood-btn").forEach(btn=>{
+
+document.querySelectorAll(".ed-pill").forEach(btn=>{
   btn.addEventListener("click",function(){
-    document.querySelectorAll(".mood-btn").forEach(b=>b.classList.remove("active"));
-    this.classList.add("active");
+    document.querySelectorAll(".ed-pill").forEach(b=>b.classList.remove("on"));
+    this.classList.add("on");
     const b=moodBooks[this.dataset.mood];if(!b)return;
-    document.getElementById("msTitle").textContent=b.title;
-    document.getElementById("msAuthor").textContent=b.author;
-    document.getElementById("msDesc").textContent=b.desc;
-    document.getElementById("msGenre").textContent=b.genre;
-    document.getElementById("moodSuggestion").classList.add("show");
+    document.getElementById("mrTitle").textContent=b.title;
+    document.getElementById("mrAuthor").textContent=b.author;
+    document.getElementById("mrDesc").textContent=b.desc;
+    document.getElementById("mrGenre").textContent=b.genre;
+    document.getElementById("moodResult").classList.add("show");
   });
 });
-
-const BOOKS=[
-  ["Roman","gc-roman",38,92],["","gc-vide-a",10,72],["Fantasy","gc-fantasy",40,100],["","gc-vide-b",9,68],
-  ["Manga","gc-manga",36,86],["","gc-vide-c",10,74],["Crime","gc-crime",38,94],["","gc-vide-a",9,70],
-  ["Romance","gc-romance",36,88],["","gc-vide-b",10,73],["Sci-Fi","gc-scifi",40,96],["","gc-vide-c",9,68],
-  ["Classique","gc-classique",38,90],["","gc-vide-a",10,71],["Roman","gc-roman",34,84],["","gc-vide-b",9,66],
-  ["Fantasy","gc-fantasy",38,94],["","gc-vide-c",10,75],["Manga","gc-manga",36,87],["","gc-vide-a",9,69],
-  ["Crime","gc-crime",40,92],["","gc-vide-b",10,72],["Romance","gc-romance",36,86],["","gc-vide-c",9,67],
-];
-(function(){
-  const t=document.getElementById("carouselTrack");
-  t.innerHTML=[...BOOKS,...BOOKS].map(([l,c,w,h])=>{
-    const i=l?`<span class="cs-lbl">${l}</span><div class="cs-deco"></div>`:'';
-    return`<div class="cs-book"><div class="cs-cover ${c}" style="width:${w}px;height:${h}px">${i}</div></div>`;
-  }).join("");
-})();
 
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
