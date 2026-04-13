@@ -1,1076 +1,743 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mon Coin Lecture</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      /* Palette pastel moderne */
+      --bg:        #fdf9f5;
+      --bg-card:   #ffffff;
+      --bg-warm:   #fef5ee;
+      --bg-green:  #f0f7f0;
+      --bg-blue:   #eef4fb;
+      --bg-purple: #f5f0fb;
+      --bg-pink:   #fdf0f5;
 
-    :root {
-      --ink:         #1a1410;
-      --ink-soft:    #3d322a;
-      --muted:       #8a7b6e;
-      --muted-light: #b5a89b;
-      --bg:          #faf7f2;
-      --bg-warm:     #f3ede3;
-      --bg-card:     #fffcf7;
-      --border:      #e8e0d4;
-      --border-warm: #d4c8b8;
-      --accent:      #c4602a;
-      --accent-light:#fdf0e8;
-      --accent-deep: #9e3e14;
-      --gold:        #b8933f;
-      --gold-light:  #faf3e0;
+      --ink:       #1c1612;
+      --ink-soft:  #3a2e24;
+      --muted:     #8a7b70;
+      --muted-lt:  #b8a898;
 
-      --font-serif: 'Playfair Display', Georgia, serif;
-      --font-sans:  'Instrument Sans', system-ui, sans-serif;
-      --radius:     12px;
-      --shadow-sm:  0 1px 4px rgba(26,20,16,0.06);
-      --shadow-md:  0 4px 20px rgba(26,20,16,0.09);
-      --shadow-lg:  0 12px 48px rgba(26,20,16,0.12);
+      --border:    #ede5dc;
+      --border-w:  #e0d4c6;
+
+      /* Accents vifs pastels */
+      --coral:     #e8634a;
+      --coral-lt:  #fff0ec;
+      --teal:      #3aada8;
+      --teal-lt:   #e8f7f6;
+      --sage:      #5a9e6a;
+      --sage-lt:   #edf7ef;
+      --lavender:  #8b6ec4;
+      --lav-lt:    #f2edfb;
+      --gold:      #c49a38;
+      --gold-lt:   #fdf5e0;
+      --blush:     #e06090;
+      --blush-lt:  #fdeef5;
+
+      --font-serif:'Playfair Display',Georgia,serif;
+      --font-sans:'Instrument Sans',system-ui,sans-serif;
+      --radius:14px;
+      --radius-lg:20px;
+      --shadow-sm:0 1px 6px rgba(28,22,18,0.06);
+      --shadow-md:0 4px 24px rgba(28,22,18,0.09);
+      --shadow-lg:0 12px 48px rgba(28,22,18,0.13);
     }
-
-    html { font-size: 15px; }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
+    html{font-size:15px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
 
     /* ── HEADER ── */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(250,247,242,0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 64px;
+    .site-header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(253,249,245,0.9);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 60px;height:66px;
     }
-
-    .logo {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-
-    .logo-mark em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .logo-divider {
-      width: 1px;
-      height: 14px;
-      background: var(--border-warm);
-    }
-
-    .logo-sub {
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-btn {
-      font-family: var(--font-sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 7px 18px;
-      border-radius: 99px;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: all 0.18s ease;
-      border: none;
-    }
-
-    .header-btn-ghost {
-      background: transparent;
-      color: var(--ink-soft);
-      border: 1px solid var(--border-warm);
-    }
-    .header-btn-ghost:hover {
-      background: var(--bg-warm);
-      border-color: var(--border-warm);
-    }
-
-    .header-btn-accent {
-      background: var(--ink);
-      color: var(--bg);
-    }
-    .header-btn-accent:hover {
-      background: var(--ink-soft);
-    }
+    .logo{display:flex;align-items:baseline;gap:10px}
+    .logo-mark{font-family:var(--font-serif);font-size:1.3rem;font-weight:500;color:var(--ink);letter-spacing:-0.01em}
+    .logo-mark em{font-style:italic;color:var(--coral)}
+    .logo-divider{width:1px;height:14px;background:var(--border-w)}
+    .logo-sub{font-size:0.72rem;color:var(--muted);letter-spacing:0.07em;text-transform:uppercase;font-weight:500}
+    .header-actions{display:flex;align-items:center;gap:10px}
+    .header-btn{font-family:var(--font-sans);font-size:0.8rem;font-weight:500;padding:8px 20px;border-radius:99px;cursor:pointer;letter-spacing:0.02em;transition:all 0.18s;border:none}
+    .btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--border-w)}
+    .btn-ghost:hover{background:var(--bg-warm)}
+    .btn-solid{background:var(--coral);color:#fff}
+    .btn-solid:hover{background:#d0522e}
 
     /* ── NAV ── */
-    .site-nav {
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-card);
-    }
-
-    .nav-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 48px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      height: 46px;
-    }
-
-    .nav-inner a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 5px 14px;
-      border-radius: 6px;
-      letter-spacing: 0.03em;
-      transition: all 0.15s;
-    }
-
-    .nav-inner a:hover {
-      color: var(--ink);
-      background: var(--bg-warm);
-    }
-
-    .nav-inner a.active {
-      color: var(--accent);
-      background: var(--accent-light);
-    }
-
-    .nav-dropdown { position: relative; }
-
-    .nav-dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-lg);
-      padding: 20px;
-      width: 480px;
-      gap: 20px;
-      display: none;
-      flex-direction: row;
-      z-index: 200;
-    }
-
-    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
-
-    .mega-left {
-      flex: 1;
-      padding-right: 20px;
-      border-right: 1px solid var(--border);
-    }
-
-    .mega-badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-light);
-      padding: 3px 10px;
-      border-radius: 99px;
-      margin-bottom: 10px;
-    }
-
-    .mega-heading {
-      font-family: var(--font-serif);
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .mega-text {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .mega-links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      flex: 1.2;
-    }
-
-    .mega-card {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-
-    .mega-card:hover { background: var(--bg-warm); }
-
-    .mega-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: var(--bg-warm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: var(--accent);
-    }
-    .mega-icon svg { width: 15px; height: 15px; }
-
-    .mega-card-title {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .mega-card-desc {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    /* ── MAIN GRID ── */
-    .main {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 28px;
-      max-width: 1400px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 36px 48px;
-      align-items: start;
-    }
-
-    .col-left {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .col-right {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* ── HERO ── */
-    .hero-banner {
-      background: var(--ink);
-      border-radius: 16px;
-      padding: 44px 48px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-banner::before {
-      content: '"';
-      position: absolute;
-      font-family: var(--font-serif);
-      font-size: 28rem;
-      line-height: 1;
-      color: rgba(255,255,255,0.03);
-      top: -60px;
-      right: -20px;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .hero-banner::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 80% 50%, rgba(196,96,42,0.15), transparent 60%);
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted-light);
-      margin-bottom: 18px;
-    }
-
-    .hero-eyebrow-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50% { opacity:0.5; transform:scale(0.8); }
-    }
-
-    .hero-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.5vw, 2.8rem);
-      font-weight: 400;
-      line-height: 1.2;
-      color: #f5f0e8;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: var(--muted-light);
-      max-width: 460px;
-      margin-bottom: 36px;
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 0;
-    }
-
-    .hero-stat {
-      padding: 0 28px 0 0;
-      margin: 0 28px 0 0;
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
-    .hero-stat:first-child { padding-left: 0; }
-    .hero-stat:last-child { border-right: none; }
-
-    .hero-stat-num {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-weight: 700;
-      color: #f5f0e8;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .hero-stat-label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted-light);
-    }
-
-    /* ── SEARCH CARD ── */
-    .search-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .card-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .card-title {
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 16px;
-    }
-
-    .search-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .search-input-wrap {
-      flex: 1;
-      position: relative;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    .search-input {
-      width: 100%;
-      height: 42px;
-      padding: 0 16px 0 40px;
-      border: 1.5px solid var(--border);
-      border-radius: 99px;
-      background: var(--bg);
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.18s;
-    }
-    .search-input::placeholder { color: var(--muted-light); }
-    .search-input:focus { border-color: var(--accent); background: #fff; }
-
-    .search-btn {
-      height: 42px;
-      padding: 0 22px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 99px;
-      font-family: var(--font-sans);
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      cursor: pointer;
-      transition: background 0.18s;
-      white-space: nowrap;
-    }
-    .search-btn:hover { background: var(--accent-deep); }
-
-    .search-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .search-tag {
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 5px 13px;
-      border-radius: 99px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.15s;
-      background: transparent;
-    }
-    .search-tag:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-light);
-    }
-
-    /* ── DUO GRID ── */
-    .home-duo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    /* ── CARDS ── */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* ── GENRE GRID ── */
-    .genres-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .genre-chip {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      padding: 10px 8px;
-      border-radius: 10px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
-    }
-    .genre-chip:hover {
-      background: var(--accent-light);
-      border-color: #e8c4aa;
-    }
-
-    .genre-chip-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--bg-warm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-    }
-    .genre-chip-icon svg { width: 14px; height: 14px; }
-    .genre-chip-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: var(--ink-soft);
-      letter-spacing: 0.03em;
-    }
-
-    /* ── READING PROGRESS ── */
-    .reading-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .reading-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .book-cover {
-      width: 40px;
-      height: 54px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .cover-blue  { background: linear-gradient(145deg, #2c4a8f, #1a2f5c); }
-    .cover-green { background: linear-gradient(145deg, #2a6b4c, #1a4230); }
-
-    .reading-info { flex: 1; min-width: 0; }
-
-    .reading-title {
-      font-family: var(--font-serif);
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
-    }
-
-    .reading-author {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .progress-bar-track {
-      height: 4px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 4px;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--gold));
-      border-radius: 99px;
-    }
-
-    .reading-pct {
-      font-size: 0.68rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    /* ── MOOD CARD ── */
-    .mood-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .mood-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      padding: 12px 8px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      cursor: pointer;
-      font-family: var(--font-sans);
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--ink-soft);
-      letter-spacing: 0.02em;
-      transition: all 0.18s;
-    }
-    .mood-btn:hover {
-      border-color: var(--border-warm);
-      background: var(--bg-warm);
-      transform: translateY(-1px);
-    }
-    .mood-btn.active {
-      background: var(--accent-light);
-      border-color: #e8b490;
-      color: var(--accent);
-    }
-
-    .mood-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--bg-warm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      transition: color 0.18s, background 0.18s;
-    }
-    .mood-icon svg { width: 15px; height: 15px; }
-    .mood-btn.active .mood-icon { background: var(--accent-light); color: var(--accent); }
-
-    /* ── ACTIVITY ── */
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-top: 16px;
-    }
-
-    .activity-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .activity-item:last-child { border-bottom: none; }
-
-    .activity-line {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
-
-    .activity-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-top: 4px;
-      flex-shrink: 0;
-    }
-    .dot-read  { background: #4caf7d; }
-    .dot-want  { background: var(--gold); }
-    .dot-fav   { background: #e05c7a; }
-
-    .activity-text {
-      font-size: 0.8rem;
-      color: var(--ink-soft);
-      line-height: 1.4;
-    }
-    .activity-text strong { color: var(--ink); font-weight: 600; }
-
-    .activity-time {
-      font-size: 0.7rem;
-      color: var(--muted-light);
-      margin-top: 2px;
-    }
-
-    /* ── READING STREAK (right col) ── */
-    .streak-card {
-      background: linear-gradient(135deg, #2c1a0e, #1a1410);
-      border: 1px solid #3d2a1a;
-      border-radius: var(--radius);
-      padding: 22px 24px;
-      color: #f5f0e8;
-    }
-
-    .streak-card .card-label { color: rgba(245,240,232,0.45); }
-    .streak-card .card-title { color: #f5f0e8; }
-
-    .streak-display {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin: 16px 0 6px;
-    }
-
-    .streak-num {
-      font-family: var(--font-serif);
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .streak-unit {
-      font-size: 0.8rem;
-      color: rgba(245,240,232,0.6);
-      font-weight: 500;
-    }
-
-    .streak-dots {
-      display: flex;
-      gap: 5px;
-      margin-top: 14px;
-    }
-
-    .streak-day {
-      flex: 1;
-      height: 28px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: rgba(245,240,232,0.35);
-    }
-    .streak-day.done {
-      background: var(--gold);
-      color: #1a1410;
-    }
-    .streak-day.today {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* ── FADE-IN ── */
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    .hero-banner  { animation: fadeUp 0.5s ease both; }
-    .search-card  { animation: fadeUp 0.5s 0.07s ease both; }
-    .home-duo-grid{ animation: fadeUp 0.5s 0.14s ease both; }
-    .col-right > * { animation: fadeUp 0.5s ease both; }
-    .col-right > *:nth-child(1) { animation-delay: 0.08s; }
-    .col-right > *:nth-child(2) { animation-delay: 0.15s; }
-    .col-right > *:nth-child(3) { animation-delay: 0.22s; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1024px) {
-      .main { grid-template-columns: 1fr; padding: 28px 24px; }
-      .site-header, .nav-inner { padding-inline: 24px; }
-    }
-
-    @media (max-width: 640px) {
-      .home-duo-grid { grid-template-columns: 1fr; }
-      .hero-banner { padding: 32px 28px; }
-    }
-  </style>
+    .site-nav{border-bottom:1px solid var(--border);background:var(--bg-card)}
+    .nav-inner{max-width:1320px;margin:0 auto;padding:0 60px;display:flex;align-items:center;gap:4px;height:46px}
+    .nav-inner a{font-size:0.8rem;font-weight:500;color:var(--muted);text-decoration:none;padding:5px 14px;border-radius:8px;letter-spacing:0.02em;transition:all 0.15s}
+    .nav-inner a:hover{color:var(--ink);background:var(--bg-warm)}
+    .nav-inner a.active{color:var(--coral);background:var(--coral-lt)}
+    .nav-dropdown{position:relative}
+    .nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:22px;width:480px;flex-direction:row;z-index:200}
+    .nav-dropdown:hover .nav-dropdown-menu{display:flex}
+    .mega-left{flex:1;padding-right:20px;border-right:1px solid var(--border)}
+    .mega-badge{display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--coral);background:var(--coral-lt);padding:3px 10px;border-radius:99px;margin-bottom:10px}
+    .mega-heading{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:8px}
+    .mega-text{font-size:0.77rem;color:var(--muted);line-height:1.55}
+    .mega-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1.2}
+    .mega-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;text-decoration:none;transition:background 0.15s}
+    .mega-card:hover{background:var(--bg-warm)}
+    .mega-icon{width:32px;height:32px;border-radius:8px;background:var(--coral-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--coral)}
+    .mega-icon svg{width:14px;height:14px}
+    .mega-card-title{display:block;font-size:0.8rem;font-weight:600;color:var(--ink)}
+    .mega-card-desc{display:block;font-size:0.68rem;color:var(--muted)}
+
+    /* ══════════════════════════════════
+       HERO — fond crème, split aéré
+    ══════════════════════════════════ */
+    .hero{
+      max-width:1320px;margin:0 auto;
+      padding:72px 60px 64px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+      position:relative;
+    }
+
+    /* Cercles décoratifs pastel */
+    .hero-deco-circle-1{
+      position:absolute;top:-60px;right:280px;
+      width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle,rgba(58,173,168,0.12),transparent 70%);
+      pointer-events:none;
+    }
+    .hero-deco-circle-2{
+      position:absolute;bottom:-40px;left:40px;
+      width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle,rgba(139,110,196,0.1),transparent 70%);
+      pointer-events:none;
+    }
+
+    /* GAUCHE */
+    .hero-left{position:relative;z-index:1}
+    .hero-eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;
+      color:var(--coral);margin-bottom:20px;
+    }
+    .hero-eyebrow-dot{width:6px;height:6px;background:var(--coral);border-radius:50%;animation:pulse 2.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.75)}}
+
+    .hero-title{
+      font-family:var(--font-serif);
+      font-size:clamp(2.8rem,5vw,4.8rem);
+      font-weight:700;line-height:1.02;
+      color:var(--ink);letter-spacing:-0.03em;
+      margin-bottom:36px;
+    }
+    .hero-title em{font-style:italic;font-weight:400;color:var(--coral);display:block}
+
+    /* Search */
+    .hero-search{
+      display:flex;max-width:460px;margin-bottom:18px;
+      border:2px solid var(--border-w);border-radius:99px;
+      background:#fff;box-shadow:var(--shadow-sm);
+      overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;
+    }
+    .hero-search:focus-within{border-color:var(--coral);box-shadow:0 0 0 4px rgba(232,99,74,0.1)}
+    .hero-search-wrap{flex:1;position:relative}
+    .hero-search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--muted-lt);pointer-events:none}
+    .hero-search-input{width:100%;height:50px;padding:0 16px 0 46px;border:none;background:transparent;font-family:var(--font-sans);font-size:0.88rem;color:var(--ink);outline:none}
+    .hero-search-input::placeholder{color:var(--muted-lt)}
+    .hero-search-btn{height:50px;padding:0 26px;background:var(--coral);color:#fff;border:none;font-family:var(--font-sans);font-size:0.82rem;font-weight:600;cursor:pointer;transition:background 0.18s;letter-spacing:0.02em;border-radius:0 99px 99px 0}
+    .hero-search-btn:hover{background:#d0522e}
+
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px}
+    .hero-tag{font-size:0.72rem;font-weight:500;padding:5px 14px;border-radius:99px;border:1.5px solid var(--border-w);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
+    .hero-tag:hover{border-color:var(--coral);color:var(--coral);background:var(--coral-lt)}
+
+    .hero-stats{display:flex;gap:0}
+    .hero-stat{padding:0 28px 0 0;margin:0 28px 0 0;border-right:1.5px solid var(--border)}
+    .hero-stat:last-child{border-right:none;padding:0;margin:0}
+    .hero-stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:3px}
+    .hero-stat-label{font-size:0.62rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+
+    /* DROITE — livres */
+    .hero-right{
+      position:relative;z-index:1;
+      display:flex;align-items:flex-end;justify-content:center;
+      padding-bottom:0;
+    }
+    .big-books{display:flex;align-items:flex-end;gap:10px}
+    .big-book{
+      border-radius:5px 9px 9px 5px;
+      position:relative;overflow:hidden;flex-shrink:0;
+      box-shadow:10px 14px 36px rgba(28,22,18,0.18),5px 5px 10px rgba(28,22,18,0.1),-3px 0 7px rgba(28,22,18,0.08),inset -5px 0 14px rgba(0,0,0,0.14),inset 2px 0 6px rgba(255,255,255,0.08);
+      transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      cursor:default;
+    }
+    .big-book:hover{transform:translateY(-22px) rotate(-1.5deg) scale(1.03)}
+    .big-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:13px;background:linear-gradient(90deg,rgba(0,0,0,0.28) 0%,rgba(0,0,0,0.08) 60%,transparent);border-radius:5px 0 0 5px;z-index:2}
+    .big-book::after{content:'';position:absolute;right:6px;top:0;bottom:0;width:3px;background:rgba(255,255,255,0.07);z-index:2}
+    .book-tex{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.018) 2px,rgba(0,0,0,0.018) 3px);z-index:1}
+    .book-band{position:absolute;left:0;right:0;height:2px;background:rgba(255,255,255,0.14);z-index:3}
+    .book-lbl{writing-mode:vertical-rl;transform:rotate(180deg);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.72);text-shadow:0 1px 5px rgba(0,0,0,0.3);padding:24px 0;z-index:4}
+    /* Couleurs pastels profondes */
+    .bb-1{background:linear-gradient(165deg,#d66050,#9c3220)}
+    .bb-2{background:linear-gradient(165deg,#4898c0,#245a82)}
+    .bb-3{background:linear-gradient(165deg,#c0a838,#7a6410)}
+    .bb-4{background:linear-gradient(165deg,#58a870,#285e3a)}
+    .bb-5{background:linear-gradient(165deg,#a868c8,#5c2880)}
+
+    /* ══════════════════════════════════
+       SÉPARATEUR DÉCORATIF
+    ══════════════════════════════════ */
+    .section-divider{
+      max-width:1320px;margin:0 auto;padding:0 60px;
+      display:flex;align-items:center;gap:16px;
+      margin-bottom:0;
+    }
+    .section-divider-line{flex:1;height:1px;background:var(--border)}
+    .section-divider-dot{width:6px;height:6px;border-radius:50%;background:var(--coral);opacity:0.4}
+
+    /* ══════════════════════════════════
+       WRAPPER CONTENU — bien centré
+    ══════════════════════════════════ */
+    .page-content{
+      max-width:1320px;margin:0 auto;
+      padding:48px 60px 80px;
+      display:flex;flex-direction:column;gap:32px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-eyebrow{
+      font-size:0.65rem;font-weight:600;letter-spacing:0.14em;
+      text-transform:uppercase;color:var(--muted);
+      margin-bottom:16px;display:flex;align-items:center;gap:8px;
+    }
+    .section-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--border-w)}
+
+    /* ══════════════════════════════════
+       GRILLE PRINCIPALE 3 COLONNES
+    ══════════════════════════════════ */
+    .main-grid{
+      display:grid;
+      grid-template-columns:1fr 1.1fr 0.9fr;
+      gap:20px;
+      align-items:stretch;
+    }
+
+    /* CARD BASE */
+    .card{
+      background:var(--bg-card);border:1.5px solid var(--border);
+      border-radius:var(--radius-lg);padding:24px 26px;
+      box-shadow:var(--shadow-sm);
+    }
+    .card-label{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .card-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:500;color:var(--ink);margin-bottom:16px}
+
+    /* PROGRESSION */
+    .reading-list{display:flex;flex-direction:column;gap:14px}
+    .reading-item{display:flex;align-items:center;gap:13px}
+    .book-sm{
+      width:38px;height:52px;border-radius:3px 6px 6px 3px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:3px 3px 8px rgba(0,0,0,0.15),inset -2px 0 6px rgba(0,0,0,0.12);
+      position:relative;overflow:hidden;
+    }
+    .book-sm::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.18)}
+    .book-sm span{font-family:var(--font-serif);font-size:0.6rem;font-weight:700;color:rgba(255,255,255,0.78);position:relative;z-index:1}
+    .bs-coral{background:linear-gradient(145deg,#c84030,#8c1e20)}
+    .bs-teal{background:linear-gradient(145deg,#2a9898,#185858)}
+    .bs-lav{background:linear-gradient(145deg,#8040b8,#481878)}
+    .reading-info{flex:1;min-width:0}
+    .reading-title{font-family:var(--font-serif);font-size:0.85rem;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+    .reading-author{font-size:0.68rem;color:var(--muted);margin-bottom:7px}
+    .pbar{height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:3px}
+    .pbar-fill{height:100%;border-radius:99px}
+    .pbar-coral{background:linear-gradient(90deg,var(--coral),var(--gold))}
+    .pbar-teal{background:linear-gradient(90deg,var(--teal),#7ad8d4)}
+    .pbar-lav{background:linear-gradient(90deg,var(--lavender),#c0a8e8)}
+    .reading-pct{font-size:0.62rem;color:var(--muted-lt);font-weight:500}
+
+    /* GENRE CAROUSEL */
+    .genre-card{
+      background:var(--ink);
+      border-radius:var(--radius-lg);padding:22px 20px 0;overflow:hidden;
+      border:1.5px solid var(--ink);box-shadow:var(--shadow-sm);
+      display:flex;flex-direction:column;
+    }
+    .genre-card .card-label{color:rgba(253,249,245,0.4);margin-bottom:4px}
+    .genre-card .card-title{color:#fdf9f5;margin-bottom:14px;font-size:1rem}
+    .carousel-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+    .carousel-vp{overflow:hidden;mask-image:linear-gradient(90deg,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 5%,black 95%,transparent 100%)}
+    .carousel-track{display:flex;align-items:flex-end;gap:4px;padding:6px 4px 0;width:max-content;animation:scrollC 28s linear infinite}
+    .carousel-track:hover{animation-play-state:paused}
+    @keyframes scrollC{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .cs-book{flex-shrink:0;cursor:pointer;transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1);transform-origin:bottom center}
+    .cs-book:hover{transform:translateY(-10px)}
+    .cs-cover{border-radius:2px 5px 5px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:4px 5px 12px rgba(0,0,0,0.5),-1px 0 4px rgba(0,0,0,0.3),inset -2px 0 6px rgba(0,0,0,0.2)}
+    .cs-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:rgba(0,0,0,0.3);border-radius:2px 0 0 2px}
+    .cs-lbl{font-family:var(--font-sans);font-size:0.44rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.8);text-align:center;padding:0 4px;line-height:1.3;position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,0.4)}
+    .cs-deco{width:12px;height:1px;background:rgba(255,255,255,0.3);margin-top:4px;position:relative;z-index:1}
+    .shelf-plank{height:14px;background:linear-gradient(180deg,#c8a97a 0%,#c8a97a 55%,#a67c52 55%);box-shadow:0 5px 14px rgba(80,40,10,0.4),inset 0 1px 0 rgba(255,255,255,0.25);margin-top:4px}
+    /* Couleurs livres carousel — vives */
+    .gc-roman{background:linear-gradient(160deg,#d86040,#9c3020)}
+    .gc-fantasy{background:linear-gradient(160deg,#4898c0,#1a5882)}
+    .gc-manga{background:linear-gradient(160deg,#d8b030,#9a7010)}
+    .gc-crime{background:linear-gradient(160deg,#3850b0,#182070)}
+    .gc-romance{background:linear-gradient(160deg,#d83870,#900830)}
+    .gc-scifi{background:linear-gradient(160deg,#28b8a8,#087060)}
+    .gc-classique{background:linear-gradient(160deg,#9860c8,#502080)}
+    .gc-vide-a{background:linear-gradient(160deg,#302418,#201408)}
+    .gc-vide-b{background:linear-gradient(160deg,#2a2010,#181008)}
+    .gc-vide-c{background:linear-gradient(160deg,#261c10,#140c04)}
+
+    /* COL 3 — Streak + Activité */
+    .col3{display:flex;flex-direction:column;gap:16px}
+
+    .streak-card{
+      background:linear-gradient(135deg,var(--ink) 0%,#2e1a0a 100%);
+      border:1.5px solid #3a2010;border-radius:var(--radius-lg);
+      padding:22px 24px;color:#fdf9f5;
+    }
+    .streak-card .card-label{color:rgba(253,249,245,0.4)}
+    .streak-title{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:#fdf9f5;margin-bottom:0}
+    .streak-display{display:flex;align-items:baseline;gap:8px;margin:14px 0 4px}
+    .streak-num{font-family:var(--font-serif);font-size:2.8rem;font-weight:700;color:var(--gold);line-height:1}
+    .streak-unit{font-size:0.78rem;color:rgba(253,249,245,0.5);font-weight:500}
+    .streak-dots{display:flex;gap:5px;margin-top:12px}
+    .streak-day{flex:1;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:rgba(253,249,245,0.25)}
+    .streak-day.done{background:var(--gold);color:var(--ink)}
+    .streak-day.today{background:var(--coral);color:#fff}
+
+    .activity-card{flex:1}
+    .activity-list{display:flex;flex-direction:column;margin-top:10px}
+    .activity-item{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--border)}
+    .activity-item:last-child{border-bottom:none}
+    .act-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+    .dot-read{background:var(--sage)}
+    .dot-want{background:var(--gold)}
+    .dot-fav{background:var(--blush)}
+    .act-text{font-size:0.78rem;color:var(--ink-soft);line-height:1.4}
+    .act-text strong{color:var(--ink);font-weight:600}
+    .act-time{font-size:0.65rem;color:var(--muted-lt);margin-top:2px}
+
+    /* ══════════════════════════════════
+       MOOD SECTION — pastel card large
+    ══════════════════════════════════ */
+    .mood-section{
+      background:linear-gradient(135deg,var(--bg-purple) 0%,var(--bg-blue) 100%);
+      border:1.5px solid #ddd4f0;
+      border-radius:var(--radius-lg);
+      padding:44px 52px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:52px;
+      align-items:center;
+    }
+    /* Déco circles dans la mood section */
+    .mood-section{position:relative;overflow:hidden}
+    .mood-deco-1{position:absolute;top:-40px;right:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(139,110,196,0.15),transparent 70%);pointer-events:none}
+    .mood-deco-2{position:absolute;bottom:-50px;left:200px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(58,173,168,0.12),transparent 70%);pointer-events:none}
+
+    .mood-label{font-size:0.65rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--lavender);margin-bottom:10px}
+    .mood-title{font-family:var(--font-serif);font-size:1.8rem;font-weight:400;color:var(--ink);letter-spacing:-0.025em;line-height:1.2;margin-bottom:8px}
+    .mood-title em{font-style:italic;color:var(--lavender)}
+    .mood-sub{font-size:0.82rem;color:var(--muted);line-height:1.65}
+
+    .mood-result{
+      margin-top:20px;padding:16px 18px;
+      background:#fff;border-radius:12px;
+      border:1.5px solid #ddd4f0;
+      display:none;
+    }
+    .mood-result.show{display:block;animation:fadeUp 0.3s ease both}
+    .mr-label{font-size:0.58rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--lavender);margin-bottom:6px}
+    .mr-title{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+    .mr-author{font-size:0.72rem;color:var(--muted);margin-bottom:6px}
+    .mr-desc{font-size:0.72rem;color:var(--muted);line-height:1.55}
+    .mr-genre{display:inline-block;font-size:0.58rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:2px 9px;border-radius:99px;background:var(--lav-lt);color:var(--lavender);border:1px solid #c8b8e8;margin-top:7px}
+
+    .mood-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .mood-btn{
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      padding:18px 12px;border-radius:14px;
+      border:2px solid rgba(139,110,196,0.2);
+      background:rgba(255,255,255,0.7);
+      cursor:pointer;font-family:var(--font-sans);font-size:0.74rem;font-weight:600;
+      color:var(--ink-soft);letter-spacing:0.02em;transition:all 0.2s;
+    }
+    .mood-btn:hover{border-color:var(--lavender);background:#fff;transform:translateY(-3px);box-shadow:var(--shadow-md);color:var(--lavender)}
+    .mood-btn.active{background:var(--lav-lt);border-color:var(--lavender);color:var(--lavender);box-shadow:0 4px 16px rgba(139,110,196,0.2)}
+    .mood-icon{width:34px;height:34px;border-radius:50%;background:var(--lav-lt);display:flex;align-items:center;justify-content:center;color:var(--lavender);transition:all 0.2s}
+    .mood-icon svg{width:16px;height:16px}
+    .mood-btn:hover .mood-icon,.mood-btn.active .mood-icon{background:var(--lavender);color:#fff}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    .fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .fade-in.visible{opacity:1;transform:translateY(0)}
+    .fade-in:nth-child(2){transition-delay:.08s}
+    .fade-in:nth-child(3){transition-delay:.16s}
+
+    @media(max-width:1200px){.main-grid{grid-template-columns:1fr 1fr}.mood-section{grid-template-columns:1fr}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;padding:48px 32px}.page-content{padding:36px 32px 60px}.site-header,.nav-inner{padding-inline:32px}.hero-right{min-height:260px}.main-grid{grid-template-columns:1fr}}
+  
+    /* ══════════════════════════════════════
+       SECTIONS ÉDITORIALES — style fluide
+    ══════════════════════════════════════ */
+    .ed-section{padding:72px 0;border-top:1px solid var(--border)}
+    .ed-section-alt{background:var(--bg-warm)}
+    .ed-inner{max-width:1100px;margin:0 auto;padding:0 60px}
+
+    /* Overline */
+    .ed-overline{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .ed-overline::before{content:'';width:20px;height:1.5px;background:var(--border-w)}
+
+    /* ── Livres en cours ── */
+    .ed-reading-row{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+    .ed-book-item{display:flex;align-items:center;gap:18px;text-decoration:none;transition:opacity 0.18s;flex:1;min-width:220px}
+    .ed-book-item:hover{opacity:0.72}
+    .ed-book-spine{width:44px;height:64px;border-radius:3px 6px 6px 3px;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:0.9rem;font-weight:700;color:rgba(255,255,255,0.85);flex-shrink:0;box-shadow:4px 6px 18px rgba(0,0,0,0.18),-2px 0 4px rgba(0,0,0,0.12)}
+    .ed-book-meta{flex:1}
+    .ed-book-title{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);line-height:1.2;margin-bottom:2px}
+    .ed-book-author{font-size:0.72rem;color:var(--muted);margin-bottom:10px}
+    .ed-book-bar{height:2px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:5px}
+    .ed-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease}
+    .ed-book-pct{font-size:0.68rem;font-weight:600;color:var(--muted)}
+    .ed-vline{width:1px;height:60px;background:var(--border);flex-shrink:0}
+    .ed-see-all{font-size:0.78rem;font-weight:600;color:var(--coral);text-decoration:none;white-space:nowrap;margin-left:auto;transition:gap 0.18s}
+    .ed-see-all:hover{text-decoration:underline}
+
+    /* ── Streak + Activité ── */
+    .ed-row-split{display:flex;gap:80px;align-items:flex-start}
+    .ed-streak{flex-shrink:0}
+    .ed-streak-num{font-family:var(--font-serif);font-size:5rem;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-0.04em}
+    .ed-streak-label{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:18px}
+    .ed-streak-days{display:flex;gap:6px}
+    .sd{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;background:var(--border);color:var(--muted)}
+    .sd.done{background:var(--gold);color:var(--ink)}
+    .sd.today{background:var(--coral);color:#fff}
+    .ed-mid-rule{width:1px;background:var(--border);align-self:stretch;flex-shrink:0}
+    .ed-activity{flex:1;padding-top:4px}
+    .ed-act-line{display:flex;align-items:baseline;gap:10px;font-size:0.88rem;color:var(--ink-soft);padding:14px 0;border-bottom:1px solid var(--border);line-height:1.4}
+    .ed-act-line:first-of-type{padding-top:0;border-top:none}
+    .ed-act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+    .ed-act-when{font-size:0.72rem;color:var(--muted);margin-left:auto;white-space:nowrap}
+
+    /* ── Humeur ── */
+    .ed-mood-section{background:var(--bg)}
+    .ed-mood-header{margin-bottom:36px}
+    .ed-mood-title{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--ink);letter-spacing:-0.03em;line-height:1.1;margin-top:10px}
+    .ed-mood-title em{font-style:italic;font-weight:400;color:var(--lav)}
+    .ed-mood-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+    .ed-pill{padding:10px 22px;border-radius:99px;border:1.5px solid var(--border-w);background:transparent;font-family:var(--font-sans);font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s}
+    .ed-pill:hover{border-color:var(--lav);color:var(--lav)}
+    .ed-pill.on{background:var(--lav);border-color:var(--lav);color:#fff}
+    .ed-mood-result{display:none;align-items:flex-start;gap:28px;padding:32px 0;border-top:1px solid var(--border);animation:fadeUp 0.35s ease}
+    .ed-mood-result.show{display:flex}
+    .ed-mr-book{width:52px;height:76px;border-radius:3px 7px 7px 3px;background:linear-gradient(155deg,var(--lav),#481880);flex-shrink:0;box-shadow:4px 6px 18px rgba(0,0,0,0.15)}
+    .ed-mr-genre{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--lav);margin-bottom:6px}
+    .ed-mr-title{font-family:var(--font-serif);font-size:1.5rem;font-weight:500;color:var(--ink);letter-spacing:-0.02em;margin-bottom:4px}
+    .ed-mr-author{font-size:0.78rem;color:var(--muted);margin-bottom:8px}
+    .ed-mr-desc{font-size:0.84rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;max-width:480px}
+    .ed-mr-link{font-size:0.78rem;font-weight:600;color:var(--coral);text-decoration:none}
+    .ed-mr-link:hover{text-decoration:underline}
+
+    /* ── Genres ── */
+    .ed-genres-section{background:var(--ink);border-top:none}
+    .ed-genres-section .ed-overline{color:rgba(245,240,232,0.35)}
+    .ed-genres-section .ed-overline::before{background:rgba(245,240,232,0.15)}
+    .ed-genres-scroll{display:flex;flex-wrap:wrap;gap:12px}
+    .ed-genre-chip{padding:14px 28px;border-radius:99px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-family:var(--font-sans);font-size:0.88rem;font-weight:600;color:rgba(245,240,232,0.75);text-decoration:none;transition:all 0.2s;position:relative;overflow:hidden}
+    .ed-genre-chip::before{content:'';position:absolute;inset:0;background:var(--c);opacity:0;transition:opacity 0.2s;border-radius:99px}
+    .ed-genre-chip:hover::before{opacity:0.15}
+    .ed-genre-chip:hover{border-color:rgba(255,255,255,0.25);color:#fff;transform:translateY(-2px)}
+
+    @media(max-width:900px){
+      .ed-inner{padding:0 28px}
+      .ed-reading-row{gap:24px}
+      .ed-vline{display:none}
+      .ed-row-split{flex-direction:column;gap:40px}
+      .ed-mid-rule{display:none}
+    }
+</style>
 </head>
-
 <body>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="logo">
-      <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
-      <div class="logo-divider"></div>
-      <span class="logo-sub">Ta bibliothèque</span>
-    </div>
-    <div class="header-actions">
-      <button class="header-btn header-btn-ghost">Connexion</button>
-      <button class="header-btn header-btn-accent">Commencer</button>
-    </div>
-  </header>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">
+    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
+    <div class="logo-divider"></div>
+    <span class="logo-sub">Ta bibliothèque</span>
+  </div>
+  <div class="header-actions">
+    <a href="connexion.html" class="header-btn header-btn-ghost" style="text-decoration:none">Connexion</a>
+    <button class="header-btn btn-solid">Commencer</button>
+  </div>
+</header>
 
-  <!-- NAV -->
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <a href="index.html" class="active">Accueil</a>
-
-      <div class="nav-dropdown nav-mega">
-        <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
-        <div class="nav-dropdown-menu mega-menu">
-          <div class="mega-left">
-            <div class="mega-badge">Explorer</div>
-            <h3 class="mega-heading">Ma bibliothèque</h3>
-            <p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture, garde tes favoris.</p>
-          </div>
-          <div class="mega-links">
-            <a href="livres.html" class="mega-card">
-              <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-              <span class="mega-card-content">
-                <span class="mega-card-title">Mes livres</span>
-                <span class="mega-card-desc">Toute ta bibliothèque</span>
-              </span>
-            </a>
-            <a href="favoris.html" class="mega-card">
-              <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
-              <span class="mega-card-content">
-                <span class="mega-card-title">Favoris</span>
-                <span class="mega-card-desc">Tes livres préférés</span>
-              </span>
-            </a>
-            <a href="a-lire.html" class="mega-card">
-              <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
-              <span class="mega-card-content">
-                <span class="mega-card-title">À lire</span>
-                <span class="mega-card-desc">Ta liste d'envies</span>
-              </span>
-            </a>
-            <a href="recherche.html" class="mega-card">
-              <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-              <span class="mega-card-content">
-                <span class="mega-card-title">Recherche</span>
-                <span class="mega-card-desc">Titre, auteur, genre</span>
-              </span>
-            </a>
-          </div>
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="active">Accueil</a>
+    <div class="nav-dropdown">
+      <a href="livres.html">Bibliothèque</a>
+      <div class="nav-dropdown-menu">
+        <div class="mega-left">
+          <div class="mega-badge">Explorer</div>
+          <h3 class="mega-heading">Ma bibliothèque</h3>
+          <p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture, garde tes favoris.</p>
         </div>
-      </div>
-
-      <a href="recommandations.html">Recommandations</a>
-    </div>
-  </nav>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- COL LEFT -->
-    <div class="col-left">
-
-      <!-- HERO -->
-      <div class="hero-banner">
-        <div class="hero-eyebrow">
-          <div class="hero-eyebrow-dot"></div>
-          Ta bibliothèque personnelle
+        <div class="mega-links">
+          <a href="mes-livres.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><span class="mega-card-title">Mes livres</span><span class="mega-card-desc">Toute ta bibliothèque</span></span></a>
+          <a href="favoris.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span><span class="mega-card-title">Favoris</span><span class="mega-card-desc">Tes livres préférés</span></span></a>
+          <a href="a-lire.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span><span class="mega-card-title">À lire</span><span class="mega-card-desc">Ta liste d'envies</span></span></a>
+          <a href="recherche.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span><span class="mega-card-title">Recherche</span><span class="mega-card-desc">Titre, auteur, genre</span></span></a>
         </div>
-        <h1 class="hero-title">Chaque livre est<br>une <em>nouvelle aventure</em></h1>
-        <p class="hero-sub">Suis tes lectures, découvre de nouveaux auteurs et rejoins une communauté de lecteurs passionnés.</p>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="hero-stat-num">12</div>
-            <div class="hero-stat-label">Livres lus</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num">5</div>
-            <div class="hero-stat-label">En cours</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num">38</div>
-            <div class="hero-stat-label">À lire</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SEARCH -->
-      <div class="search-card">
-        <div class="card-label">Découverte</div>
-        <div class="card-title">Rechercher un livre</div>
-        <div class="search-row">
-          <div class="search-input-wrap">
-            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <input class="search-input" type="text" id="searchInput" placeholder="Ex : Agatha Christie, fantasy, manga…" />
-          </div>
-          <button class="search-btn" onclick="doSearch()">Rechercher</button>
-        </div>
-        <div class="search-tags">
-          <span class="search-tag" onclick="setSearch('Fantasy')">Fantasy</span>
-          <span class="search-tag" onclick="setSearch('Agatha Christie')">Agatha Christie</span>
-          <span class="search-tag" onclick="setSearch('Manga')">Manga</span>
-          <span class="search-tag" onclick="setSearch('Romance')">Romance</span>
-          <span class="search-tag" onclick="setSearch('Classiques')">Classiques</span>
-          <span class="search-tag" onclick="setSearch('Sci-Fi')">Sci-Fi</span>
-        </div>
-      </div>
-
-      <!-- DUO GRID -->
-      <div class="home-duo-grid">
-
-        <!-- GENRES -->
-        <div class="card">
-          <div class="card-label">Explorer</div>
-          <div class="card-title">Par genre</div>
-          <div class="genres-grid">
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="genre-chip-label">Roman</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="genre-chip-label">Fantasy</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="genre-chip-label">Manga</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span class="genre-chip-label">Crime</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span class="genre-chip-label">Romance</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l1.11-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span class="genre-chip-label">Sci-Fi</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="genre-chip-label">Biographie</span></div>
-            <div class="genre-chip"><span class="genre-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18M9 21V9"/></svg></span><span class="genre-chip-label">Classiques</span></div>
-          </div>
-        </div>
-
-        <!-- LECTURES EN COURS -->
-        <div class="card">
-          <div class="card-label">Progression</div>
-          <div class="card-title">En cours de lecture</div>
-          <div class="reading-list">
-            <div class="reading-item">
-              <div class="book-cover cover-blue"><span style="font-family:var(--font-serif);font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:0.05em">LM</span></div>
-              <div class="reading-info">
-                <div class="reading-title">Les Misérables</div>
-                <div class="reading-author">Victor Hugo</div>
-                <div class="progress-bar-track">
-                  <div class="progress-bar-fill" style="width:62%"></div>
-                </div>
-                <div class="reading-pct">62% — p. 487 / 785</div>
-              </div>
-            </div>
-            <div class="reading-item">
-              <div class="book-cover cover-green"><span style="font-family:var(--font-serif);font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:0.05em">DN</span></div>
-              <div class="reading-info">
-                <div class="reading-title">Dune</div>
-                <div class="reading-author">Frank Herbert</div>
-                <div class="progress-bar-track">
-                  <div class="progress-bar-fill" style="width:18%"></div>
-                </div>
-                <div class="reading-pct">18% — p. 112 / 624</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
-    <!-- /col-left -->
+    <a href="recommandations.html">Recommandations</a>
+  </div>
+</nav>
 
-    <!-- COL RIGHT -->
-    <div class="col-right">
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-deco-circle-1"></div>
+    <div class="hero-deco-circle-2"></div>
 
-      <!-- STREAK -->
-      <div class="streak-card">
-        <div class="card-label">Habitude</div>
-        <div class="card-title" style="color:#f5f0e8">Série de lecture</div>
-        <div class="streak-display">
-          <div class="streak-num">7</div>
-          <div class="streak-unit">jours consécutifs</div>
-        </div>
-        <div class="streak-dots">
-          <div class="streak-day done">L</div>
-          <div class="streak-day done">M</div>
-          <div class="streak-day done">M</div>
-          <div class="streak-day done">J</div>
-          <div class="streak-day done">V</div>
-          <div class="streak-day done">S</div>
-          <div class="streak-day today">D</div>
-        </div>
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        Ta bibliothèque personnelle
       </div>
-
-      <!-- MOOD -->
-      <div class="card">
-        <div class="card-label">Suggestion</div>
-        <div class="card-title">Comment tu te sens ?</div>
-        <div class="mood-grid">
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Calme</button>
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Aventure</button>
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Émotion</button>
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 3 4 3 4-3 4-3"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Légèreté</button>
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg></span>Réfléchi</button>
-          <button class="mood-btn"><span class="mood-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg></span>Frisson</button>
+      <h1 class="hero-title">
+        Chaque livre<br>est une<br><em>nouvelle aventure</em>
+      </h1>
+      <div class="hero-search">
+        <div class="hero-search-wrap">
+          <svg class="hero-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="hero-search-input" type="text" id="searchInput" placeholder="Titre, auteur, genre…"/>
         </div>
+        <button class="hero-search-btn" onclick="doSearch()">Rechercher</button>
       </div>
-
-      <!-- ACTIVITY -->
-      <div class="card">
-        <div class="card-label">Journal</div>
-        <div class="card-title">Activité récente</div>
-        <div class="activity-list">
-          <div class="activity-item">
-            <div class="activity-dot dot-read"></div>
-            <div>
-              <div class="activity-text">Terminé <strong>L'Étranger</strong></div>
-              <div class="activity-time">Il y a 2 jours</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-want"></div>
-            <div>
-              <div class="activity-text">Ajouté <strong>Fondation</strong> à ta liste</div>
-              <div class="activity-time">Il y a 4 jours</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-fav"></div>
-            <div>
-              <div class="activity-text"><strong>Le Comte de Monte-Cristo</strong> en favori</div>
-              <div class="activity-time">Il y a 1 semaine</div>
-            </div>
-          </div>
-        </div>
+      <div class="hero-tags">
+        <span class="hero-tag" onclick="setSearch('Fantasy')">Fantasy</span>
+        <span class="hero-tag" onclick="setSearch('Agatha Christie')">Agatha Christie</span>
+        <span class="hero-tag" onclick="setSearch('Manga')">Manga</span>
+        <span class="hero-tag" onclick="setSearch('Romance')">Romance</span>
+        <span class="hero-tag" onclick="setSearch('Classiques')">Classiques</span>
+        <span class="hero-tag" onclick="setSearch('Sci-Fi')">Sci-Fi</span>
       </div>
-
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">12</div><div class="hero-stat-label">Livres lus</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">En cours</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">38</div><div class="hero-stat-label">À lire</div></div>
+      </div>
     </div>
-    <!-- /col-right -->
 
-  </main>
+    <div class="hero-right">
+      <div class="big-books">
+        <div class="big-book bb-1" style="width:68px;height:66vh;max-height:400px;transform:rotate(2deg) translateY(16px)">
+          <div class="book-tex"></div><div class="book-band" style="top:22%"></div><div class="book-band" style="bottom:22%"></div>
+          <span class="book-lbl">Roman</span>
+        </div>
+        <div class="big-book bb-2" style="width:84px;height:80vh;max-height:490px;transform:rotate(-1deg)">
+          <div class="book-tex"></div><div class="book-band" style="top:18%"></div><div class="book-band" style="bottom:18%"></div>
+          <span class="book-lbl">Fantasy</span>
+        </div>
+        <div class="big-book bb-3" style="width:72px;height:72vh;max-height:440px;transform:rotate(1.5deg) translateY(8px)">
+          <div class="book-tex"></div><div class="book-band" style="top:20%"></div><div class="book-band" style="bottom:20%"></div>
+          <span class="book-lbl">Classique</span>
+        </div>
+        <div class="big-book bb-4" style="width:64px;height:64vh;max-height:390px;transform:rotate(-2deg) translateY(20px)">
+          <div class="book-tex"></div><div class="book-band" style="top:25%"></div><div class="book-band" style="bottom:25%"></div>
+          <span class="book-lbl">Manga</span>
+        </div>
+        <div class="big-book bb-5" style="width:76px;height:74vh;max-height:460px;transform:rotate(1deg) translateY(12px)">
+          <div class="book-tex"></div><div class="book-band" style="top:19%"></div><div class="book-band" style="bottom:19%"></div>
+          <span class="book-lbl">Sci-Fi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script>
-    function setSearch(val) {
-      document.getElementById("searchInput").value = val;
-      document.getElementById("searchInput").focus();
-    }
-    function doSearch() {
-      const q = document.getElementById("searchInput").value.trim();
-      if (q) window.location.href = "recherche.html?q=" + encodeURIComponent(q);
-    }
-    document.getElementById("searchInput").addEventListener("keydown", e => {
-      if (e.key === "Enter") doSearch();
-    });
-    document.querySelectorAll(".mood-btn").forEach(btn => {
-      btn.addEventListener("click", function () {
-        document.querySelectorAll(".mood-btn").forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-      });
-    });
-  </script>
 
+<!-- ═══════════════════════════════════════
+     SECTION EN COURS — ligne éditoriale
+═══════════════════════════════════════ -->
+<section class="ed-section">
+  <div class="ed-inner">
+
+    <!-- Label flottant -->
+    <div class="ed-overline fade-in">En cours de lecture</div>
+
+    <!-- Livres en cours — disposition horizontale aérée -->
+    <div class="ed-reading-row fade-in">
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#c84030,#8c1e20)">LM</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Les Misérables</div>
+          <div class="ed-book-author">Victor Hugo</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:62%;background:var(--coral)"></div></div>
+          <div class="ed-book-pct">62%</div>
+        </div>
+      </a>
+      <div class="ed-vline"></div>
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#28a8a0,#086860)">DN</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Dune</div>
+          <div class="ed-book-author">Frank Herbert</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:18%;background:var(--teal)"></div></div>
+          <div class="ed-book-pct">18%</div>
+        </div>
+      </a>
+      <div class="ed-vline"></div>
+      <a href="mes-livres.html" class="ed-book-item">
+        <div class="ed-book-spine" style="background:linear-gradient(160deg,#8b6ec4,#481880)">HP</div>
+        <div class="ed-book-meta">
+          <div class="ed-book-title">Harry Potter T.3</div>
+          <div class="ed-book-author">J.K. Rowling</div>
+          <div class="ed-book-bar"><div class="ed-bar-fill" style="width:44%;background:var(--lav)"></div></div>
+          <div class="ed-book-pct">44%</div>
+        </div>
+      </a>
+      <a href="mes-livres.html" class="ed-see-all">Voir tout →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION ACTIVITÉ — typographie seule
+═══════════════════════════════════════ -->
+<section class="ed-section ed-section-alt">
+  <div class="ed-inner ed-row-split">
+
+    <!-- Gauche : streak minimal -->
+    <div class="ed-streak fade-in">
+      <div class="ed-streak-num">7</div>
+      <div class="ed-streak-label">jours de lecture<br>consécutifs</div>
+      <div class="ed-streak-days">
+        <span class="sd done">L</span><span class="sd done">M</span><span class="sd done">M</span>
+        <span class="sd done">J</span><span class="sd done">V</span><span class="sd done">S</span>
+        <span class="sd today">D</span>
+      </div>
+    </div>
+
+    <!-- Séparateur vertical -->
+    <div class="ed-mid-rule"></div>
+
+    <!-- Droite : activité récente en texte -->
+    <div class="ed-activity fade-in">
+      <div class="ed-overline" style="margin-bottom:20px">Activité récente</div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--teal)"></span>
+        Terminé <strong>L'Étranger</strong> — <span class="ed-act-when">il y a 2 jours</span>
+      </div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--gold)"></span>
+        Ajouté <strong>Fondation</strong> à la liste — <span class="ed-act-when">il y a 4 jours</span>
+      </div>
+      <div class="ed-act-line">
+        <span class="ed-act-dot" style="background:var(--coral)"></span>
+        <strong>Le Comte de Monte-Cristo</strong> en favori — <span class="ed-act-when">il y a 1 semaine</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION HUMEUR — grande typographie
+═══════════════════════════════════════ -->
+<section class="ed-section ed-mood-section fade-in">
+  <div class="ed-inner">
+
+    <div class="ed-mood-header">
+      <div class="ed-overline">Suggestion du jour</div>
+      <h2 class="ed-mood-title">Comment tu te <em>sens</em> aujourd'hui ?</h2>
+    </div>
+
+    <div class="ed-mood-pills">
+      <button class="ed-pill" data-mood="calme">Calme</button>
+      <button class="ed-pill" data-mood="aventure">Aventure</button>
+      <button class="ed-pill" data-mood="emotion">Émotion</button>
+      <button class="ed-pill" data-mood="legerete">Légèreté</button>
+      <button class="ed-pill" data-mood="reflexion">Réfléchi</button>
+      <button class="ed-pill" data-mood="frisson">Frisson</button>
+    </div>
+
+    <!-- Résultat — apparaît au choix -->
+    <div class="ed-mood-result" id="moodResult">
+      <div class="ed-mr-book" id="mrSpine"></div>
+      <div class="ed-mr-text">
+        <div class="ed-mr-genre" id="mrGenre"></div>
+        <div class="ed-mr-title" id="mrTitle"></div>
+        <div class="ed-mr-author" id="mrAuthor"></div>
+        <div class="ed-mr-desc" id="mrDesc"></div>
+        <a href="recommandations.html" class="ed-mr-link">Voir plus de suggestions →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION GENRES — défilement horizontal
+═══════════════════════════════════════ -->
+<section class="ed-section ed-genres-section fade-in">
+  <div class="ed-inner">
+    <div class="ed-overline">Explorer</div>
+    <div class="ed-genres-scroll">
+      <a href="recherche.html?q=Roman"     class="ed-genre-chip" style="--c:#c84030">Roman</a>
+      <a href="recherche.html?q=Fantasy"   class="ed-genre-chip" style="--c:#3870c0">Fantasy</a>
+      <a href="recherche.html?q=Manga"     class="ed-genre-chip" style="--c:#c8a020">Manga</a>
+      <a href="recherche.html?q=Crime"     class="ed-genre-chip" style="--c:#283880">Crime</a>
+      <a href="recherche.html?q=Romance"   class="ed-genre-chip" style="--c:#c83070">Romance</a>
+      <a href="recherche.html?q=Sci-Fi"    class="ed-genre-chip" style="--c:#28a8a0">Sci-Fi</a>
+      <a href="recherche.html?q=Classique" class="ed-genre-chip" style="--c:#9060c0">Classiques</a>
+    </div>
+  </div>
+</section>
+
+<script>
+function setSearch(v){document.getElementById("searchInput").value=v;document.getElementById("searchInput").focus()}
+function doSearch(){const q=document.getElementById("searchInput").value.trim();if(q)window.location.href="recherche.html?q="+encodeURIComponent(q)}
+document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch()});
+
+const moodBooks={
+  calme:{title:"Le Vieil Homme et la Mer",author:"Ernest Hemingway",desc:"Contemplatif, sur la solitude et la persévérance.",genre:"Roman"},
+  aventure:{title:"Le Seigneur des Anneaux",author:"J.R.R. Tolkien",desc:"Une épopée grandiose dans un monde fantastique.",genre:"Fantasy"},
+  emotion:{title:"Les Fleurs pour Algernon",author:"Daniel Keyes",desc:"Bouleversant, sur l'intelligence et l'amour.",genre:"Sci-Fi"},
+  legerete:{title:"Le Petit Prince",author:"A. de Saint-Exupéry",desc:"Une fable douce pleine de sagesse.",genre:"Classique"},
+  reflexion:{title:"L'Étranger",author:"Albert Camus",desc:"Court et profond, sur l'absurde.",genre:"Philosophie"},
+  frisson:{title:"Shining",author:"Stephen King",desc:"Un huis clos terrifiant dans un hôtel hanté.",genre:"Thriller"}
+};
+
+document.querySelectorAll(".ed-pill").forEach(btn=>{
+  btn.addEventListener("click",function(){
+    document.querySelectorAll(".ed-pill").forEach(b=>b.classList.remove("on"));
+    this.classList.add("on");
+    const b=moodBooks[this.dataset.mood];if(!b)return;
+    document.getElementById("mrTitle").textContent=b.title;
+    document.getElementById("mrAuthor").textContent=b.author;
+    document.getElementById("mrDesc").textContent=b.desc;
+    document.getElementById("mrGenre").textContent=b.genre;
+    document.getElementById("moodResult").classList.add("show");
+  });
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:0.06});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>

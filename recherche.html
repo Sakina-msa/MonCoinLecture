@@ -1,189 +1,267 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-  <title>Recherche</title>
-
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recherche — Mon Coin Lecture</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--ink:#1a1410;--ink-soft:#3d322a;--muted:#8a7b6e;--muted-light:#b5a89b;--bg:#faf7f2;--bg-warm:#f3ede3;--bg-card:#fffcf7;--border:#e8e0d4;--border-warm:#d4c8b8;--accent:#c4602a;--accent-light:#fdf0e8;--accent-deep:#9e3e14;--gold:#b8933f;--sage:#5a9e6a;--sage-light:#edf7ef;--lav:#8b6ec4;--lav-light:#f2edfb;--font-serif:'Playfair Display',Georgia,serif;--font-sans:'Instrument Sans',system-ui,sans-serif;--radius:12px;--radius-lg:18px;--shadow-sm:0 1px 4px rgba(26,20,16,0.06);--shadow-md:0 4px 20px rgba(26,20,16,0.09);--shadow-lg:0 12px 48px rgba(26,20,16,0.14)}
+    html{font-size:15px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px}
+    .logo{display:flex;align-items:baseline;gap:10px}.logo-mark{font-family:var(--font-serif);font-size:1.25rem;font-weight:500;color:var(--ink);letter-spacing:-0.01em}.logo-mark em{font-style:italic;color:var(--accent)}.logo-divider{width:1px;height:14px;background:var(--border-warm)}.logo-sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-weight:500}
+    .header-actions{display:flex;align-items:center;gap:10px}
+    .header-btn{font-family:var(--font-sans);font-size:0.8rem;font-weight:500;padding:7px 18px;border-radius:99px;cursor:pointer;letter-spacing:0.02em;transition:all 0.18s;border:none}
+    .btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border-warm)}.btn-ghost:hover{background:var(--bg-warm)}.btn-accent{background:var(--ink);color:var(--bg)}.btn-accent:hover{background:var(--ink-soft)}
+    .site-nav{border-bottom:1px solid var(--border);background:var(--bg-card)}.nav-inner{max-width:1400px;margin:0 auto;padding:0 48px;display:flex;align-items:center;gap:4px;height:46px}
+    .nav-inner a{font-size:0.8rem;font-weight:500;color:var(--muted);text-decoration:none;padding:5px 14px;border-radius:6px;letter-spacing:0.03em;transition:all 0.15s}.nav-inner a:hover{color:var(--ink);background:var(--bg-warm)}.nav-inner a.active{color:var(--accent);background:var(--accent-light)}
+    .nav-dropdown{position:relative}.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:20px;width:480px;flex-direction:row;z-index:200}.nav-dropdown:hover .nav-dropdown-menu{display:flex}
+    .mega-left{flex:1;padding-right:20px;border-right:1px solid var(--border)}.mega-badge{display:inline-block;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:99px;margin-bottom:10px}.mega-heading{font-family:var(--font-serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:8px}.mega-text{font-size:0.78rem;color:var(--muted);line-height:1.55}.mega-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1.2}.mega-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;transition:background 0.15s}.mega-card:hover{background:var(--bg-warm)}.mega-icon{width:32px;height:32px;border-radius:8px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}.mega-icon svg{width:15px;height:15px}.mega-card-title{display:block;font-size:0.8rem;font-weight:600;color:var(--ink)}.mega-card-desc{display:block;font-size:0.7rem;color:var(--muted)}
 
-  <link rel="stylesheet" href="assets/css/style.css">
+    /* ── PAGE ── */
+    .page-wrap{max-width:1320px;margin:0 auto;padding:44px 48px 80px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+    /* HERO SEARCH */
+    .search-hero{text-align:center;padding:48px 0 40px;animation:fadeUp 0.5s ease both}
+    .search-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+    .search-title{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--ink);letter-spacing:-0.025em;line-height:1.1;margin-bottom:28px}
+    .search-title em{font-style:italic;font-weight:400;color:var(--accent)}
+
+    /* Grande barre de recherche */
+    .search-bar-big{
+      display:flex;max-width:680px;margin:0 auto 20px;
+      border:2px solid var(--border-warm);border-radius:99px;
+      background:#fff;box-shadow:var(--shadow-md);overflow:hidden;
+      transition:border-color 0.2s,box-shadow 0.2s;
+    }
+    .search-bar-big:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(196,96,42,0.12)}
+    .search-bar-wrap{flex:1;position:relative}
+    .search-bar-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--muted-light);pointer-events:none}
+    .search-bar-input{width:100%;height:58px;padding:0 20px 0 52px;border:none;background:transparent;font-family:var(--font-sans);font-size:1rem;color:var(--ink);outline:none}
+    .search-bar-input::placeholder{color:var(--muted-light)}
+    .search-bar-btn{height:58px;padding:0 32px;background:var(--accent);color:#fff;border:none;font-family:var(--font-sans);font-size:0.88rem;font-weight:600;cursor:pointer;transition:background 0.18s;letter-spacing:0.03em;border-radius:0 99px 99px 0}
+    .search-bar-btn:hover{background:var(--accent-deep)}
+
+    /* Tags rapides */
+    .search-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:0}
+    .search-tag{font-size:0.75rem;font-weight:500;padding:6px 16px;border-radius:99px;border:1.5px solid var(--border-warm);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
+    .search-tag:hover,.search-tag.active{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+
+    /* FILTRES */
+    .filters-row{
+      display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+      padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      margin-bottom:28px;animation:fadeUp 0.5s 0.08s ease both;
+    }
+    .filters-label{font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+    .filter-chip{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);font-size:0.76rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;background:var(--bg-card)}
+    .filter-chip:hover{border-color:var(--border-warm);color:var(--ink)}
+    .filter-chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+    .filter-chip.genre-on{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+
+    /* RÉSULTATS */
+    .results-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;animation:fadeUp 0.5s 0.12s ease both}
+    .results-count{font-size:0.78rem;color:var(--muted);font-weight:500}
+    .results-count strong{color:var(--ink);font-weight:700}
+    .sort-select{height:36px;padding:0 32px 0 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg-card);font-family:var(--font-sans);font-size:0.78rem;color:var(--ink-soft);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7b6e' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color 0.18s}
+    .sort-select:focus{border-color:var(--accent)}
+
+    /* GRILLE RÉSULTATS */
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;animation:fadeUp 0.5s 0.16s ease both}
+    .result-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.22s;position:relative}
+    .result-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+    .result-cover{height:120px;position:relative;overflow:hidden}
+    .result-cover-art{position:absolute;inset:0}
+    .result-cover-art::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.4) 0%,transparent 50%)}
+    .result-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:11px;background:rgba(0,0,0,0.22);z-index:1}
+    .result-cover-init{position:absolute;bottom:10px;left:18px;font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:rgba(255,255,255,0.85);z-index:2;text-shadow:0 2px 6px rgba(0,0,0,0.3);letter-spacing:-0.02em}
+    .result-source-badge{position:absolute;top:8px;right:8px;z-index:2;font-size:0.56rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:2px 7px;border-radius:99px}
+    .badge-ml{background:var(--accent-light);color:var(--accent);border:1px solid #f0b080}
+    .badge-fav{background:#fdf5e0;color:var(--gold);border:1px solid #dfc070}
+    .badge-al{background:var(--sage-light);color:var(--sage);border:1px solid #8dd49d}
+    .result-body{padding:14px 16px}
+    .result-title{font-family:var(--font-serif);font-size:0.9rem;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .result-author{font-size:0.7rem;color:var(--muted);margin-bottom:8px}
+    .result-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .result-tag{font-size:0.6rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--bg-warm);border:1px solid var(--border);color:var(--muted)}
+    .result-stars{display:flex;gap:1px}
+    .star-xs{font-size:0.68rem;color:var(--border-warm)}.star-xs.lit{color:var(--gold)}
+    /* Actions au hover */
+    .result-actions{position:absolute;bottom:14px;right:14px;display:flex;gap:6px;opacity:0;transition:opacity 0.18s}
+    .result-card:hover .result-actions{opacity:1}
+    .result-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}.result-btn:hover{background:var(--bg-warm)}.result-btn svg{width:12px;height:12px;color:var(--muted)}
+    /* Couleurs couvertures */
+    .cv-roman{background:linear-gradient(145deg,#c84030,#8c1e20)}.cv-fantasy{background:linear-gradient(145deg,#3870c0,#1a4080)}.cv-manga{background:linear-gradient(145deg,#c8a020,#8a6808)}.cv-crime{background:linear-gradient(145deg,#283880,#101840)}.cv-romance{background:linear-gradient(145deg,#c83070,#880028)}.cv-scifi{background:linear-gradient(145deg,#28a8a0,#086860)}.cv-classique{background:linear-gradient(145deg,#9060c0,#481880)}.cv-default{background:linear-gradient(145deg,#8a7b6e,#4a3a2e)}
+    /* Empty */
+    .empty-state{text-align:center;padding:80px 32px}
+    .empty-icon{width:72px;height:72px;background:var(--bg-warm);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}.empty-icon svg{width:32px;height:32px;color:var(--muted-light)}
+    .empty-title{font-family:var(--font-serif);font-size:1.3rem;font-weight:500;color:var(--ink);margin-bottom:8px}.empty-sub{font-size:0.85rem;color:var(--muted);line-height:1.65}
+    @media(max-width:768px){.page-wrap{padding:32px 24px 60px}.site-header,.nav-inner{padding-inline:24px}.results-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+  </style>
 </head>
-
 <body>
-
-  <header class="site-header">
-  <div class="logo">
-    <span class="logo-mark">Mon <em>Coin</em> Lecture</span>
-    <span class="logo-sub">Ta bibliothèque</span>
-  </div>
-  <div class="header-actions">
-    <button class="header-btn header-btn-ghost">Connexion</button>
-    <button class="header-btn header-btn-accent">Commencer</button>
-  </div>
+<header class="site-header">
+  <div class="logo"><span class="logo-mark">Mon <em>Coin</em> Lecture</span><div class="logo-divider"></div><span class="logo-sub">Ta bibliothèque</span></div>
+  <div class="header-actions"><a href="connexion.html" class="header-btn btn-ghost" style="text-decoration:none">Connexion</a><a href="inscrire.html" class="header-btn btn-accent" style="text-decoration:none">Commencer</a></div>
 </header>
-
-  <nav class="site-nav">
+<nav class="site-nav">
   <div class="nav-inner">
     <a href="index.html">Accueil</a>
-
-    <div class="nav-dropdown nav-mega">
-      <a href="livres.html" class="nav-dropdown-toggle">Bibliothèque</a>
-
-      <div class="nav-dropdown-menu mega-menu">
-        <div class="mega-left">
-          <div class="mega-badge">Explorer</div>
-          <h3 class="mega-heading">Ma bibliothèque</h3>
-          <p class="mega-text">
-            Retrouve tous tes livres, organise tes envies de lecture,
-            garde tes favoris et lance une recherche en un instant.
-          </p>
-        </div>
-
+    <div class="nav-dropdown">
+      <a href="livres.html" class="active">Bibliothèque</a>
+      <div class="nav-dropdown-menu">
+        <div class="mega-left"><div class="mega-badge">Explorer</div><h3 class="mega-heading">Ma bibliothèque</h3><p class="mega-text">Retrouve tous tes livres, organise tes envies de lecture, garde tes favoris.</p></div>
         <div class="mega-links">
-          <a href="livres.html" class="mega-card">
-            <span class="mega-icon">📚</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Mes livres</span>
-              <span class="mega-card-desc">Voir toute ta bibliothèque</span>
-            </span>
-          </a>
-
-          <a href="favoris.html" class="mega-card">
-            <span class="mega-icon">❤️</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Favoris</span>
-              <span class="mega-card-desc">Retrouver tes livres préférés</span>
-            </span>
-          </a>
-
-          <a href="a-lire.html" class="mega-card">
-            <span class="mega-icon">🕮</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">À lire</span>
-              <span class="mega-card-desc">Gérer ta liste d’envies</span>
-            </span>
-          </a>
-
-          <a href="recherche.html" class="mega-card">
-            <span class="mega-icon">🔎</span>
-            <span class="mega-card-content">
-              <span class="mega-card-title">Recherche</span>
-              <span class="mega-card-desc">Trouver un titre, un auteur, un genre</span>
-            </span>
-          </a>
+          <a href="mes-livres.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><span class="mega-card-title">Mes livres</span><span class="mega-card-desc">Toute ta bibliothèque</span></span></a>
+          <a href="favoris.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span><span class="mega-card-title">Favoris</span><span class="mega-card-desc">Tes livres préférés</span></span></a>
+          <a href="a-lire.html" class="mega-card"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span><span class="mega-card-title">À lire</span><span class="mega-card-desc">Ta liste d'envies</span></span></a>
+          <a href="recherche.html" class="mega-card" style="background:var(--bg-warm)"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span><span class="mega-card-title">Recherche</span><span class="mega-card-desc">Titre, auteur, genre</span></span></a>
         </div>
       </div>
     </div>
-
     <a href="recommandations.html">Recommandations</a>
   </div>
 </nav>
-<main class="container">
 
-  <section class="card">
-    <div class="card-head">
-      <h2>Rechercher un livre</h2>
-      <span class="muted">Recherche dans ta base de données</span>
+<div class="page-wrap">
+  <!-- HERO -->
+  <div class="search-hero">
+    <div class="search-eyebrow">Rechercher</div>
+    <h1 class="search-title">Retrouve n'importe quel <em>livre</em></h1>
+    <div class="search-bar-big">
+      <div class="search-bar-wrap">
+        <svg class="search-bar-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-bar-input" id="searchMain" type="text" placeholder="Titre, auteur, genre, commentaire…" oninput="render()"/>
+      </div>
+      <button class="search-bar-btn" onclick="render()">Chercher</button>
     </div>
+    <div class="search-tags" id="tagCloud"></div>
+  </div>
 
-    <div class="toolbar" style="margin-top:14px;">
-      <input id="champRecherche" type="text" placeholder="Titre, auteur, mot-clé..." style="min-width:260px;">
-      <button id="btnRecherche" type="button" class="btn-primary">Rechercher</button>
-    </div>
+  <!-- FILTRES -->
+  <div class="filters-row">
+    <span class="filters-label">Source</span>
+    <button class="filter-chip on" data-source="tous" onclick="setSource(this,'tous')">Tous</button>
+    <button class="filter-chip" data-source="ml" onclick="setSource(this,'ml')">Mes livres</button>
+    <button class="filter-chip" data-source="fav" onclick="setSource(this,'fav')">Favoris</button>
+    <button class="filter-chip" data-source="al" onclick="setSource(this,'al')">À lire</button>
+    <span class="filters-label" style="margin-left:8px">Genre</span>
+    <button class="filter-chip" data-genre="" onclick="setGenre(this,'')">Tous</button>
+    <button class="filter-chip" data-genre="roman" onclick="setGenre(this,'roman')">Roman</button>
+    <button class="filter-chip" data-genre="fantasy" onclick="setGenre(this,'fantasy')">Fantasy</button>
+    <button class="filter-chip" data-genre="manga" onclick="setGenre(this,'manga')">Manga</button>
+    <button class="filter-chip" data-genre="scifi" onclick="setGenre(this,'scifi')">Sci-Fi</button>
+    <button class="filter-chip" data-genre="crime" onclick="setGenre(this,'crime')">Crime</button>
+    <button class="filter-chip" data-genre="classique" onclick="setGenre(this,'classique')">Classique</button>
+  </div>
 
-    <div id="messageRecherche" class="notice" style="margin-top:12px;"></div>
-  </section>
-
-  <section class="card">
-    <div class="card-head">
-      <h2>Résultats</h2>
-      <span class="muted"><span id="compteurResultats">0</span> résultat(s)</span>
-    </div>
-
-    <ul id="listeResultats" class="books-list" style="margin-top:14px;"></ul>
-  </section>
-
-</main>
+  <!-- RÉSULTATS -->
+  <div class="results-header">
+    <div class="results-count" id="resultsCount"></div>
+    <select class="sort-select" id="sortSelect" onchange="render()">
+      <option value="recent">Plus récent</option>
+      <option value="alpha">A → Z</option>
+      <option value="note">Meilleure note</option>
+    </select>
+  </div>
+  <div class="results-grid" id="resultsGrid"></div>
+</div>
 
 <script>
-function afficherResultats(livres) {
-  const liste = document.getElementById("listeResultats");
-  const compteur = document.getElementById("compteurResultats");
+const genreColors = {roman:'cv-roman',fantasy:'cv-fantasy',manga:'cv-manga',crime:'cv-crime',romance:'cv-romance',scifi:'cv-scifi',classique:'cv-classique','':`cv-default`};
+const genreNames = {roman:'Roman',fantasy:'Fantasy',manga:'Manga',crime:'Crime',romance:'Romance',scifi:'Sci-Fi',classique:'Classique'};
+const statusNames = {lu:'Lu',encours:'En cours',alire:'À lire'};
+let currentSource = 'tous', currentGenre = '';
 
-  liste.innerHTML = "";
-
-  if (!livres || livres.length === 0) {
-    liste.innerHTML = "<li>Aucun livre trouvé.</li>";
-    compteur.textContent = "0";
-    return;
-  }
-
-  livres.forEach(livre => {
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <div class="livre-top">
-        <strong>${livre.titre}</strong>
-      </div>
-
-      <div class="livre-meta">
-        <p>Auteur : ${livre.auteur ?? "Inconnu"}</p>
-        <p>Genre : ${livre.genre ?? "Non précisé"}</p>
-        <p>Statut : ${livre.statut ?? "Non défini"}</p>
-        <p>Note : ${livre.note ?? "Non noté"}/5</p>
-        ${livre.isbn ? `<p>ISBN : ${livre.isbn}</p>` : ""}
-        ${livre.description ? `<p>Description : ${livre.description}</p>` : ""}
-      </div>
-    `;
-
-    liste.appendChild(li);
+// Agréger tous les livres
+function getAllBooks() {
+  const ml = (JSON.parse(localStorage.getItem('mcl_books') || '[]')).map(b => ({...b, _src:'ml'}));
+  const fav = (JSON.parse(localStorage.getItem('mcl_favoris') || '[]')).map(b => ({...b, _src:'fav'}));
+  const al = (JSON.parse(localStorage.getItem('mcl_alire') || '[]')).map(b => ({...b, _src:'al', statut:'alire', note:0}));
+  // Dédoublonner par titre+auteur, ml en priorité
+  const seen = new Set();
+  return [...ml, ...fav, ...al].filter(b => {
+    const k = (b.titre+b.auteur).toLowerCase();
+    if (seen.has(k)) return false; seen.add(k); return true;
   });
-
-  compteur.textContent = livres.length;
 }
 
-function rechercherLivres() {
-  const champ = document.getElementById("champRecherche");
-  const message = document.getElementById("messageRecherche");
-  const valeur = champ.value.trim();
+function setSource(el, v) {
+  document.querySelectorAll('[data-source]').forEach(c => c.classList.remove('on'));
+  el.classList.add('on'); currentSource = v; render();
+}
+function setGenre(el, v) {
+  document.querySelectorAll('[data-genre]').forEach(c => c.classList.remove('on','genre-on'));
+  el.classList.add(v ? 'genre-on' : 'on'); currentGenre = v; render();
+}
 
-  message.textContent = "";
+function render() {
+  const q = document.getElementById('searchMain').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+  let books = getAllBooks();
 
-  if (valeur === "") {
-    message.textContent = "Tape un mot-clé pour rechercher.";
-    afficherResultats([]);
+  if (currentSource !== 'tous') books = books.filter(b => b._src === currentSource);
+  if (currentGenre) books = books.filter(b => b.genre === currentGenre);
+  if (q) books = books.filter(b =>
+    b.titre.toLowerCase().includes(q) || b.auteur.toLowerCase().includes(q) ||
+    (b.commentaire||'').toLowerCase().includes(q) || (genreNames[b.genre]||'').toLowerCase().includes(q)
+  );
+
+  if (sort === 'alpha') books.sort((a,b) => a.titre.localeCompare(b.titre));
+  else if (sort === 'note') books.sort((a,b) => (b.note||0) - (a.note||0));
+
+  const count = document.getElementById('resultsCount');
+  count.innerHTML = books.length ? `<strong>${books.length}</strong> livre${books.length>1?'s':''} trouvé${books.length>1?'s':''}` : '';
+
+  const grid = document.getElementById('resultsGrid');
+  if (!books.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-title">${q ? 'Aucun résultat pour "'+q+'"' : 'Aucun livre dans ta bibliothèque'}</div><div class="empty-sub">Essaie un autre terme ou ajoute des livres dans <a href="mes-livres.html" style="color:var(--accent)">Mes livres</a>.</div></div>`;
     return;
   }
 
-  fetch("api/rechercher_livres.php?q=" + encodeURIComponent(valeur))
-    .then(response => response.json())
-    .then(data => {
-      if (data.erreur) {
-        message.textContent = data.erreur;
-        afficherResultats([]);
-        return;
-      }
-
-      afficherResultats(data);
-    })
-    .catch(error => {
-      console.error("Erreur :", error);
-      message.textContent = "Erreur lors de la recherche.";
-      afficherResultats([]);
-    });
+  const badgeMap = {ml:'badge-ml',fav:'badge-fav',al:'badge-al'};
+  const badgeLabel = {ml:'Mes livres',fav:'Favori',al:'À lire'};
+  grid.innerHTML = books.map(b => {
+    const stars = b.note ? Array.from({length:5},(_,i)=>`<span class="star-xs${i<b.note?' lit':''}"">★</span>`).join('') : '';
+    const init = b.titre.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0].toUpperCase()).join('') || b.titre.slice(0,2).toUpperCase();
+    return `<div class="result-card">
+      <div class="result-cover">
+        <div class="result-cover-art ${genreColors[b.genre]||'cv-default'}"></div>
+        <div class="result-cover-init">${init}</div>
+        <span class="result-source-badge ${badgeMap[b._src]}">${badgeLabel[b._src]}</span>
+      </div>
+      <div class="result-body">
+        <div class="result-title">${b.titre}</div>
+        <div class="result-author">${b.auteur}</div>
+        <div class="result-tags">
+          ${b.genre?`<span class="result-tag">${genreNames[b.genre]}</span>`:''}
+          ${b.statut?`<span class="result-tag">${statusNames[b.statut]||b.statut}</span>`:''}
+        </div>
+        ${stars?`<div class="result-stars" style="margin-top:6px">${stars}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
-document.getElementById("btnRecherche").addEventListener("click", rechercherLivres);
+// Tags cloud depuis les livres existants
+function buildTags() {
+  const books = getAllBooks();
+  const genres = [...new Set(books.map(b=>b.genre).filter(Boolean))];
+  const tags = document.getElementById('tagCloud');
+  tags.innerHTML = genres.map(g => `<button class="search-tag" onclick="quickSearch('${genreNames[g]||g}')">${genreNames[g]||g}</button>`).join('');
+}
+function quickSearch(q) {
+  document.getElementById('searchMain').value = q; render();
+}
 
-document.getElementById("champRecherche").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    rechercherLivres();
-  }
-});
+// URL param ?q=
+const urlQ = new URLSearchParams(location.search).get('q');
+if (urlQ) { document.getElementById('searchMain').value = urlQ; }
+
+buildTags(); render();
 </script>
-
 </body>
 </html>
