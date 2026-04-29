@@ -77,16 +77,25 @@ Tables principales :
 MonCoinLecture/
 │
 ├── assets/
-│   ├── css/
-│   └── js/
+│   └── css/
 │
+├── js/
+│
+├── a-lire.html
 ├── api_livres.php
 ├── config.php
+├── connexion.html
 ├── connexion.php
-├── index.php
+├── db.html
+├── deconnexion.php
 ├── decouvrir.php
-├── a-lire.html
-├── MonCoinLecture.pdf        ← Rapport complet
+├── favoris.html
+├── index.php
+├── livres.html
+├── mes-livres.html
+├── recherche.html
+│
+├── MonCoinLecture.pdf          ← Rapport complet
 └── presentation diapo.pdf      ← Diaporama Canva
 
 
