@@ -1,122 +1,150 @@
-#  MonCoinLecture  
+# MonCoinLecture  
 Application web de gestion de lectures, développée en PHP, MySQL, HTML/CSS et JavaScript.
-
-## Présentation du projet
-MonCoinLecture est une application web permettant aux utilisateurs de gérer leurs lectures, suivre leur progression, consulter leurs statistiques et maintenir une habitude quotidienne de lecture grâce à un système de streak.
-
-Ce projet a été réalisé dans le cadre du module **Programmation Web & Introduction à PHP**.
 
 ---
 
-##  Fonctionnalités principales
+## Présentation du projet
 
-### Utilisateur
-- Création de compte et connexion sécurisée (PDO + mots de passe hashés)
-- Déconnexion
-- Gestion de profil
+MonCoinLecture est une application web permettant aux utilisateurs de gérer leurs lectures, suivre leur progression, consulter leurs statistiques et maintenir une habitude quotidienne grâce à un système de streak.  
+Le projet a été réalisé dans le cadre du module **Programmation Web & PHP** (L2 MIAGE).
+
+L’objectif est de proposer une interface simple et intuitive pour :
+- gérer sa bibliothèque personnelle,
+- découvrir de nouveaux livres,
+- suivre son avancement,
+- organiser ses favoris,
+- consulter des recommandations.
+
+---
+
+## Fonctionnalités principales
+
+### Gestion utilisateur
+- Inscription
+- Connexion / déconnexion
+- Accès à un espace personnel
 
 ### Gestion des livres
-- Ajouter un livre (avec autocomplétion via l’API OpenLibrary)
-- Modifier un livre
+- Ajouter un livre (avec autocomplétion via OpenLibrary)
+- Modifier un livre (statut, progression, note, favori)
 - Supprimer un livre
-- Marquer un livre comme :
-  - ✔️ Lu  
-  - 📖 En cours  
-  - 📌 À lire  
-- Ajouter une note et un commentaire
-- Ajouter un livre en favori
-
-###  Suivi de progression
-- Mise à jour du pourcentage de lecture
-- Historique des actions (table *activite*)
-- Suivi du streak de lecture (table *streak*)
+- Voir les détails d’un livre
+- Gérer ses favoris
 
 ### Recherche & découverte
 - Recherche de livres via OpenLibrary
-- Page “Découvrir” avec suggestions
+- Découverte par genres
+- Suggestions selon l’humeur
+- Livres similaires
 
----
-
-## Base de données
-
-La base de données **coin_lecture_db** est gérée sous MySQL via phpMyAdmin (XAMPP).  
-La connexion est centralisée dans `config.php` via PDO (pattern Singleton).
-
-### Schéma de la base de données
-*(voir fichier `MonCoinLecture.pdf` pour le schéma complet)*
-
-Tables principales :
-- **utilisateurs**
-- **livres**
-- **activite**
-- **streak**
-- **progression**
+### Suivi de progression
+- Mise à jour du pourcentage de lecture
+- Historique des actions
+- Système de streak (jours consécutifs de lecture)
 
 ---
 
 ## Technologies utilisées
 
-- **Frontend :**
-  - HTML5
-  - CSS3
-  - JavaScript
+### Frontend
+- HTML5  
+- CSS3  
+- JavaScript  
 
-- **Backend :**
-  - PHP 8
-  - PDO (requêtes préparées)
+### Backend
+- PHP 8  
+- PDO (requêtes préparées)
 
-- **Base de données :**
-  - MySQL (phpMyAdmin)
+### Base de données
+- MySQL (phpMyAdmin via XAMPP)
 
-- **API externe :**
-  - OpenLibrary (recherche de livres)
-
----
-
-##  Structure du projet
-MonCoinLecture/
-│
-├── assets/
-│   └── css/
-│
-├── js/
-│
-├── a-lire.html
-├── api_livres.php
-├── config.php
-├── connexion.html
-├── connexion.php
-├── db.html
-├── deconnexion.php
-├── decouvrir.php
-├── favoris.html
-├── index.php
-├── livres.html
-├── mes-livres.html
-├── recherche.html
-│
-├── MonCoinLecture.pdf          ← Rapport complet
-└── presentation diapo.pdf      ← Diaporama Canva
-
+### API externe
+- OpenLibrary API
 
 ---
 
-##  Rapport & Présentation
+## Installation du projet
 
--  **Rapport complet** : `MonCoinLecture.pdf`
--  **Présentation (Canva)** : `presentation diapo.pdf`
+###  Télécharger le projet
 
-Ces documents détaillent :
-- l’analyse UML  
-- le schéma de la base de données  
-- les diagrammes de séquence  
-- les choix techniques  
-- les fonctionnalités implémentées  
+#### ✔️ Option A — ZIP
+1. Aller sur :  
+   https://github.com/Sakina-msa/MonCoinLecture
+2. Cliquer sur **Code**
+3. Cliquer sur **Download ZIP**
+4. Extraire le dossier
 
----
+#### ✔️ Option B — Cloner le dépôt
+```bash
+git clone https://github.com/Sakina-msa/MonCoinLecture.git
 
-##  Auteur
 
-Projet réalisé par **Mona et Sakina**  
+### Installation avec XAMPP
+-  Installer XAMPP (Apache + MySQL)
+-  Copier le dossier du projet dans : C:\xampp\htdocs\
+-  Renommer le dossier en :   MonCoinLecture
+-  Démarrer Apache et MySQL dans le panneau XAMPP
+
+###  Configuration de la base de données
+-  Ouvrir phpMyAdmin :
+      http://localhost/phpmyadmin
+
+-  Créer une base de données : coin_lecture_db
+
+-  Importer le fichier SQL fourni (si présent dans le projet)
+    ou créer les tables décrites dans le rapport.
+
+-  Importer le fichier SQL fourni (si présent dans le projet)
+    ou créer les tables décrites dans le rapport.
+    $host = "localhost";
+    $dbname = "coin_lecture_db";
+    $username = "root";
+    $password = "";
+
+###  Lancer l’application
+
+Ouvrir le site dans votre navigateur : http://localhost/MonCoinLecture/index.php
+
+
+###  Configuration de la base de données
+      MonCoinLecture/
+      │
+      ├── assets/
+      │   └── css/
+      │
+      ├── js/
+      │
+      ├── a-lire.html
+      ├── api_livres.php
+      ├── config.php
+      ├── connexion.html
+      ├── connexion.php
+      ├── db.html
+      ├── deconnexion.php
+      ├── decouvrir.php
+      ├── favoris.html
+      ├── favoris.php
+      ├── header_nav.php
+      ├── index.php
+      ├── livres.html
+      ├── mes-livres.html
+      ├── recherche.html
+      │
+      ├── rapport/
+      │   └── MonCoinLecture.pdf
+      │
+      └── presentation/
+          └── presentation.pdf
+      
+
+
+
+### Documentation
+
+-  Le rapport complet se trouve dans : /rapport/MonCoinLecture.pdf
+-  La présentation Canva se trouve dans : /presentation/presentation.pdf
+
+###  Auteur
+
+Projet réalisé par Mona et Sakina 
 Étudiantes en L2 MIAGE — Université Paris Nanterre
-
