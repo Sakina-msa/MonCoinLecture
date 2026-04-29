@@ -1,0 +1,113 @@
+#  MonCoinLecture  
+Application web de gestion de lectures, développée en PHP, MySQL, HTML/CSS et JavaScript.
+
+## Présentation du projet
+MonCoinLecture est une application web permettant aux utilisateurs de gérer leurs lectures, suivre leur progression, consulter leurs statistiques et maintenir une habitude quotidienne de lecture grâce à un système de streak.
+
+Ce projet a été réalisé dans le cadre du module **Programmation Web & Introduction à PHP**.
+
+---
+
+##  Fonctionnalités principales
+
+### Utilisateur
+- Création de compte et connexion sécurisée (PDO + mots de passe hashés)
+- Déconnexion
+- Gestion de profil
+
+### Gestion des livres
+- Ajouter un livre (avec autocomplétion via l’API OpenLibrary)
+- Modifier un livre
+- Supprimer un livre
+- Marquer un livre comme :
+  - ✔️ Lu  
+  - 📖 En cours  
+  - 📌 À lire  
+- Ajouter une note et un commentaire
+- Ajouter un livre en favori
+
+###  Suivi de progression
+- Mise à jour du pourcentage de lecture
+- Historique des actions (table *activite*)
+- Suivi du streak de lecture (table *streak*)
+
+### Recherche & découverte
+- Recherche de livres via OpenLibrary
+- Page “Découvrir” avec suggestions
+
+---
+
+## Base de données
+
+La base de données **coin_lecture_db** est gérée sous MySQL via phpMyAdmin (XAMPP).  
+La connexion est centralisée dans `config.php` via PDO (pattern Singleton).
+
+### Schéma de la base de données
+*(voir fichier `MonCoinLecture.pdf` pour le schéma complet)*
+
+Tables principales :
+- **utilisateurs**
+- **livres**
+- **activite**
+- **streak**
+- **progression**
+
+---
+
+## Technologies utilisées
+
+- **Frontend :**
+  - HTML5
+  - CSS3
+  - JavaScript
+
+- **Backend :**
+  - PHP 8
+  - PDO (requêtes préparées)
+
+- **Base de données :**
+  - MySQL (phpMyAdmin)
+
+- **API externe :**
+  - OpenLibrary (recherche de livres)
+
+---
+
+##  Structure du projet
+MonCoinLecture/
+│
+├── assets/
+│   ├── css/
+│   └── js/
+│
+├── api_livres.php
+├── config.php
+├── connexion.php
+├── index.php
+├── decouvrir.php
+├── a-lire.html
+├── MonCoinLecture.pdf        ← Rapport complet
+└── presentation diapo.pdf      ← Diaporama Canva
+
+
+---
+
+##  Rapport & Présentation
+
+-  **Rapport complet** : `MonCoinLecture.pdf`
+-  **Présentation (Canva)** : `presentation diapo.pdf`
+
+Ces documents détaillent :
+- l’analyse UML  
+- le schéma de la base de données  
+- les diagrammes de séquence  
+- les choix techniques  
+- les fonctionnalités implémentées  
+
+---
+
+##  Auteur
+
+Projet réalisé par **Mona et Sakina**  
+Étudiantes en L2 MIAGE — Université Paris Nanterre
+
